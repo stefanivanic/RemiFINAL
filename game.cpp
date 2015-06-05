@@ -14,6 +14,8 @@ bool firstTime;
 int groupsThrown;
 int groupValue;
 
+// proba ubaceno
+
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
