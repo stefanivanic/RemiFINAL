@@ -17,6 +17,8 @@ Card::Card(QWidget *parent, short number, short value, Sign sign)
     e = new QGraphicsOpacityEffect();
 } //END CONSTRUCTOR
 
+//cacakam card
+
 QString Card::name(){
     QString rez;
 
