@@ -1,0 +1,88 @@
+#include "game.h"
+#include "ui_game.h"
+
+#include "sign.h"
+#include "card.h"
+
+Game::Game(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::Game)
+{
+    ui->setupUi(this);
+
+    deck = QVector<Card*>(108);
+    firstAvailable = 0;
+
+    // BEGIN PUNJENJE U SPIL
+    for(int i=0; i<2; i++){
+        for(int j=1; j<15; j++){
+            if(j==11)
+                continue;
+
+            Card *card1 = new Card(j,KARO);
+            Card *card2 = new Card(j,TREF);
+            Card *card3 = new Card(j,PIK);
+            Card *card4 = new Card(j,HERC);
+
+            // umesto ovog ruznog oblika
+            // da se ubaci deck.addCard();
+            addCard(card1);
+            addCard(card2);
+            addCard(card3);
+            addCard(card4);
+        }
+    }
+
+    for(int i=0; i<4; i++){
+        Card *card = new Card(0, JOKER);
+        addCard(card);
+    }
+    // END PUNJENJE U SPIL
+
+
+    //SHUFFLE DECK MORA DA SE ODRADI RANDOM BROJ PUTA
+    /* ovo je vrlo sumnjivo vrvt mora da se menja
+    random_shuffle(deck.begin(), deck.end());
+    */
+
+    // BEGIN INICIJALIZACIJA IGRACA *** OVO DA SE ISPRAVI OBAVEZNO ***
+    for(int i=0; i<14; i++) {
+        _Player1.addCard(deck[firstAvailable-1]);
+        removeLastCard();
+        _Player2.addCard(deck[firstAvailable-1]);
+        removeLastCard();
+    }
+
+    // END INICIJALIZACIJA IGRACA
+}
+
+Game::~Game()
+{
+    delete ui;
+}
+
+void Game::addCard(Card* c)
+{
+    deck[firstAvailable++] = c;
+}
+
+void Game::removeLastCard()
+{
+    deck[--firstAvailable] = 0;
+}
+
+//Probna funkcija, sa izbacivanjem karte playera1
+void Game::play(){
+    while(1){
+
+       //zbog ubaciavanja guia
+        // mora skroz da se menja ovo
+
+    }
+}
+
+void Game::on_pushButton_clicked()
+{
+    Card *c = new Card(10,PIK);
+    c->show();
+}

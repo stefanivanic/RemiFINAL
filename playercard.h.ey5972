@@ -1,0 +1,24 @@
+#ifndef PLAYERCARD_H
+#define PLAYERCARD_H
+
+#include "card.h"
+
+namespace Ui {
+class PlayerCard;
+}
+
+class PlayerCard : public Card
+{
+    Q_OBJECT
+
+public:
+    explicit PlayerCard(QWidget *parent = 0);
+    PlayerCard(QWidget *parent = 0, short number =0 , Sign sign = JOKER);
+
+private:
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+};
+
+#endif // PLAYERCARD_H

@@ -1,0 +1,144 @@
+#include "playercontainer.h"
+#include "ui_playercontainer.h"
+
+PlayerContainer::PlayerContainer(QWidget *parent, int x, int y) :
+    QWidget(parent),
+    ui(new Ui::PlayerContainer),
+    _Hand(), playerPosition(x, y), tempCardPosition(-1)
+{
+    ui->setupUi(this);
+
+    this->move(playerPosition);
+
+    /* za debag, strogo preporucujem da se ne brise */
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::black);
+    this->setAutoFillBackground(true);
+    this->setPalette(Pal);
+
+    /* velicina, menjace se,
+     * predlazem da se uvedu polja const,
+     * da se tako menja, kao #define u c-u */
+    this->resize(width, height);
+}
+
+void PlayerContainer::removeCard()
+{
+    _Hand.hide(_Hand.begin() + tempCardPosition);
+    _Hand.erase(_Hand.begin() + tempCardPosition);
+
+    for(int i = 0; i < _Hand.size(); i++)
+        _Hand[i]->move(playerPosition.x() + i * cardDistance,
+                       playerPosition.y());
+}
+
+bool PlayerContainer::isInArea()
+{
+    QPoint p = mapFromGlobal(QCursor::pos());
+
+    if(p.x() >= 0 && p.x() <= width &&
+        p.y() >= 0 && p.y() <= height)
+        return true;
+
+    return false;
+}
+
+bool PlayerContainer::isCardTargeted(QObject *target)
+{
+    for(PlayerCard* c : _Hand)
+        if(target == c)
+            return true;
+    return false;
+}
+
+void PlayerContainer::addCard(Card* card1, const QString& theme){
+
+    PlayerCard* card =
+            new PlayerCard(card1->parentWidget(),
+                           card1->getNumber(),
+                           card1->getSign());
+
+    card->installEventFilter(this->parentWidget());
+
+    card->move(playerPosition.x() + _Hand.size() * cardDistance,
+               playerPosition.y());
+
+    card->setImage("default", true); card->raise(); _Hand.push_back(card);
+}
+/*
+//Funkcija za bacanje karte
+void PlayerContainer::throwCard(int i){
+    i;
+}
+*/
+void PlayerContainer::mousePressEvent(QMouseEvent* event)
+{
+    event->accept();
+
+    // pozicija karte na koju je kliknuto
+    // u _Hand se odreduje preko misa
+    tempCardPosition = getCurrArea();
+    tempCardObject = _Hand[tempCardPosition];
+
+    emit onPositionChange();
+}
+
+void PlayerContainer::mouseMoveEvent(QMouseEvent* event)
+{
+    event->accept();
+
+    int areaOfCurrCard = getCurrArea();
+
+    if(tempCardPosition != areaOfCurrCard) {
+        shiftCards( tempCardPosition < areaOfCurrCard );
+        tempCardPosition = areaOfCurrCard;
+        emit onPositionChange();
+    }
+}
+
+void PlayerContainer::mouseReleaseEvent(QMouseEvent* event)
+{
+    event->accept();
+
+    int areaOfCurrCard = getCurrArea();
+
+    _Hand[tempCardPosition] = tempCardObject;
+    _Hand[tempCardPosition]->
+                move(playerPosition.x() + areaOfCurrCard * cardDistance,
+                     playerPosition.y());
+
+    tempCardPosition = -1;
+    emit onPositionChange();
+    refreshDepth();
+}
+
+void PlayerContainer::shiftCards(bool right)
+{
+    int position = right ? 1 : -1;
+
+    _Hand[tempCardPosition] = _Hand[tempCardPosition + position];
+    _Hand[tempCardPosition + position] = tempCardObject;
+
+    _Hand[tempCardPosition]->
+                move(playerPosition.x() + tempCardPosition * cardDistance,
+                     playerPosition.y());
+}
+
+void PlayerContainer::refreshDepth()
+{
+    for(Card* c : _Hand)
+        c->raise();
+}
+
+int PlayerContainer::getCurrArea()
+{
+    QPoint p = this->mapFromGlobal(QCursor::pos());
+    int areaOfCurrCard = p.x() / cardDistance;
+
+    if(areaOfCurrCard >= 15)    areaOfCurrCard = 14;
+    if(areaOfCurrCard <   0)    areaOfCurrCard =  0;
+
+    return areaOfCurrCard;
+}
+
+PlayerContainer::~PlayerContainer() { delete ui; }

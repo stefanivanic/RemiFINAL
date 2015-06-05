@@ -1,0 +1,270 @@
+#include "game.h"
+#include "ui_game.h"
+#include "sign.h"
+
+#include <QTime>
+
+Game::Game(QWidget *parent) :
+    QMainWindow(parent), ui(new Ui::Game),
+    theme("default"), playerOneOnMove(true), playerTookCard(true)
+{
+    ui->setupUi(this); setBackgroundColor(); ui->throwGroup->hide();
+
+    _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
+    _Player2 = new PlayerContainer(this, 200,  50, 350, 100);
+
+    talon = new Talon(this, 0, 250, 100, 100);
+    deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
+
+    _Player1->installEventFilter(this);
+    _Player2->installEventFilter(this);
+
+    talon->installEventFilter(this);
+    deck->installEventFilter(this);
+
+    // inicijalizacija signal-slotova
+    initSnS();
+
+    dealCards();
+} // END CONSTRUCTOR
+
+void Game::initSnS()
+{
+    // monitoring glega za tempCardPosition
+    connect( _Player1, SIGNAL(onPositionChange()),
+                 this, SLOT(changeTempPosText()));
+    // bacili kartu => pomeraju se flegovi, tekst itd
+    connect( _Player1, SIGNAL(onThrowCard()),
+                 this, SLOT(changeOnMoveText()));
+    // bacili kartu => pomeraju se flegovi, tekst itd
+    connect( _Player2, SIGNAL(onThrowCard()),
+                 this, SLOT(changeOnMoveText()));
+    // aktiviramo grupu => prikaz dugmeta za izbacivanje grupe
+    connect( _Player1, SIGNAL(onAddingCardtoGroup()),
+                 this, SLOT(showOnThrowButton()));
+    // nema grupe => nema dugmeta
+    connect( _Player1, SIGNAL(onEmptyGroup()),
+                 this, SLOT(hideOnThrowButton()));
+    // za restart aplikacije
+    connect( ui->menuBarRestartGame, SIGNAL(triggered()),
+              this, SLOT(slotReboot()));
+}
+
+bool Game::eventFilter(QObject* target, QEvent* event)
+{
+
+    if(event->type() == QEvent::MouseButtonPress ||
+        event->type() == QEvent::MouseButtonRelease||
+        event->type() == QEvent::MouseMove) {
+
+        QMouseEvent* m_event = static_cast<QMouseEvent*>(event);
+
+        if(_Player1->isCardTargeted(target)) {            
+            if(!talon->isInArea()) {
+                if(event->type() == QEvent::MouseButtonPress)
+                    _Player1->mousePressEvent(m_event);
+                if(event->type() == QEvent::MouseMove)
+                    _Player1->mouseMoveEvent(m_event);
+                if(event->type() == QEvent::MouseButtonRelease)
+                    _Player1->mouseReleaseEvent(m_event);
+            }
+
+            if( talon->isInArea() ) {
+                if(event->type() == QEvent::MouseButtonRelease) {
+                    if(!playerOneOnMove) {
+                        ui->errorLogger->setText("SACCEKAJ SVOJ RED");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }
+                    else if(!playerTookCard) {
+                        ui->errorLogger->setText("PRVO UZMITE KARTU");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }
+                    else {
+                        playerToTalon(player1);
+                        talon->mouseReleaseEvent(static_cast<QMouseEvent*>(event));
+
+//                        a zasto ovde emit kad moze direkt
+//                        da se pozove slot metoda? ubaciti
+//                        u odgovarajucu funkciju.
+                        emit _Player1->onThrowCard();
+
+                        playerTwoPlay();
+                        talon->mouseReleaseEvent(m_event);
+                    }
+
+                } // END IF event->type() == MouseButtonRelease
+
+            } // END IF talon->isInArea()
+
+        }// END IF _Player1->isCardTargeted(target)
+
+        for(CardTableContainer* cdc : table) {
+            if( cdc->isCardTargeted(target) ) {
+//                if(cdc->isInArea()) {
+                    if(event->type() == QEvent::MouseButtonPress)
+                        cdc->mousePressEvent(m_event);
+                    if(event->type() == QEvent::MouseMove)
+                        cdc->mouseMoveEvent(m_event);
+                    if(event->type() == QEvent::MouseButtonRelease)
+                        cdc->mouseReleaseEvent(m_event);
+//                }
+            }
+        }
+
+        // blokiraj diranje tudjih karata
+        if( _Player2->isCardTargeted(target) ||
+                talon->isCardTargeted(target) ) {
+            event->ignore();
+            return true;
+        }
+
+        if(deck->isCardTargeted(target)) {
+            if(event->type() == QMouseEvent::MouseButtonPress) {
+                if(playerTookCard)
+                    ui->errorLogger->setText("KARTA VEC UZETA");
+                else if(!playerOneOnMove)
+                    ui->errorLogger->setText("SACEKAJ SVOJ RED");
+                else {
+                    dealCard(player1);
+                    playerTookCard = true;
+                    ui->errorLogger->setText("error logger.");
+                }
+            }
+            event->ignore();
+            return true;
+        }
+    } // END IF (MOUSE EVENT)
+
+    // ako nije mouse event pustimo ga da radi svoje
+    return target->event(event);
+}
+
+void Game::dealCards()
+{
+    dealCard(player1); for(int i=0; i<14; i++)
+    {  dealCard(player1);  dealCard(player2);  }
+}
+
+void Game::dealCard(bool player2)
+{
+    PlayerContainer* player = player2 ? _Player2 : _Player1;
+    player->addCard(deck->getLastCard(), !player2);
+}
+
+void Game::on_actionSelect_theme_triggered()
+{
+    selectTheme = new SelectTheme(this);
+    selectTheme->show();
+}
+
+void Game::playerTwoPlay()
+{
+    delay(1.5, "TAKING CARD");    dealCard(player2);
+    delay(2.5, "THINKING"   );    playerToTalon(player2);
+
+    emit _Player2->onThrowCard();
+}
+
+void Game::playerToTalon(bool playerTwo)
+{
+    PlayerContainer* p = playerTwo ? _Player2 : _Player1;
+    talon->addCard(p->getTempCard(), true);
+    p->removeCard();
+
+    // player je pobedio
+    if(p->handSize() == 0) {
+        // neki dialog za restart/exit igre
+    }
+
+//    talon->printCards();
+    playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()
+}
+
+void Game::changeTempPosText()
+{
+    QString s("Player1 : tempCardPosition : ");
+    s.append( QString::number(_Player1->getTempCardPos()) );
+    ui->label->setText(s);
+}
+
+// nesrecno ime, ona menja igraca a ne samo tekst
+void Game::changeOnMoveText()
+{
+    playerOneOnMove = !playerOneOnMove;
+
+    ui->errorLogger->setText("error logger.");
+
+    QString s("on move : ");
+    QString s1 = playerOneOnMove ? "player1" : "player2" ;
+    ui->onMoveLabel->setText(s.append(s1));
+}
+
+void Game::showOnThrowButton() { ui->throwGroup->show(); }
+void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
+
+void Game::delay(double seconds, QString message)
+{
+    ui->aiLogger->setText(message);
+
+    QTime dieTime= QTime::currentTime().addSecs(seconds);
+    while( QTime::currentTime() < dieTime )
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
+    ui->aiLogger->setText("CHILLING");
+}
+
+void Game::on_throwGroup_clicked()
+{
+
+    if(!playerTookCard) {
+        ui->errorLogger->setText("PRVO UZMITEW KARTU");
+    }
+    else {
+//    if(_Player1->group->isCorrectGroup() != 1)
+//        ui->errorLogger->setText("LOSA GRUPA");
+//    else {
+        if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
+            ui->errorLogger->setText("mora da vam ostane bar 1 karta");
+        }
+        else {
+            int w1 = _Player1->group->getCards().size() * 20 + 80;
+            int h1 = 100;
+            int pos_x = 200 + std::accumulate(table.begin(),
+                                              table.end(), 0,
+                                              [](const CardTableContainer* cdc) { return cdc->getContainerWidth(); }) +  w1;
+            int pos_y = 150;
+
+            CardTableContainer* cdc =
+                    new CardTableContainer(this, pos_x, pos_y, w1, h1);
+
+            cdc->addCards(_Player1->group->getCards());
+
+            _Player1->deleteCardsFromGroup();
+
+            table.push_back(cdc);
+    /*
+            qDebug() << "table vectors : ";
+            for(CardTableContainer* cdc : table)
+                cdc->print();
+    */
+    //    }
+        }
+    }
+}
+
+void Game::slotReboot()
+{
+    qDebug() << "Performing application reboot...";
+    qApp->exit( Game::EXIT_CODE_REBOOT );
+}
+
+void Game::setBackgroundColor()
+{
+    /* background color , bolje da se zameni sa setStyleSheet*/
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::lightGray);
+    this->setAutoFillBackground(true);
+    this->setPalette(Pal);
+}
+
+Game::~Game() { delete ui; }
