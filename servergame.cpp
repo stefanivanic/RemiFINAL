@@ -63,7 +63,7 @@ void ServerGame::initSnS()
 
     //PROBA ZA SERVER
     connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
-    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(sendMessage()));
+    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
 
 }
 
@@ -454,8 +454,10 @@ void ServerGame::appendMessage(const QString &message)
     ui->textEdit->append(message);
 }
 
-void ServerGame::sendMessage()
+void ServerGame::on_lineEdit_returnPressed()
 {
+    ui->textEdit->append(ui->lineEdit->text());
+
     QString s(ui->lineEdit->text());
     server->sendMessage(s);
 }

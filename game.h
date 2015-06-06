@@ -46,13 +46,13 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
-    void cardsPreordered(QVector<QString> cardsName);
     //OVDE DODATO
     void on_lineEdit_returnPressed();
 
 public slots:
     void appendMessage(const QString& message);
     void sendMessage();
+    void cardsPreordered(QVector<QString> cardsName);
 
 private:
    //Server* server;

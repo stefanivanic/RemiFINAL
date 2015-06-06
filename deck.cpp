@@ -15,7 +15,7 @@ Deck::Deck(QWidget *parent, int x, int y, int w, int h, QVector<QString> cardNam
     : CardContainer(parent, x, y, w, h), chosenCards(true)
 {
     initializeDeck(cardNames);
-    shuffleDeck   ();
+   // shuffleDeck   ();
 }
 
 
@@ -35,13 +35,22 @@ void Deck::initializeDeck(QVector<QString> cardNames)
 
     if(chosenCards) {
         for(int i=0; i<cardNames.size(); i++) {
-            for(int j=0; ; j++) {
+            for(int j=0; j < cards.size() ; j++) {
                 if(cardNames[i] == cards[j]->name()) {
-                    std::swap(cards[j], cards[cards.size()-i]);
+        /*
+                    Card* c = cards[j];
+                    cards.erase(cards.begin() + j);
+                    cards.append(c);
+*/
+                    std::swap(cards[j], cards[cards.size() - i - 1]);
+
+                    break;
                 }
             }
         }
+        qDebug() << printCards();
     }
+
 }
 
 void Deck::shuffleDeck()

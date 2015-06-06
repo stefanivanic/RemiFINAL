@@ -70,7 +70,7 @@ void Server::disconnected()
     qDebug() << " Disconnected!";
 
     socket->deleteLater();
-    exit(0);
+//    exit(0);
 }
 
 void Server::sendMessage(const QString &message)

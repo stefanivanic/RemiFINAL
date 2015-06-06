@@ -25,6 +25,8 @@ Game::Game(QWidget *parent) :
     // moze ovako da ostane jer mora dinamicki da se menja
     // broj karata koje protivnik ima u ruci
 
+    chooseCards = new ChooseCards(this);
+
     talon = new Talon(this, 0, 250, 100, 100);
     deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
 
@@ -61,6 +63,8 @@ void Game::initSnS()
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
 
+    connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString>)),
+                    this, SLOT(cardsPreordered(QVector<QString>)));
 
     //PROBA ZA SERVER
    // connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
@@ -450,12 +454,7 @@ Game::~Game() { delete ui; }
 
 void Game::on_actionChoose_cards_triggered()
 {
-    chooseCards = new ChooseCards(this);
     chooseCards->show();
-
-
-    connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString> cardsName)),
-                    this, SLOT(cardsPreordered(QVector<QString> cardsName)));
 }
 
 void Game::appendMessage(const QString &message)
@@ -473,11 +472,30 @@ void Game::cardsPreordered(QVector<QString> cardsName)
 {
     qDebug() << "doso do slota";
 
+
+    delete _Player1;
+    delete talon;
+
+    _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
+    talon = new Talon(this, 0, 250, 100, 100);
+
+
     delete deck;
     deck = new Deck(this, 50, 50, 100, 100, cardsName); // init i shuffle
 
+    _Player1->installEventFilter(this);
+
+    talon->installEventFilter(this);
+    deck->installEventFilter(this);
+
+    initSnS();
+
+    qDebug() << deck->printCards();
+
     for(int i=0; i<15; i++)
         _Player1->addCard(deck->getLastCard(), true);
+
+    _Player->refreshDepth();
 }
 
 void Game::sendMessage()
