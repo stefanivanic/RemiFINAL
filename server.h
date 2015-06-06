@@ -11,8 +11,10 @@ public:
    Server(QObject *parent = 0);
    QTcpSocket *socket;
 
+   void sendMessage(const QString& message);
+
 signals:
-   void newMessage(QString& message);
+   void newMessage(const QString& message);
 
 public slots:
     void newConnection();

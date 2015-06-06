@@ -12,12 +12,16 @@ public:
     Client(QObject *parent = 0);
     ~Client();
 
+    void sendMessage(const QString& message);
+
+
 private slots:
     void newConnect();
     void showError(QAbstractSocket::SocketError);
     void readyRead();
-    void on_pushButton_clicked();
-    void on_sendButton_clicked();
+
+signals:
+    void newMessage(const QString& message);
 
 private:
     QTcpSocket *tcpSocket;

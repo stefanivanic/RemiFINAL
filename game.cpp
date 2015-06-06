@@ -12,10 +12,11 @@ Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
     goodOpening(false), playerTookCardFromTalon(0),
-    firstTime(true), groupsThrown(0), groupValue(0), opponentCards(14),
+    firstTime(true), groupsThrown(0), groupValue(0),
     endGameFlag(false)
 {
     server = new Server();
+   // client = new Client();
 
     ui->setupUi(this);
     ui->throwGroup->hide(); ui->undoGroup->hide();
@@ -61,6 +62,14 @@ void Game::initSnS()
     // za restart aplikacije
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
+
+    //PROBA ZA SERVER
+    connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
+    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(sendMessage()));
+
+    //PROBA ZA KLIJENTA
+   // connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
+   // connect(client,SIGNAL(newMessage(QString)), this, SLOT(appendMessage(QString)));
 
 }
 
@@ -145,49 +154,50 @@ void Game::on_throwGroup_clicked()
 
     if(!playerTookCard) {
         ui->errorLogger->setText("PRVO UZMITEW KARTU");
-        return;
     }
-
-    int retValue = _Player1->group->isCorrectGroup();
-    if( retValue < 0) {
-        switch( retValue ) {
+    else {
+        int retValue = _Player1->group->isCorrectGroup();
+        if( retValue < 0) {
+            switch( retValue ) {
             case -1 : ui->errorLogger->setText("-1 : manje od 3 karte!"); break;
             case -2 : ui->errorLogger->setText("-2 : vise djokera!"); break;
             case -3 : ui->errorLogger->setText("-3 : niti su istog znaka niti su svi razlicitog"); break;
             case -4 : ui->errorLogger->setText("-4 : razlicitog znaka ali i razlicite vr"); break;
             case -5 : ui->errorLogger->setText("-5 : istog znaka ali brojevi nisu dobri"); break;
             default : ui->errorLogger->setText("nepoznaa greska" + QString::number(retValue)); break;
+            }
         }
-        return;
-    }
-    if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
-        ui->errorLogger->setText("mora da vam ostane bar 1 karta");
-        return;
-    }
-
+        else {
+            if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
+                ui->errorLogger->setText("mora da vam ostane bar 1 karta");
+            }
+            else {
 //                ui->errorLogger->setText("");
-    groupValue += retValue;
-    ui->groupValue->setText("group value :" + QString::number(groupValue));
+                groupValue += retValue;
+                ui->groupValue->setText("group value :" + QString::number(groupValue));
 
-    int w1 = _Player1->group->getCards().size() * 20;
-    int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
-                                table.end(),
-                                200,
-                                [](const int& a, CardTableContainer* cdc)
-                                    { return a + cdc->getContainerWidth(); } );
-    int pos_y = 150 + (table.size() / 3 ) * 100;
+                int w1 = _Player1->group->getCards().size() * 20;
+                int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
+                                            table.end(),
+                                            200,
+                                            [](const int& a, CardTableContainer* cdc)
+                                                { return a + cdc->getContainerWidth(); } );
+                int pos_y = 150 + (table.size() / 3 ) * 100;
 
-    CardTableContainer* cdc =
-            new CardTableContainer(this, pos_x, pos_y, w1, 100);
+                CardTableContainer* cdc =
+                        new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
-    // i dodajemo u grupu i brisemo iz playera
+                // i dodajemo u grupu i brisemo iz playera
 
-    cdc->addCards(_Player1->group->getCards());
-    _Player1->deleteCardsFromGroup();
+                cdc->addCards(_Player1->group->getCards());
+                _Player1->deleteCardsFromGroup();
 
-    groupsThrown++;
+                groupsThrown++;
 
-    table.push_back(cdc);
+                table.push_back(cdc); 
+            }
+        }
+    }
 
     if(groupValue > 51)
         _Player1->alreadyOpened = true;
@@ -196,223 +206,215 @@ void Game::on_throwGroup_clicked()
 bool Game::eventFilter(QObject* target, QEvent* event)
 {
 
-    if(event->type() != QEvent::MouseButtonPress &&
-        event->type() != QEvent::MouseButtonRelease &&
-        event->type() != QEvent::MouseMove)
-        return target->event(event);
+    if(event->type() == QEvent::MouseButtonPress ||
+        event->type() == QEvent::MouseButtonRelease||
+        event->type() == QEvent::MouseMove) {
 
-    QMouseEvent* m_event = static_cast<QMouseEvent*>(event);
+        QMouseEvent* m_event = static_cast<QMouseEvent*>(event);
 
-    if(_Player1->isCardTargeted(target)) {
+        if(_Player1->isCardTargeted(target)) {
 
-        bool isInTable = std::count_if(table.begin(), table.end(),
-                                       [](CardTableContainer* cdc){return cdc->isInArea(); });
+            bool isInTable = std::count_if(table.begin(), table.end(),
+                                           [](CardTableContainer* cdc){return cdc->isInArea(); });
 
-        if(!talon->isInArea() && !isInTable) {
-            _Player1->resolveMouseEvent(m_event);
-            return target->event(event);
-        }
-
-        if(isInTable) {
-            CardTableContainer* cdc = NULL;
-            for(int i=0; i<table.size(); i++) {
-                if(table[i]->isInArea()) {
-                    cdc = table[i]; break; }
-            }
-            if(event->type() == QEvent::MouseButtonRelease) {
-                if( cdc != nullptr) {
-
-                    Group g;
-                    for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
-                        g.addCard(cdc->CardContainer::getCards()[i]);
-                    g.addCard(_Player1->getTempCard());
-
-                    int value =g.isCorrectGroup(); //ovde mi izmeni vrednost jokera
-                    qDebug() << value;
-
-                    if(value > 0){
-
-                        int jokerFlag = -1;
-                        int firstValue, lastValue;
-                        int tempCardValue = _Player1->getTempCard()->getValue();
-
-                        firstValue = cdc->CardContainer::getCards()[0]->getValue();
-                        lastValue = cdc->CardContainer::getCards().last()->getValue();
-
-                        int i;
-                        for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                            if(cdc->CardContainer::getCards()[i]->getSign() == JOKER)
-                            {
-                                jokerFlag = i;
-                                qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
-                                break;
-                            }
-
-
-                        //sve ovo samo za isti znak
-                        if(jokerFlag != -1 && tempCardValue == cdc->CardContainer::getCards()[jokerFlag]->getValue())
-                        {
-                            //ako kartu koju dodajemo menjamo za jokera
-                            _Player1->addCard(cdc->CardContainer::getCards()[jokerFlag], true);
-                            cdc->CardContainer::getCards()[jokerFlag] = _Player1->getTempCard();
-                            _Player1->refreshDepth();
-                            cdc->refreshDepth();
-                            qDebug() << "Karta zamenjena za jokera!";
-
-                        }
-                        else if(tempCardValue == (lastValue+1)
-                                || ( tempCardValue == (lastValue+2) && lastValue == 10))
-                        {
-                            //ako kartu dodajemo na kraj
-                            cdc->addCard(_Player1->getTempCard(), true);
-                            _Player1->removeCard();
-                            _Player1->refreshDepth();
-                            cdc->refreshDepth();
-                            qDebug() << "Karta dodata na kraj!";
-                            qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
-                        }
-                        else if((tempCardValue == firstValue-1 && firstValue != 1)
-                                || ( tempCardValue == firstValue-2 && firstValue == 12 ))
-                        {
-                            //ako kartu dodajemo na pocetak
-                            cdc->addCard(_Player1->getTempCard(), true);
-                            _Player1->removeCard();
-                            _Player1->refreshDepth();
-
-                            qDebug() << cdc->printCards();
-                            cdc->refreshDepth();
-                            cdc->refreshCardsPosition();
-                            qDebug() << "Karta dodata na pocetak";
-                            qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
-                        }
-                        else if(tempCardValue == 0)
-                        {
-                            //ako je karta JOKER
-                            if(lastValue == 15)
-                                {}//dodaj na pocetak
-                            else{}
-                                //dodaj na kraj
-
-                        }
-                        else if(lastValue < firstValue)
-                        {
-                            //ovo je slucaj kad je joker na kraju, a on ga prebaci na pocetak
-                            qDebug() << "Ne znam sta sad!?";
-                            qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
-                        }
-                    }
-                    else
-                    {
-                        _Player1->mouseReleaseEvent(m_event);
-                        _Player1->refreshDepth();
-                        qDebug() << "Karta ne odgovara za grupu!";
-                    }
-
-                    return true;
-                }
-            }
-            else
+            if(!talon->isInArea() && !isInTable) {
+//
                 _Player1->resolveMouseEvent(m_event);
-        }
+            }
 
-
-        if( talon->isInArea()) {
-            if(event->type() == QEvent::MouseButtonRelease && !firstTime) {
-
-                if(!playerOneOnMove) {
-                    ui->errorLogger->setText("SACCEKAJ SVOJ RED");
-                    _Player1->mouseReleaseEvent(m_event);
-                    return target->event(event);
+            if(isInTable) {
+                CardTableContainer* cdc = NULL;
+                for(int i=0; i<table.size(); i++) {
+                    if(table[i]->isInArea()) {
+                        cdc = table[i]; break; }
                 }
+                if(event->type() == QEvent::MouseButtonRelease) {
+                    if( cdc != nullptr) {
 
-                if(!playerTookCard) {
-                    ui->errorLogger->setText("PRVO UZMITE KARTU");
-                    _Player1->mouseReleaseEvent(m_event);
-                    return target->event(event);
+                        Group g;
+                        for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
+                            g.addCard(cdc->CardContainer::getCards()[i]);
+                        g.addCard(_Player1->getTempCard());
+
+                        int value =g.isCorrectGroup(); //ovde mi izmeni vrednost jokera
+                        qDebug() << value;
+
+                        if(value > 0){
+
+                            int jokerFlag = -1;
+                            int firstValue, lastValue;
+                            int tempCardValue = _Player1->getTempCard()->getValue();
+
+                            firstValue = cdc->CardContainer::getCards()[0]->getValue();
+                            lastValue = cdc->CardContainer::getCards().last()->getValue();
+
+                            int i;
+                            for(i=0; i<cdc->CardContainer::getCards().size(); i++)
+                                if(cdc->CardContainer::getCards()[i]->getSign() == JOKER)
+                                {
+                                    jokerFlag = i;
+                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
+                                    break;
+                                }
+
+
+                            //sve ovo samo za isti znak
+                            if(jokerFlag != -1 && tempCardValue == cdc->CardContainer::getCards()[jokerFlag]->getValue())
+                            {
+                                //ako kartu koju dodajemo menjamo za jokera
+                                _Player1->addCard(cdc->CardContainer::getCards()[jokerFlag], true);
+                                cdc->CardContainer::getCards()[jokerFlag] = _Player1->getTempCard();
+                                _Player1->refreshDepth();
+                                cdc->refreshDepth();
+                                qDebug() << "Karta zamenjena za jokera!";
+
+                            }
+                            else if(tempCardValue == (lastValue+1)
+                                    || ( tempCardValue == (lastValue+2) && lastValue == 10))
+                            {
+                                //ako kartu dodajemo na kraj
+                                cdc->addCard(_Player1->getTempCard(), true);
+                                _Player1->removeCard();
+                                _Player1->refreshDepth();
+                                cdc->refreshDepth();
+                                qDebug() << "Karta dodata na kraj!";
+                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
+                            }
+                            else if((tempCardValue == firstValue-1 && firstValue != 1)
+                                    || ( tempCardValue == firstValue-2 && firstValue == 12 ))
+                            {
+                                //ako kartu dodajemo na pocetak
+                                cdc->addCard(_Player1->getTempCard(), true);
+                                _Player1->removeCard();
+                                _Player1->refreshDepth();                    
+
+                                qDebug() << cdc->printCards();
+                                cdc->refreshDepth();
+                                cdc->refreshCardsPosition();
+                                qDebug() << "Karta dodata na pocetak";
+                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
+                            }
+                            else if(tempCardValue == 0)
+                            {
+                                //ako je karta JOKER
+                                if(lastValue == 15)
+                                    {}//dodaj na pocetak
+                                else{}
+                                    //dodaj na kraj
+
+                            }
+                            else if(lastValue < firstValue)
+                            {
+                                //ovo je slucaj kad je joker na kraju, a on ga prebaci na pocetak
+                                qDebug() << "Ne znam sta sad!?";
+                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
+                            }
+                        }
+                        else
+                        {
+                            _Player1->mouseReleaseEvent(m_event);
+                            _Player1->refreshDepth();
+                            qDebug() << "Karta ne odgovara za grupu!";
+                        }
+
+                        return true;
+                    }
                 }
+                else
+                    _Player1->resolveMouseEvent(m_event);
+            }
 
-                if( groupValue > 0 && groupValue <52 && !_Player1->alreadyOpened) {
-                    ui->errorLogger->setText("otvaranje mora da ima vrednost preko 52");
-                    _Player1->mouseReleaseEvent(m_event);
-                    return target->event(event);
-                }
 
-                if(playerTookCardFromTalon && groupValue == 0 && !_Player1->alreadyOpened) {
-                    ui->errorLogger->setText("uzeli ste kartu sa talona, morate da se otvorite");
-                    _Player1->mouseReleaseEvent(m_event);
-                    return target->event(event);
-                }
-
-                 playerToTalon();
-                talon->mouseReleaseEvent(m_event);
+            if( talon->isInArea()) {
+                if(event->type() == QEvent::MouseButtonRelease && !firstTime) {
+                    if(!playerOneOnMove) {
+                        ui->errorLogger->setText("SACCEKAJ SVOJ RED");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }
+                    else if(!playerTookCard) {
+                        ui->errorLogger->setText("PRVO UZMITE KARTU");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }
+                    else if( groupValue > 0 && groupValue <52 && !_Player1->alreadyOpened) {
+                        ui->errorLogger->setText("otvaranje mora da ima vrednost preko 52");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }
+                    else if(playerTookCardFromTalon && groupValue == 0 && !_Player1->alreadyOpened) {
+                        ui->errorLogger->setText("uzeli ste kartu sa talona, morate da se otvorite");
+                        _Player1->mouseReleaseEvent(m_event);
+                    }/*
+                    else if(!firstTime && playerTookCardFromTalon) {
+                        firstTime = false;
+                    }*/
+                    else {
+                         playerToTalon();
+                        talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
 //                        da se pozove slot metoda? ubaciti
 //                        u odgovarajucu funkciju.
-                emit _Player1->onThrowCard();
+                        emit _Player1->onThrowCard();
 //                        groupValue = 0;
 
-                ui->undoGroup->hide();
+                        ui->undoGroup->hide();
 
-                playerTookCardFromTalon = false;
+                        playerTookCardFromTalon = false;
 
-                /* ovaj deo ne treba al mozda treba da se zameni sa necim
-                if(!endGameFlag)
-                    playerTwoPlay();
-                  */
-                talon->mouseReleaseEvent(m_event);
+                        /* ovaj deo ne treba al mozda treba da se zameni sa necim
+                        if(!endGameFlag)
+                            playerTwoPlay();
+                          */
+                        talon->mouseReleaseEvent(m_event);
+                    }
 
-            } // END IF event->type() == MouseButtonRelease
-            firstTime = false;
-        } // END IF talon->isInArea()
+                } // END IF event->type() == MouseButtonRelease
+                firstTime = false;
+            } // END IF talon->isInArea()
 
 
-    }// END IF _Player1->isCardTargeted(target)
+        }// END IF _Player1->isCardTargeted(target)
 
-    if(deck->isCardTargeted(target)) {
-        if(event->type() == QMouseEvent::MouseButtonPress) {
-            if(playerTookCard) {
-                ui->errorLogger->setText("KARTA VEC UZETA");
-                return target->event(event);
-            }
-
-            if(!playerOneOnMove) {
-                ui->errorLogger->setText("SACEKAJ SVOJ RED");
-                return target->event(event);
-            }
-
-            _Player1->addCard(deck->getLastCard(), true);
-            playerTookCard = true;
-            ui->errorLogger->setText("error logger.");
+        /* ne treba al neka stoiji
+        // blokiraj diranje tudjih karata
+        if( _Player2->isCardTargeted(target) ) {
+            event->ignore();
+            return true;
         }
-
-        return target->event(event);
-    }
-
-    if(talon->isCardTargeted(target)) {
-
-        if(event->type() == QMouseEvent::MouseButtonPress) {
-
-            if(playerTookCardFromTalon || playerTookCard) {
-                ui->errorLogger->setText("KARTA VEC UZETA");
-                return target->event(event);
+           */
+        if(deck->isCardTargeted(target)) {
+            if(event->type() == QMouseEvent::MouseButtonPress) {
+                if(playerTookCard)
+                    ui->errorLogger->setText("KARTA VEC UZETA");
+                else if(!playerOneOnMove)
+                    ui->errorLogger->setText("SACEKAJ SVOJ RED");
+                else {
+                    _Player1->addCard(deck->getLastCard(), true);
+                    playerTookCard = true;
+                    ui->errorLogger->setText("error logger.");
+                }
             }
-
-            if(!playerOneOnMove) {
-                ui->errorLogger->setText("SACEKAJ SVOJ RED");
-                return target->event(event);
-            }
-
-           playerTookCardFromTalon  = true;
-           playerTookCard           = true;
-           firstTime                = true;
-           //deal card
-           _Player1->addCard(talon->getLastCard(), true);
+            event->ignore();
+            return true;
         }
-        return target->event(event);
+        if(talon->isCardTargeted(target)) {
+            if(event->type() == QMouseEvent::MouseButtonPress) {
+                if(playerTookCardFromTalon || playerTookCard)
+                    ui->errorLogger->setText("KARTA VEC UZETA");
+                else if(!playerOneOnMove)
+                    ui->errorLogger->setText("SACEKAJ SVOJ RED");
+                else {
+                   playerTookCardFromTalon  = true;
+                   playerTookCard           = true;
+                   firstTime                = true;
+                   //deal card
+                   _Player1->addCard(talon->getLastCard(), true);
+                }
+            }
+            event->ignore();
+            return true;
+        }
+     // END IF (MOUSE EVENT)
     }
-
-
     // ako nije mouse event pustimo ga da radi svoje
     return target->event(event);
 }
@@ -436,17 +438,27 @@ void Game::on_actionSelect_theme_triggered()
 void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
 void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
 
-void Game::drawOpponentCards(int cardNumberChange)
-{
-
-
-}
-
-
 Game::~Game() { delete ui; }
 
 void Game::on_actionChoose_cards_triggered()
 {
     chooseCards = new ChooseCards(this);
     chooseCards->show();
+}
+
+void Game::appendMessage(const QString &message)
+{
+    ui->textEdit->append(message);
+}
+
+void Game::on_lineEdit_returnPressed()
+{
+    QString s(ui->lineEdit->text());
+    //client->sendMessage(s);
+}
+
+void Game::sendMessage()
+{
+    QString s(ui->lineEdit->text());
+    server->sendMessage(s);
 }

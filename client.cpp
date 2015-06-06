@@ -22,7 +22,9 @@ Client::~Client()
 void Client::readyRead(){
 
     QByteArray data = tcpSocket->readAll();
-   // messageBrowser->append(data);
+
+    QString s(data);
+    emit newMessage(s);
 }
 
 void Client::newConnect()
@@ -48,22 +50,10 @@ void Client::showError(QAbstractSocket::SocketError)
 
 }
 
-void Client::on_pushButton_clicked()
+
+void Client::sendMessage(const QString &message)
 {
-    newConnect();
-}
-
-void Client::on_sendButton_clicked()
-{
-    QString message;
-
-    if (message.isEmpty())
-        return;
-
     QByteArray data = message.toUtf8();
 
     tcpSocket->write(data);
-
 }
-
-

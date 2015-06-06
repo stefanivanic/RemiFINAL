@@ -60,7 +60,7 @@ void Server::readyRead()
 
     qDebug() << "Poslat signal...";
 
-    socket->write(Data);
+   // socket->write(Data);
 
 }
 
@@ -71,5 +71,10 @@ void Server::disconnected()
 
     socket->deleteLater();
     exit(0);
+}
+
+void Server::sendMessage(const QString &message)
+{
+    socket->write(message.toUtf8());
 }
 
