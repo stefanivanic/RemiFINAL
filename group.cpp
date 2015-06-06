@@ -18,7 +18,7 @@ bool Group::removeCard(Card* card)
 {
     for(int i=0; i<cards.size(); i++)
         if(cards[i] == card) {
-            if(card->getSign() == JOKER) //OVDE JE PROMENJENO
+            if(card->getSign() == Card::JOKER) //OVDE JE PROMENJENO
                 card->setValue(0);
             if(card->getValue() == 15)
                 card->setValue(1);
@@ -44,7 +44,7 @@ void Group::correctValues()
 {
     for(int i=0; i<cards.size(); i++)
     {
-        if(cards[i]->getSign() == JOKER)
+        if(cards[i]->getSign() == Card::JOKER)
             cards[i]->setValue(0);
         if(cards[i]->getNumber() == 1)
             cards[i]->setValue(1);
@@ -74,21 +74,21 @@ int Group::isCorrectGroup(){
     for(int i=0; i<cards.size(); i++)
     {
         switch(cards[i]->getSign()){
-            case KARO : counters[KARO]++; break;
-            case HERC : counters[HERC]++; break;
-            case PIK : counters[PIK]++; break;
-            case TREF : counters[TREF]++; break;
-            default: counters[JOKER]++; break;
+            case Card::KARO : counters[Card::KARO]++; break;
+            case Card::HERC : counters[Card::HERC]++; break;
+            case Card::PIK : counters[Card::PIK]++; break;
+            case Card::TREF : counters[Card::TREF]++; break;
+            default: counters[Card::JOKER]++; break;
         }
     }
 
-    if(counters[JOKER] > 1)
+    if(counters[Card::JOKER] > 1)
         return -2; // VRACA -2 AKO GRUPA SADRZI VISE OD 1 JOKERA
 
     for(int i=0; i<5; i++)
     {
         //PROVERA DA LI SU SVI ISTOG ZNAKA
-        if(counters[i] == (int)cards.size() || (counters[i] == (int)(cards.size()-1) && counters[JOKER]== 1))
+        if(counters[i] == (int)cards.size() || (counters[i] == (int)(cards.size()-1) && counters[Card::JOKER]== 1))
         {
             allEqualSign = true;
             allDifferentSign = false;
@@ -127,7 +127,7 @@ int Group::isCorrectGroup(){
     //ako imamo 1 u grupi J Q K 1 sort ga stavlja na prvu poziciju,sto nije dobro
     //ovde menjamo vrednost toj karti ako je ima i sortiramo opet
     //OVDE DA SE PROMENI!!!
-    int i = counters[JOKER];
+    int i = counters[Card::JOKER];
 
     if(cards[i]->getNumber() == 1 && (cards.last()->getNumber()==14 || cards.last()->getNumber() == 13) )
     {
@@ -139,7 +139,7 @@ int Group::isCorrectGroup(){
     if(allEqualSign)
     {
         //ako ima jokera ubacuje se na odgovarajucu poziciju
-        if(counters[JOKER] == 1 && cards[0]->getSign() == JOKER)
+        if(counters[Card::JOKER] == 1 && cards[0]->getSign() == Card::JOKER)
             i = 1;
         else
             i = 0;
@@ -152,16 +152,16 @@ int Group::isCorrectGroup(){
                 if(cards[i]->getNumber()== 10 && cards[i+1]->getNumber() == 12)
                     continue;
 
-                if(counters[JOKER] == 0)
+                if(counters[Card::JOKER] == 0)
                     return -6;
 
-                if(cards[0]->getSign() == JOKER)
+                if(cards[0]->getSign() == Card::JOKER)
                 {
                     Card* tmp = cards[0];
                     tmp->setValue(cards[i]->getValue()+1); //desilo mi se da sam izbacio grupu sa jokerom
                     cards.insert(i+1,tmp);                  // a kad sam je vratio u ruke joker mi se promenio
                     cards.pop_front();
-                    counters[JOKER] = 0;                              // u kartu koju je i sam menjao , promenila se slika! :D
+                    counters[Card::JOKER] = 0;                              // u kartu koju je i sam menjao , promenila se slika! :D
                 }
                 else return -6;
             }
@@ -170,14 +170,14 @@ int Group::isCorrectGroup(){
                 if( (cards[i]->getNumber()== 9 && cards[i+1]->getNumber() == 12)
                         || (cards[i]->getNumber() == 10 && cards[i+1]->getNumber() == 13))
                 {
-                    if(counters[JOKER] == 0)
+                    if(counters[Card::JOKER] == 0)
                         return -6;
 
                     Card* tmp = cards[0];
                     tmp->setValue(cards[i]->getValue()+1); //desilo mi se da sam izbacio grupu sa jokerom
                     cards.insert(i+1,tmp);                  // a kad sam je vratio u ruke joker mi se promenio
                     cards.pop_front();
-                    counters[JOKER] = 0; // u kartu koju je i sam menjao , promenila se slika! :D
+                    counters[Card::JOKER] = 0; // u kartu koju je i sam menjao , promenila se slika! :D
                 }
                 else
                     return -6;
@@ -189,7 +189,7 @@ int Group::isCorrectGroup(){
 
         //ako ima jokera a ne postoji pozicija na koju  bi ga ubacili
         //stavljamo ga na najvisu poziciju u grupi i dodeljujemo vrednost
-        if(counters[JOKER] == 1 && i==cards.size()-1)
+        if(counters[Card::JOKER] == 1 && i==cards.size()-1)
         {
             // ako je najvisa karta u grupi razlicita od A
             if(cards.last()->getValue() != 15)

@@ -4,7 +4,6 @@
 #include <QVector>
 #include <QDebug>
 
-#include "sign.h"
 #include "card.h"
 
 class Group
