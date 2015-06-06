@@ -27,6 +27,8 @@ Game::Game(QWidget *parent) :
     // moze ovako da ostane jer mora dinamicki da se menja
     // broj karata koje protivnik ima u ruci
 
+    chooseCards = new ChooseCards(this);
+
     talon = new Talon(this, 0, 250, 100, 100);
     deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
 
@@ -62,6 +64,9 @@ void Game::initSnS()
     // za restart aplikacije
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
+
+    connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString>)),
+                    this, SLOT(cardsPreordered(QVector<QString>)));
 
     //PROBA ZA SERVER
    // connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
@@ -222,16 +227,25 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 _Player1->resolveMouseEvent(m_event);
             }
 
+            int tableContainterPosition;
             if(isInTable) {
                 CardTableContainer* cdc = NULL;
                 for(int i=0; i<table.size(); i++) {
                     if(table[i]->isInArea()) {
-                        cdc = table[i]; break; }
+                        cdc = table[i];
+                        tableContainterPosition = i;
+                        break;
+                    }
                 }
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
+<<<<<<< HEAD
 
                       /*  Group g;
+=======
+                    /* STEFAN DA REAGUJE
+                        Group g;
+>>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
                         g.addCard(_Player1->getTempCard());
@@ -249,14 +263,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             firstValue = cdc->CardContainer::getCards()[0]->getValue();
                             lastValue = cdc->CardContainer::getCards().last()->getValue();
 
-                        int i;
-                        for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                            if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
-                            {
-                                jokerFlag = i;
-                                qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
-                                break;
-                            }
+                            int i;
+                            for(i=0; i<cdc->CardContainer::getCards().size(); i++)
+                                if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
+                                {
+                                    jokerFlag = i;
+                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
+                                    break;
+                                }
 
                             for(i=0; i<cdc->CardContainer::getCards().size(); i++)
                                 if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
@@ -318,14 +332,30 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Ne znam sta sad!?";
                                 qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
                             }
+<<<<<<< HEAD
                             */
+=======
+
+>>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
 
                         }
-                        else
-                        {
+                        else{
                             _Player1->mouseReleaseEvent(m_event);
                             _Player1->refreshDepth();
                             qDebug() << "Karta ne odgovara za grupu!";
+                        }
+*/
+// STEFANE OVDE STAVLJAM KARTU U GRUPU
+                        cdc->addCard(_Player1->getTempCard(), true);
+                        _Player1->removeCard();
+                        _Player1->refreshDepth();
+
+                        qDebug() << cdc->printCards();
+                        cdc->refreshDepth();
+                        cdc->refreshCardsPosition();
+// POMERANJE SVIH KONTEJNERA NA DESNO
+                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                            table[i]->moveRight();
                         }
 
                         return true;
@@ -453,7 +483,6 @@ Game::~Game() { delete ui; }
 
 void Game::on_actionChoose_cards_triggered()
 {
-    chooseCards = new ChooseCards(this);
     chooseCards->show();
 }
 
@@ -466,6 +495,35 @@ void Game::on_lineEdit_returnPressed()
 {
     QString s(ui->lineEdit->text());
     client->sendMessage(s);
+}
+
+void Game::cardsPreordered(QVector<QString> cardsName)
+{
+    // MORA U DESTRUKTORIMA KONTEJNERA DA SE BRISU I KARTE
+
+    delete _Player1;
+    delete talon;
+
+    _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
+    talon = new Talon(this, 0, 250, 100, 100);
+
+
+    delete deck;
+    deck = new Deck(this, 50, 50, 100, 100, cardsName); // init i shuffle
+
+    _Player1->installEventFilter(this);
+
+    talon->installEventFilter(this);
+    deck->installEventFilter(this);
+
+    initSnS();
+
+    qDebug() << deck->printCards();
+
+    for(int i=0; i<15; i++)
+        _Player1->addCard(deck->getLastCard(), true);
+
+    _Player1->refreshDepth();
 }
 
 void Game::sendMessage()

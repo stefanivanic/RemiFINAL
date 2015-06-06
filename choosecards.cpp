@@ -13,7 +13,7 @@ ChooseCards::ChooseCards(QWidget *parent) :
     int index = mo.indexOfEnumerator("Sign"); // watch out during refactorings
     QMetaEnum metaEnum = mo.enumerator(index);
 
-   // We can then use the QMetaEnum object as follows:
+    // We can then use the QMetaEnum object as follows:
     // first, let's convert from an enum value to a string
     Card::Sign q = Card::KARO;
     QByteArray str = metaEnum.valueToKey(q);
@@ -49,8 +49,16 @@ ChooseCards::~ChooseCards()
 
 void ChooseCards::on_buttonBox_accepted()
 {
+    qDebug() << "kliknuto na ok";
+
+    QVector<QString> cardNames;
     for(QCheckBox* chb : boxes) {
         if(chb->isChecked())
-            qDebug() << chb->text();
+            cardNames.append(chb->text());
     }
+
+    for(QString s : cardNames)
+        qDebug() << s;
+
+    emit cardsPreorderd(cardNames);
 }

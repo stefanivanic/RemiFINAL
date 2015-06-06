@@ -26,7 +26,16 @@ void CardTableContainer::addCard(Card *card, bool background)
     PlayerContainer::addCard(card, background);
 }
 
+void CardTableContainer::moveRight() {
+    position.setX(position.x() + cardDistance);
 
+    for(Card* c : PlayerContainer::cards) {
+        c->move(position.x() + PlayerContainer::cards.size() * cardDistance,
+                position.y());
+        PlayerContainer::cards.push_back(c);
+        c->raise();
+    }
+}
 
 int CardTableContainer::getContainerWidth()
 {

@@ -106,7 +106,11 @@ void Server::disconnected()
     qDebug() << " Disconnected!";
 
     socket->deleteLater();
+<<<<<<< HEAD
     //exit(0);
+=======
+//    exit(0);
+>>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
 }
 
 void Server::sendMessage(const QString &message)
