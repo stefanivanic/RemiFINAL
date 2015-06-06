@@ -9,12 +9,12 @@ int main(int argc, char *argv[])
 
     do {
      QApplication a(argc, argv);
-     ServerGame w;
+     ClientGame w;
      w.show();
      currentExitCode = a.exec();
     } while( currentExitCode == Game::EXIT_CODE_REBOOT );
 
-    // mnain
+    // main
 
     return currentExitCode;
 }

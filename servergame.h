@@ -16,8 +16,6 @@
 #include "server.h"
 #include "client.h"
 
-
-
 class ServerGame : public QMainWindow,private Ui::Game
 {
     Q_OBJECT
@@ -34,7 +32,7 @@ public:
 
     static int const EXIT_CODE_REBOOT = -666;
 
-    Card* createCardByString(const QString& string);
+    Card* createCardByString(const QString& string1);
 
 private slots:
     void on_actionSelect_theme_triggered();
@@ -48,9 +46,13 @@ private slots:
 
     void on_actionChoose_cards_triggered();
     void on_lineEdit_returnPressed();
+    void onCardThrown();
+    void onGroupOfCardsThrown();
 
 public slots:
     void appendMessage(const QString& message);
+    void addCard(const QString& card);
+    void addGroupOfCards(const QString& cards);
 
 private:
     Server* server;

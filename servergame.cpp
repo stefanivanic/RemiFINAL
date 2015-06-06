@@ -1,5 +1,6 @@
 #include "servergame.h"
 #include "ui_game.h"
+#include "card.h"
 
 #include <QTime>
 #include <QStringList>
@@ -70,8 +71,11 @@ void ServerGame::initSnS()
               this, SLOT(slotReboot()));
 
     //PROBA ZA SERVER
-    connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
     connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
+
+    connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
+    connect(server,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
+    connect(server,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
 
 }
 
@@ -190,7 +194,7 @@ void ServerGame::on_throwGroup_clicked()
                         new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
                 // i dodajemo u grupu i brisemo iz playera
-
+                onGroupOfCardsThrown();
                 cdc->addCards(_Player1->group->getCards());
                 _Player1->deleteCardsFromGroup();
 
@@ -358,7 +362,8 @@ bool ServerGame::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
-                         playerToTalon();
+                        onCardThrown(); //SERVERSKI
+                        playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
@@ -457,6 +462,59 @@ void ServerGame::on_actionChoose_cards_triggered()
     chooseCards->show();
 }
 
+Card* ServerGame::createCardByString(const QString& string1)
+{
+
+    int number;
+    Card::Sign sign;
+    Card* c;
+
+    QString string(string1.trimmed());
+
+    if(string.length()==2)
+    {
+    if(string.at(0) == 'A')
+        number=1;
+    else if(string.at(0) == 'K')
+        number=14;
+    else if(string.at(0) == 'Q')
+        number=13;
+    else if(string.at(0) == 'J')
+        number=12;
+    else
+        number = string.at(0).digitValue();
+
+    if(string.at(1) == 'P')
+        sign=Card::PIK;
+    else if(string.at(1) == 'K')
+        sign=Card::KARO;
+    else if(string.at(1) == 'T')
+        sign=Card::TREF;
+    else
+        sign=Card::HERC;
+
+        c = new Card(this,number,number,sign);
+    }
+    else if(string.at(0) == 'J')
+    {
+        c = new Card(this,0,0,Card::JOKER);
+    }
+    else{
+        if(string.at(2) == 'P')
+            sign=Card::PIK;
+        else if(string.at(2) == 'K')
+            sign=Card::KARO;
+        else if(string.at(2) == 'T')
+            sign=Card::TREF;
+        else
+            sign=Card::HERC;
+
+        c = new Card(this,10,10,sign);
+    }
+
+    return c;
+}
+
 void ServerGame::appendMessage(const QString &message)
 {
     ui->textEdit->append(message);
@@ -470,4 +528,53 @@ void ServerGame::on_lineEdit_returnPressed()
     server->sendMessage(s);
 }
 
+void ServerGame::onCardThrown()
+{
+    server->sendCard(_Player1->getTempCard()->name());
+}
+
+void ServerGame::addCard(const QString &card)
+{
+    Card* c = createCardByString(card);
+
+    talon->addCard(c,true);
+}
+
+void ServerGame::addGroupOfCards(const QString &cards)
+{
+
+    QStringList list = cards.split(' ');
+
+    int w1 = list.size() * 20;
+    int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
+                                table.end(),
+                                200,
+                                [](const int& a, CardTableContainer* cdc)
+                                    { return a + cdc->getContainerWidth(); } );
+    int pos_y = 150 + (table.size() / 3 ) * 100;
+
+    CardTableContainer* cdc =
+            new CardTableContainer(this, pos_x, pos_y, w1, 100);
+
+
+    for(int i=0; i<list.size()-1; i++)
+    {
+        Card* c = createCardByString(list.at(i));
+        cdc->addCard(c,true);
+    }
+
+    table.append(cdc);
+}
+
+void ServerGame::onGroupOfCardsThrown()
+{
+    QString cards = "";
+
+    for(int i=0; i<_Player1->group->getCards().size(); i++)
+        cards.append(_Player1->group->getCards()[i]->name()+" ");
+
+    qDebug() << cards << " <--- Karte";
+
+    server->sendGroupOfCards(cards);
+}
 

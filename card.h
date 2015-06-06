@@ -23,6 +23,7 @@ public:
     enum Sign {
         KARO, HERC, PIK, TREF, JOKER
     };
+    Card(const Card& card);
 
     explicit Card(QWidget *parent = 0);
     Card(QWidget *parent = 0,
@@ -66,7 +67,6 @@ protected:
     friend bool operator==(const Card& card1, const Card& card2);
     friend bool operator!=(const Card& card1, const Card& card2);
 
-    Card(const Card& card)          = delete;
     Card& operator=(const Card& op) = delete;
 };
 

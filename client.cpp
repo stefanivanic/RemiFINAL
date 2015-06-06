@@ -10,7 +10,7 @@ Client::Client(QObject *parent)
 
     tcpSocket->abort();
 
-    tcpSocket->connectToHost("169.254.247.12",50537);
+    tcpSocket->connectToHost("192.168.0.16",50287);
 
     if(tcpSocket->waitForConnected(3000))
     {
@@ -40,8 +40,46 @@ void Client::readyRead(){
     QByteArray data = tcpSocket->readAll();
 
     QString s(data);
-    emit newMessage(s);
+    resolveReadyRead(s);
 }
+
+void Client::resolveReadyRead(const QString &message)
+{
+    QStringList list = message.split(' ');
+
+    QString buffer("");
+
+    for(int i=1; i<list.size(); i++)
+    {
+        buffer.append(list.at(i));
+        buffer.append(" ");
+    }
+
+    if(list.at(0) == "MESSAGE")
+        currentDataType = Message;
+    else if(list.at(0) == "CARD")
+        currentDataType = Card;
+    else if(list.at(0) == "GROUP")
+        currentDataType = Group;
+    else
+        currentDataType = Undefined;
+
+    switch(currentDataType)
+    {
+    case Message:
+        emit newMessage(buffer);
+        break;
+    case Card:
+        emit cardThrown(buffer);
+        break;
+    case Group:
+        emit groupThrown(buffer);
+        break;
+    default:
+        qDebug() << "Nepoznat podatak!";
+    }
+}
+
 
 void Client::showError(QAbstractSocket::SocketError)
 {
@@ -54,3 +92,25 @@ void Client::sendMessage(const QString &message)
 
     tcpSocket->write(data);
 }
+
+void Client::sendCard(const QString &card)
+{
+    if (card.isEmpty())
+            return;
+
+    qDebug() << "Slanje karte " + card;
+
+    tcpSocket->write(card.toUtf8());
+}
+
+void Client::sendGroupOfCards(const QString &cards)
+{
+    if (cards.isEmpty())
+            return;
+
+    QString data = "GROUP " + cards;
+    qDebug() << "Slanje grupe " + cards;
+    tcpSocket->write(data.toUtf8());
+}
+
+
