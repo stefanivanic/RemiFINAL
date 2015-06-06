@@ -15,6 +15,8 @@ Game::Game(QWidget *parent) :
     firstTime(true), groupsThrown(0), groupValue(0),
     endGameFlag(false)
 {
+    server = new Server();
+
     ui->setupUi(this);
     ui->throwGroup->hide(); ui->undoGroup->hide();
 

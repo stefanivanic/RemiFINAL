@@ -12,8 +12,9 @@
 #include "cardtablecontainer.h"
 #include "sign.h"
 #include "choosecards.h"
-
 #include "ui_game.h"
+
+#include "server.h"
 
 
 class Game : public QMainWindow,private Ui::Game
@@ -47,6 +48,7 @@ private slots:
     void on_actionChoose_cards_triggered();
 
 private:
+    Server* server;
 
     Ui::Game *ui;
 
