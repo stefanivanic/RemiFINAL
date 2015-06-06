@@ -17,3 +17,5 @@ void Talon::printCards() {
         s.append(c->name()).append(" ");
     qDebug() << s;
 }
+
+//STEFANOV KOMENTAR
