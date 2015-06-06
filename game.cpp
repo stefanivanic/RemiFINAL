@@ -334,7 +334,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             qDebug() << "Karta ne odgovara za grupu!";
                         }
 */
-
+// STEFANE OVDE STAVLJAM KARTU U GRUPU
                         cdc->addCard(_Player1->getTempCard(), true);
                         _Player1->removeCard();
                         _Player1->refreshDepth();
@@ -342,7 +342,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         qDebug() << cdc->printCards();
                         cdc->refreshDepth();
                         cdc->refreshCardsPosition();
-
+// POMERANJE SVIH KONTEJNERA NA DESNO
                         for(int i = tableContainterPosition + 1; i < table.size(); i++){
                             table[i]->moveRight();
                         }
