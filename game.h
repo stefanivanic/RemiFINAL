@@ -10,7 +10,6 @@
 #include "talon.h"
 #include "deck.h"
 #include "cardtablecontainer.h"
-#include "sign.h"
 #include "choosecards.h"
 #include "ui_game.h"
 #include "server.h"

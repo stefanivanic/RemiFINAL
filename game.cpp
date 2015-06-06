@@ -1,7 +1,5 @@
 #include "game.h"
 #include "ui_game.h"
-#include "sign.h"
-
 
 #include <QTime>
 #include <QStringList>
@@ -245,8 +243,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             int firstValue, lastValue;
                             int tempCardValue = _Player1->getTempCard()->getValue();
 
+
                             firstValue = cdc->CardContainer::getCards()[0]->getValue();
                             lastValue = cdc->CardContainer::getCards().last()->getValue();
+
+                        int i;
+                        for(i=0; i<cdc->CardContainer::getCards().size(); i++)
+                            if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
+                            {
+                                jokerFlag = i;
+                                qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
+                                break;
+                            }
+
 
                             int i;
                             for(i=0; i<cdc->CardContainer::getCards().size(); i++)

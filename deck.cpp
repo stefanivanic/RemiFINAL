@@ -13,14 +13,14 @@ void Deck::initializeDeck()
     for(int i=0; i<2; i++){
         for(int j=1; j<15; j++){
             if(j==11) continue;
-            addCard(new Card(parentWidget(), j,j, KARO), false);
-            addCard(new Card(parentWidget(), j,j, TREF), false);
-            addCard(new Card(parentWidget(), j,j, PIK) , false);
-            addCard(new Card(parentWidget(), j,j, HERC), false);
+            addCard(new Card(parentWidget(), j,j, Card::KARO), false);
+            addCard(new Card(parentWidget(), j,j, Card::TREF), false);
+            addCard(new Card(parentWidget(), j,j, Card::PIK) , false);
+            addCard(new Card(parentWidget(), j,j, Card::HERC), false);
         }
     }
     for(int i=0; i<4; i++)
-        addCard(new Card(parentWidget(), 0,0, JOKER), false);
+        addCard(new Card(parentWidget(), 0,0, Card::JOKER), false);
 }
 
 void Deck::shuffleDeck()

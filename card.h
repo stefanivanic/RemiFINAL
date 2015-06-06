@@ -11,8 +11,6 @@
 #include <QWidget>
 #include <QDebug>
 
-#include "sign.h"
-
 namespace Ui {
 class Card;
 }
@@ -22,6 +20,10 @@ class Card : public QLabel
     Q_OBJECT
 
 public:
+    enum Sign {
+        KARO, HERC, PIK, TREF, JOKER
+    };
+
     explicit Card(QWidget *parent = 0);
     Card(QWidget *parent = 0,
          short number =0,

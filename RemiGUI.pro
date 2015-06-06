@@ -30,7 +30,6 @@ SOURCES += main.cpp\
 HEADERS  += game.h \
     card.h \
     group.h \
-    sign.h \
     selecttheme.h \
     playercontainer.h \
     talon.h \
