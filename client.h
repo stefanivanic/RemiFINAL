@@ -9,11 +9,20 @@ class Client : public QObject
     Q_OBJECT
 
 public:
+    enum DataType {
+             Message,
+             Undefined,
+             Card,
+             Group
+         };
     Client(QObject *parent = 0);
     ~Client();
 
-    void sendMessage(const QString& message);
+    void resolveReadyRead(const QString& message);
 
+    void sendMessage(const QString& message);
+    void sendCard(const QString& card);
+    void sendGroupOfCards(const QString& cards);
 
 private slots:
     void readyRead();
@@ -21,10 +30,13 @@ private slots:
 
 signals:
     void newMessage(const QString& message);
+    void cardThrown(const QString& card);
+    void groupThrown(const QString& cards);
 
 private:
     QTcpSocket *tcpSocket;
     quint16 blockSize;
+    DataType currentDataType;
 
 };
 

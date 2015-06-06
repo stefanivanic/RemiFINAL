@@ -17,6 +17,8 @@ Game::Game(QWidget *parent) :
     ui->setupUi(this);
     this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
 
+    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/default/back.gif);"));
+
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
     _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
@@ -229,7 +231,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
 
-                        Group g;
+                      /*  Group g;
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
                         g.addCard(_Player1->getTempCard());
@@ -316,6 +318,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Ne znam sta sad!?";
                                 qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
                             }
+                            */
+
                         }
                         else
                         {
@@ -421,7 +425,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             return true;
         }
      // END IF (MOUSE EVENT)
-    }
+
     // ako nije mouse event pustimo ga da radi svoje
     return target->event(event);
 }

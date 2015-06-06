@@ -1,5 +1,6 @@
 #include "server.h"
 #include <QtNetwork>
+#include <QString>
 
 Server::Server(QObject *parent)
     :QObject(parent)
@@ -56,12 +57,47 @@ void Server::readyRead()
     qDebug() << " Data in:" << Data;
 
     QString s(Data);
-    emit newMessage(s);
+    resolveReadyRead(s);
 
     qDebug() << "Poslat signal...";
 
-   // socket->write(Data);
+}
 
+void Server::resolveReadyRead(const QString &message)
+{
+    QStringList list = message.split(' ');
+
+    QString buffer("");
+
+    for(int i=1; i<list.size(); i++)
+    {
+        buffer.append(list.at(i));
+        buffer.append(" ");
+    }
+
+    if(list.at(0) == "MESSAGE")
+        currentDataType = Message;
+    else if(list.at(0) == "CARD")
+        currentDataType = Card;
+    else if(list.at(0) == "GROUP")
+        currentDataType = Group;
+    else
+        currentDataType = Undefined;
+
+    switch(currentDataType)
+    {
+    case Message:
+        emit newMessage(buffer);
+        break;
+    case Card:
+        emit cardThrown(buffer);
+        break;
+    case Group:
+        emit groupThrown(buffer);
+        break;
+    default:
+        qDebug() << "Nepoznat podatak!";
+    }
 }
 
 void Server::disconnected()
@@ -70,11 +106,36 @@ void Server::disconnected()
     qDebug() << " Disconnected!";
 
     socket->deleteLater();
-    exit(0);
+    //exit(0);
 }
 
 void Server::sendMessage(const QString &message)
 {
-    socket->write(message.toUtf8());
+    if (message.isEmpty())
+            return;
+
+    QString data = "MESSAGE " + message;
+    qDebug() << "Slanje karte " + data;
+    socket->write(data.toUtf8());
+}
+
+void Server::sendCard(const QString &card)
+{
+    if (card.isEmpty())
+            return;
+
+    QString data = "CARD " + card;
+    qDebug() << "Slanje karte " + data;
+    socket->write(data.toUtf8());
+}
+
+void Server::sendGroupOfCards(const QString &cards)
+{
+    if (cards.isEmpty())
+            return;
+
+    QString data = "GROUP " + cards;
+    qDebug() << "Slanje grupe " + data;
+    socket->write(data.toUtf8());
 }
 
