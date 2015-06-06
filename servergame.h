@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
+#include "game.h"
 #include "playercontainer.h"
 #include "card.h"
 #include "selecttheme.h"
@@ -16,35 +17,16 @@
 #include "server.h"
 #include "client.h"
 
-class ServerGame : public QMainWindow,private Ui::Game
+class ServerGame :public Game
 {
     Q_OBJECT
 
 public:
     explicit ServerGame(QWidget *parent = 0);
-    ~ServerGame();
-
-    void playerToTalon();
-
-    //void delay(double seconds, QString message);
-
-    enum player { PLAYER1, PLAYER2};
-
-    static int const EXIT_CODE_REBOOT = -666;
 
     Card* createCardByString(const QString& string1);
 
 private slots:
-    void on_actionSelect_theme_triggered();
-    void on_throwGroup_clicked();
-    void changeTempPosText();
-    void changePlayer();
-    void showOnThrowButton();
-    void hideOnThrowButton();
-    void slotReboot();
-    void on_undoGroup_clicked();
-
-    void on_actionChoose_cards_triggered();
     void on_lineEdit_returnPressed();
     void onCardThrown();
     void onGroupOfCardsThrown();
@@ -56,39 +38,6 @@ public slots:
 
 private:
     Server* server;
-
-
-    Ui::Game *ui;
-
-    QString theme;
-
-    PlayerContainer *_Player1;
-
-    Talon* talon;
-    Deck*   deck;
-
-    ChooseCards* chooseCards;
-
-    QVector<CardTableContainer*> table;
-
-    bool playerOneOnMove;
-    bool playerTookCard;
-    bool goodOpening;
-    bool playerTookCardFromTalon;
-    bool firstTime;
-    int groupsThrown;
-    int groupValue;
-
-    void initSnS();
-
-    void setBackgroundColor();
-
-    SelectTheme *selectTheme;
-    QMessageBox::StandardButton endGameDialog;
-
-    bool endGameFlag;
-
-    bool eventFilter(QObject* target, QEvent* event);
 };
 
 #endif // SERVERGAME_H

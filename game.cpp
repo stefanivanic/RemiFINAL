@@ -11,13 +11,17 @@ Game::Game(QWidget *parent) :
     firstTime(true), groupsThrown(0), groupValue(0),
     endGameFlag(false)
 {
-    //server = new Server();
-    client = new Client();
-
     ui->setupUi(this);
     this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
+    ui->label->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->onMoveLabel->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->errorLogger->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->groupValue->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->lineEdit->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
 
-    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/default/back.gif);"));
 
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
@@ -67,14 +71,6 @@ void Game::initSnS()
 
     connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString>)),
                     this, SLOT(cardsPreordered(QVector<QString>)));
-
-    //PROBA ZA SERVER
-   // connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
-   // connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(sendMessage()));
-
-    //PROBA ZA KLIJENTA
-    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
-    connect(client,SIGNAL(newMessage(QString)), this, SLOT(appendMessage(QString)));
 
 }
 
@@ -193,7 +189,6 @@ void Game::on_throwGroup_clicked()
                         new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
                 // i dodajemo u grupu i brisemo iz playera
-
                 cdc->addCards(_Player1->group->getCards());
                 _Player1->deleteCardsFromGroup();
 
@@ -386,7 +381,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
-                         playerToTalon();
+                        //onCardThrown();
+                        playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
@@ -484,48 +480,3 @@ void Game::on_actionChoose_cards_triggered()
     chooseCards->show();
 }
 
-void Game::appendMessage(const QString &message)
-{
-    ui->textEdit->append(message);
-}
-
-void Game::on_lineEdit_returnPressed()
-{
-    QString s(ui->lineEdit->text());
-    client->sendMessage(s);
-}
-
-void Game::cardsPreordered(QVector<QString> cardsName)
-{
-    // MORA U DESTRUKTORIMA KONTEJNERA DA SE BRISU I KARTE
-
-    delete _Player1;
-    delete talon;
-
-    _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
-    talon = new Talon(this, 0, 250, 100, 100);
-
-
-    delete deck;
-    deck = new Deck(this, 50, 50, 100, 100, cardsName); // init i shuffle
-
-    _Player1->installEventFilter(this);
-
-    talon->installEventFilter(this);
-    deck->installEventFilter(this);
-
-    initSnS();
-
-    qDebug() << deck->printCards();
-
-    for(int i=0; i<15; i++)
-        _Player1->addCard(deck->getLastCard(), true);
-
-    _Player1->refreshDepth();
-}
-
-void Game::sendMessage()
-{
-    QString s(ui->lineEdit->text());
-    //server->sendMessage(s);
-}

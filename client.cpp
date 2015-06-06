@@ -10,7 +10,7 @@ Client::Client(QObject *parent)
 
     tcpSocket->abort();
 
-    tcpSocket->connectToHost("192.168.0.16",50287);
+    tcpSocket->connectToHost("192.168.0.16",49908);
 
     if(tcpSocket->waitForConnected(3000))
     {
@@ -88,9 +88,9 @@ void Client::showError(QAbstractSocket::SocketError)
 
 void Client::sendMessage(const QString &message)
 {
-    QByteArray data = message.toUtf8();
+    QString data("MESSAGE "+message);
 
-    tcpSocket->write(data);
+    tcpSocket->write(data.toUtf8());
 }
 
 void Client::sendCard(const QString &card)
@@ -98,9 +98,8 @@ void Client::sendCard(const QString &card)
     if (card.isEmpty())
             return;
 
-    qDebug() << "Slanje karte " + card;
-
-    tcpSocket->write(card.toUtf8());
+    QString data("CARD "+card);
+    tcpSocket->write(data.toUtf8());
 }
 
 void Client::sendGroupOfCards(const QString &cards)
@@ -109,7 +108,6 @@ void Client::sendGroupOfCards(const QString &cards)
             return;
 
     QString data = "GROUP " + cards;
-    qDebug() << "Slanje grupe " + cards;
     tcpSocket->write(data.toUtf8());
 }
 

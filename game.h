@@ -33,7 +33,6 @@ public:
 
     static int const EXIT_CODE_REBOOT = -666;
 
-    Card* createCardByString(const QString& string);
 
 private slots:
     void on_actionSelect_theme_triggered();
@@ -46,18 +45,8 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
-    //OVDE DODATO
-    void on_lineEdit_returnPressed();
 
-public slots:
-    void appendMessage(const QString& message);
-    void sendMessage();
-    void cardsPreordered(QVector<QString> cardsName);
-
-private:
-   //Server* server;
-    Client* client;
-
+protected:
     Ui::Game *ui;
 
     QString theme;
