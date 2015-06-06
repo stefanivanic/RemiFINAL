@@ -239,13 +239,13 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 }
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
-<<<<<<< HEAD
+
 
                       /*  Group g;
-=======
-                    /* STEFAN DA REAGUJE
+
+                    // STEFAN DA REAGUJE
                         Group g;
->>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
+
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
                         g.addCard(_Player1->getTempCard());
@@ -332,11 +332,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Ne znam sta sad!?";
                                 qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
                             }
-<<<<<<< HEAD
-                            */
-=======
 
->>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
+                            */
+
 
                         }
                         else{
@@ -344,7 +342,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->refreshDepth();
                             qDebug() << "Karta ne odgovara za grupu!";
                         }
-*/
+
 // STEFANE OVDE STAVLJAM KARTU U GRUPU
                         cdc->addCard(_Player1->getTempCard(), true);
                         _Player1->removeCard();
