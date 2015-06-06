@@ -25,10 +25,9 @@ public:
     explicit Game(QWidget *parent = 0);
     ~Game();
 
-    void playerTwoPlay();
-    void playerToTalon(bool playerOne);
+    void playerToTalon();
 
-    void delay(double seconds, QString message);
+    //void delay(double seconds, QString message);
 
     enum player { PLAYER1, PLAYER2};
 
@@ -84,9 +83,6 @@ private:
     bool firstTime;
     int groupsThrown;
     int groupValue;
-
-    void dealCard(bool player1);
-    void dealCards();
 
     void initSnS();
 

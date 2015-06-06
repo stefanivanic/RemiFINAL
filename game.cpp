@@ -6,15 +6,7 @@
 #include <QTime>
 #include <QStringList>
 
-bool playerOneOnMove;
-bool playerTookCard;
-bool goodOpening;
-bool playerTookCardFromTalon;
-bool firstTime;
-int groupsThrown;
-int groupValue;
 
-// proba ubaceno
 
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
@@ -27,13 +19,17 @@ Game::Game(QWidget *parent) :
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
     _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
-    _Player2 = new PlayerContainer(this, 200,  50, 350, 100);
+
+    // napravi kontejner za playera 2 ovo ne
+    // moze ovako da ostane jer mora dinamicki da se menja
+    // broj karata koje protivnik ima u ruci
+
+
 
     talon = new Talon(this, 0, 250, 100, 100);
     deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
 
     _Player1->installEventFilter(this);
-    _Player2->installEventFilter(this);
 
     talon->installEventFilter(this);
     deck->installEventFilter(this);
@@ -41,8 +37,35 @@ Game::Game(QWidget *parent) :
     // inicijalizacija signal-slotova
     initSnS();
 
-    dealCards();
+    // podela karata
+    for(int i=0; i<15; i++)
+        _Player1->addCard(deck->getLastCard(), true);
+    // u add card vise ne mora da se prosledjuje bool
 
+    myNickName = client.nickName();
+    newParticipant(myNickName);
+
+} // END CONSTRUCTOR
+
+void Game::initSnS()
+{
+    // monitoring glega za tempCardPosition
+    connect( _Player1, SIGNAL(onPositionChange()),
+                 this, SLOT(changeTempPosText()));
+    // bacili kartu => pomeraju se flegovi, tekst itd
+    connect( _Player1, SIGNAL(onThrowCard()),
+                 this, SLOT(changePlayer()));
+    // aktiviramo grupu => prikaz dugmeta za izbacivanje grupe
+    connect( _Player1, SIGNAL(onAddingCardtoGroup()),
+                 this, SLOT(showOnThrowButton()));
+    // nema grupe => nema dugmeta
+    connect( _Player1, SIGNAL(onEmptyGroup()),
+                 this, SLOT(hideOnThrowButton()));
+    // za restart aplikacije
+    connect( ui->menuBarRestartGame, SIGNAL(triggered()),
+              this, SLOT(slotReboot()));
+
+    // S&S za mreze
     connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()),
             this, SLOT(on_lineEdit_returnPressed()));
     connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()),
@@ -60,65 +83,18 @@ Game::Game(QWidget *parent) :
 
     connect(&client, SIGNAL(groupThrown(QString)),
             this, SLOT(appendGroupOfCards(QString)));
-
-    myNickName = client.nickName();
-    newParticipant(myNickName);
-
-} // END CONSTRUCTOR
-
-void Game::initSnS()
-{
-    // monitoring glega za tempCardPosition
-    connect( _Player1, SIGNAL(onPositionChange()),
-                 this, SLOT(changeTempPosText()));
-    // bacili kartu => pomeraju se flegovi, tekst itd
-    connect( _Player1, SIGNAL(onThrowCard()),
-                 this, SLOT(changePlayer()));
-    // bacili kartu => pomeraju se flegovi, tekst itd
-    connect( _Player2, SIGNAL(onThrowCard()),
-                 this, SLOT(changePlayer()));
-    // aktiviramo grupu => prikaz dugmeta za izbacivanje grupe
-    connect( _Player1, SIGNAL(onAddingCardtoGroup()),
-                 this, SLOT(showOnThrowButton()));
-    // nema grupe => nema dugmeta
-    connect( _Player1, SIGNAL(onEmptyGroup()),
-                 this, SLOT(hideOnThrowButton()));
-    // za restart aplikacije
-    connect( ui->menuBarRestartGame, SIGNAL(triggered()),
-              this, SLOT(slotReboot()));
 }
 
-void Game::dealCards()
+void Game::playerToTalon()
 {
-    dealCard(PLAYER1); for(int i=0; i<14; i++)
-    {  dealCard(PLAYER1);  dealCard(PLAYER2);  }
-}
+    // ovo je trentuno
+    playerOneOnMove = !playerOneOnMove;
 
-void Game::dealCard(bool player2)
-{
-    PlayerContainer* player = player2 ? _Player2 : _Player1;
-    player->addCard(deck->getLastCard(), !player2);
-}
-
-void Game::playerTwoPlay()
-{
-    _Player2->setTempCard();
-    delay(1.5, "TAKING CARD");    dealCard(PLAYER2);
-    delay(2.5, "THINKING"   );    playerToTalon(PLAYER2);
-
-    // dal cemo ovde ili negde u playeru
-    emit _Player2->onThrowCard();
-}
-
-void Game::playerToTalon(bool playerTwo)
-{
-    PlayerContainer* p = playerTwo ? _Player2 : _Player1;
-
-    talon->addCard(p->getTempCard(), true);
-    p->removeCard();
+    talon->addCard(_Player1->getTempCard(), true);
+    _Player1->removeCard();
 
     // player je pobedio
-    if(p->handSize() == 0) {
+    if(_Player1->handSize() == 0) {
         endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
                                         QMessageBox::Yes|QMessageBox::No);
@@ -134,14 +110,12 @@ void Game::playerToTalon(bool playerTwo)
 
 void Game::on_undoGroup_clicked()
 {
-    PlayerContainer* p = playerOneOnMove ? _Player1 : _Player2 ;
-
     for( int i = 0 ; i < groupsThrown; i++){
         CardTableContainer* cdc = table.back();
 
         int size = cdc->handSize();
         for(int j = 0 ; j < size ; j++)
-            p->addCard(cdc->getLastCard(), true);
+            _Player1->addCard(cdc->getLastCard(), true);
 
         table.pop_back();
     }
@@ -175,7 +149,7 @@ void Game::changePlayer()
     QString s1 = playerOneOnMove ? "player1" : "player2" ;
     ui->onMoveLabel->setText(s.append(s1));
 }
-
+/*
 void Game::delay(double seconds, QString message)
 {
     ui->aiLogger->setText(message);
@@ -186,7 +160,7 @@ void Game::delay(double seconds, QString message)
 
     ui->aiLogger->setText("CHILLING");
 }
-
+*/
 void Game::on_throwGroup_clicked()
 {
 
@@ -390,7 +364,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     }*/
                     else {
                         onCardThrown();
-                        playerToTalon(PLAYER1);
+                        playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
@@ -403,9 +377,10 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                         playerTookCardFromTalon = false;
 
+                        /* ovaj deo ne treba al mozda treba da se zameni sa necim
                         if(!endGameFlag)
                             playerTwoPlay();
-
+                          */
                         talon->mouseReleaseEvent(m_event);
                     }
 
@@ -416,13 +391,13 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
         }// END IF _Player1->isCardTargeted(target)
 
-
+        /* ne treba al neka stoiji
         // blokiraj diranje tudjih karata
         if( _Player2->isCardTargeted(target) ) {
             event->ignore();
             return true;
         }
-
+           */
         if(deck->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCard)
@@ -430,7 +405,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 else if(!playerOneOnMove)
                     ui->errorLogger->setText("SACEKAJ SVOJ RED");
                 else {
-                    dealCard(PLAYER1);
+                    _Player1->addCard(deck->getLastCard(), true);
                     playerTookCard = true;
                     ui->errorLogger->setText("error logger.");
                 }
