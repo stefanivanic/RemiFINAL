@@ -470,8 +470,7 @@ void Game::on_lineEdit_returnPressed()
 
 void Game::cardsPreordered(QVector<QString> cardsName)
 {
-    qDebug() << "doso do slota";
-
+    // MORA U DESTRUKTORIMA KONTEJNERA DA SE BRISU I KARTE
 
     delete _Player1;
     delete talon;
@@ -495,7 +494,7 @@ void Game::cardsPreordered(QVector<QString> cardsName)
     for(int i=0; i<15; i++)
         _Player1->addCard(deck->getLastCard(), true);
 
-    _Player->refreshDepth();
+    _Player1->refreshDepth();
 }
 
 void Game::sendMessage()
