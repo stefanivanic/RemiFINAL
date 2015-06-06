@@ -3,6 +3,7 @@
 
 #include "cardcontainer.h"
 #include "group.h"
+
 namespace Ui {
 class PlayerContainer;
 }

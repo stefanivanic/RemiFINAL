@@ -35,8 +35,8 @@ ChooseCards::ChooseCards(QWidget *parent) :
         }
     }
     for(int i=0; i<4; i++) {
-        boxes.append(new QCheckBox( QString::number(0) + "HERC", this));
-        boxes.back()->move(20*i, 0);
+        boxes.append(new QCheckBox( QString::number(j) + "HERC", this));
+        boxes.back()->move(20*i, 23*j);
     }
 }
 
