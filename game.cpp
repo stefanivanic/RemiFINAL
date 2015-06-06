@@ -225,15 +225,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 _Player1->resolveMouseEvent(m_event);
             }
 
+            int tableContainterPosition;
             if(isInTable) {
                 CardTableContainer* cdc = NULL;
                 for(int i=0; i<table.size(); i++) {
                     if(table[i]->isInArea()) {
-                        cdc = table[i]; break; }
+                        cdc = table[i];
+                        tableContainterPosition = i;
+                        break;
+                    }
                 }
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
-
+                    /* STEFAN DA REAGUJE
                         Group g;
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
@@ -252,14 +256,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             firstValue = cdc->CardContainer::getCards()[0]->getValue();
                             lastValue = cdc->CardContainer::getCards().last()->getValue();
 
-                        int i;
-                        for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                            if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
-                            {
-                                jokerFlag = i;
-                                qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
-                                break;
-                            }
+                            int i;
+                            for(i=0; i<cdc->CardContainer::getCards().size(); i++)
+                                if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
+                                {
+                                    jokerFlag = i;
+                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
+                                    break;
+                                }
 
                             for(i=0; i<cdc->CardContainer::getCards().size(); i++)
                                 if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
@@ -321,12 +325,26 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Ne znam sta sad!?";
                                 qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
                             }
+
+
                         }
-                        else
-                        {
+                        else{
                             _Player1->mouseReleaseEvent(m_event);
                             _Player1->refreshDepth();
                             qDebug() << "Karta ne odgovara za grupu!";
+                        }
+*/
+
+                        cdc->addCard(_Player1->getTempCard(), true);
+                        _Player1->removeCard();
+                        _Player1->refreshDepth();
+
+                        qDebug() << cdc->printCards();
+                        cdc->refreshDepth();
+                        cdc->refreshCardsPosition();
+
+                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                            table[i]->moveRight();
                         }
 
                         return true;
