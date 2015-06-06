@@ -26,18 +26,18 @@ ChooseCards::ChooseCards(QWidget *parent) :
             if(j==11) continue;
 
 
-            boxes.append(new QCheckBox( QString::number(j) + "KARO", this));
+            boxes.append(new QCheckBox( QString::number(j) + "K", this));
             boxes.back()->move(0, 20*j);
-            boxes.append(new QCheckBox( QString::number(j) + "PIK", this));
+            boxes.append(new QCheckBox( QString::number(j) + "P", this));
             boxes.back()->move(50, 20*j);
-            boxes.append(new QCheckBox( QString::number(j) + "TREF", this));
+            boxes.append(new QCheckBox( QString::number(j) + "T", this));
             boxes.back()->move(100, 20*j);
-            boxes.append(new QCheckBox( QString::number(j) + "HERC", this));
+            boxes.append(new QCheckBox( QString::number(j) + "H", this));
             boxes.back()->move(150, 20*j);
         }
     }
     for(int i=0; i<4; i++) {
-        boxes.append(new QCheckBox( QString("JOKER ") + "HERC", this));
+        boxes.append(new QCheckBox( QString("J"), this));
         boxes.back()->move(50*i, 0);
     }
 }
@@ -49,6 +49,8 @@ ChooseCards::~ChooseCards()
 
 void ChooseCards::on_buttonBox_accepted()
 {
-    for(QCheckBox* chb : boxes)
-        qDebug() << chb->isChecked();
+    for(QCheckBox* chb : boxes) {
+        if(chb->isChecked())
+            qDebug() << chb->text();
+    }
 }
