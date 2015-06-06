@@ -629,3 +629,9 @@ Card* Game::createCardByString(const QString& string)
 
     return c;
 }
+
+void Game::on_actionChoose_cards_triggered()
+{
+    chooseCards = new ChooseCards(this);
+    chooseCards->show();
+}

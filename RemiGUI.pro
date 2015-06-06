@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     client.cpp \
     server.cpp \
     connection.cpp \
-    peermanager.cpp
+    peermanager.cpp \
+    choosecards.cpp
 
 HEADERS  += game.h \
     card.h \
@@ -41,7 +42,8 @@ HEADERS  += game.h \
     client.h \
     server.h \
     connection.h \
-    peermanager.h
+    peermanager.h \
+    choosecards.h
 
 FORMS    += game.ui \
     card.ui \
@@ -51,4 +53,5 @@ FORMS    += game.ui \
     talon.ui \
     deck.ui \
     cardcontainer.ui \
-    cardtablecontainer.ui
+    cardtablecontainer.ui \
+    choosecards.ui

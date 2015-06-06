@@ -12,6 +12,7 @@
 #include "cardtablecontainer.h"
 #include "client.h"
 #include "sign.h"
+#include "choosecards.h"
 
 #include "ui_game.h"
 
@@ -52,6 +53,8 @@ private slots:
     void onCardThrown();
     void onGroupOfCardsThrown();
 
+    void on_actionChoose_cards_triggered();
+
 public slots:
     void appendMessage(const QString &from, const QString &message);
     void appendCard(const QString &card);
@@ -65,10 +68,12 @@ private:
 
     QString theme;
 
-    PlayerContainer *_Player1, *_Player2;
+    PlayerContainer *_Player1;
 
     Talon* talon;
     Deck*   deck;
+
+    ChooseCards* chooseCards;
 
     QVector<CardTableContainer*> table;
 

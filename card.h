@@ -29,6 +29,9 @@ public:
          Sign sign = JOKER);
     virtual ~Card();
 
+     // treba mi da uzmem enum kao string
+     Q_ENUMS(Sign)
+
     QString name();
     short   getNumber() const { return _Number; }
     short   getValue () const { return  _Value; }
