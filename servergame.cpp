@@ -15,7 +15,7 @@ ServerGame::ServerGame(QWidget *parent) :
     server = new Server();
 
     ui->setupUi(this);
-    this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
+    ui->centralWidget->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
     ui->label->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
     ui->onMoveLabel->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
     ui->errorLogger->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
@@ -25,8 +25,6 @@ ServerGame::ServerGame(QWidget *parent) :
     ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
     ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
 
-
-
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
     _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
@@ -35,7 +33,7 @@ ServerGame::ServerGame(QWidget *parent) :
     // moze ovako da ostane jer mora dinamicki da se menja
     // broj karata koje protivnik ima u ruci
 
-    talon = new Talon(this, 0, 250, 100, 100);
+    talon = new Talon(this, 50, 250, 100, 100);
     deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
 
     _Player1->installEventFilter(this);

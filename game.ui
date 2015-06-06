@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>820</width>
-    <height>452</height>
+    <width>822</width>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Player1 : tempCardPosition : </string>
+     <string>   Player1 : tempCardPosition : </string>
     </property>
    </widget>
    <widget class="QLabel" name="onMoveLabel">
@@ -42,7 +42,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>on move : player1</string>
+     <string>   on move : player1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="throwGroup">
@@ -77,7 +77,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>errorLogger</string>
+     <string>   errorLogger</string>
     </property>
    </widget>
    <widget class="QLabel" name="groupValue">
@@ -90,7 +90,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>gruopValie : 0</string>
+     <string>  gruopValie : 0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="undoGroup">
@@ -135,7 +135,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>820</width>
+     <width>822</width>
      <height>21</height>
     </rect>
    </property>
