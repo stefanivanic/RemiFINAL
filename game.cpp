@@ -256,10 +256,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 break;
                             }
 
-
-                            int i;
                             for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                                if(cdc->CardContainer::getCards()[i]->getSign() == JOKER)
+                                if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
                                 {
                                     jokerFlag = i;
                                     qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
