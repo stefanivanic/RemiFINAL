@@ -1,10 +1,26 @@
 #include "client.h"
 
+#include <QHostAddress>
+
 Client::Client(QObject *parent)
     :QObject(parent)
 {
 
     tcpSocket = new QTcpSocket(this);
+
+    tcpSocket->abort();
+
+    tcpSocket->connectToHost("192.168.0.11",49496);
+
+    if(tcpSocket->waitForConnected(3000))
+    {
+       qDebug() << "Connected！";
+
+    }
+    else
+    {
+        qDebug() << "Connection Error！";
+    }
 
 
     connect(tcpSocket,SIGNAL(error(QAbstractSocket::SocketError)),
@@ -27,29 +43,10 @@ void Client::readyRead(){
     emit newMessage(s);
 }
 
-void Client::newConnect()
-{
-    tcpSocket->abort();
-   // tcpSocket->connectToHost("127.0.0.1",1234);
-
-    if(tcpSocket->waitForConnected(3000))
-    {
-       qDebug() << "Connected！";
-
-    }
-    else
-    {
-        qDebug() << "Connection Error！";
-    }
-
-}
-
 void Client::showError(QAbstractSocket::SocketError)
 {
-    // messageBrowser->append(QString("errorString：%1\n").arg(tcpSocket->errorString()));
-
+   qDebug() <<  tcpSocket->errorString();
 }
-
 
 void Client::sendMessage(const QString &message)
 {

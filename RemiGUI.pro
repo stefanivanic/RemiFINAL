@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     cardtablecontainer.cpp \
     choosecards.cpp \
     server.cpp \
-    client.cpp
+    client.cpp \
+    clientgame.cpp \
+    servergame.cpp
 
 HEADERS  += game.h \
     card.h \
@@ -38,7 +40,9 @@ HEADERS  += game.h \
     cardtablecontainer.h \
     choosecards.h \
     server.h \
-    client.h
+    client.h \
+    clientgame.h \
+    servergame.h
 
 FORMS    += game.ui \
     card.ui \

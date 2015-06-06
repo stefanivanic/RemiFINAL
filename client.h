@@ -16,9 +16,8 @@ public:
 
 
 private slots:
-    void newConnect();
-    void showError(QAbstractSocket::SocketError);
     void readyRead();
+    void showError(QAbstractSocket::SocketError);
 
 signals:
     void newMessage(const QString& message);
