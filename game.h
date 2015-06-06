@@ -12,6 +12,8 @@
 #include "cardtablecontainer.h"
 #include "choosecards.h"
 #include "ui_game.h"
+#include "server.h"
+#include "client.h"
 
 #include "server.h"
 
@@ -46,8 +48,16 @@ private slots:
 
     void on_actionChoose_cards_triggered();
 
+    //OVDE DODATO
+    void on_lineEdit_returnPressed();
+
+public slots:
+    void appendMessage(const QString& message);
+    void sendMessage();
+
 private:
-    Server* server;
+   Server* server;
+   // Client* client;
 
     Ui::Game *ui;
 
@@ -71,10 +81,6 @@ private:
     int groupValue;
 
     void initSnS();
-
-    QVector<QLabel*> opponentCards;
-    void drawOpponentCards(int cardNumberChange);
-
 
     void setBackgroundColor();
 
