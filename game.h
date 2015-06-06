@@ -10,7 +10,6 @@
 #include "talon.h"
 #include "deck.h"
 #include "cardtablecontainer.h"
-#include "client.h"
 #include "sign.h"
 #include "choosecards.h"
 
@@ -45,23 +44,9 @@ private slots:
     void slotReboot();
     void on_undoGroup_clicked();
 
-    void newParticipant(const QString &nick);
-    void participantLeft(const QString &nick);
-    void on_lineEdit_returnPressed();
-
-    void onCardThrown();
-    void onGroupOfCardsThrown();
-
     void on_actionChoose_cards_triggered();
 
-public slots:
-    void appendMessage(const QString &from, const QString &message);
-    void appendCard(const QString &card);
-    void appendGroupOfCards(const QString &cards);
-
 private:
-    Client client;
-    QString myNickName;
 
     Ui::Game *ui;
 
