@@ -19,24 +19,26 @@ ChooseCards::ChooseCards(QWidget *parent) :
     QByteArray str = metaEnum.valueToKey(q);
     // str now contains "Student"
 
+
+
     for(int i=0; i<2; i++){
         for(int j=1; j<15; j++){
             if(j==11) continue;
 
 
             boxes.append(new QCheckBox( QString::number(j) + "KARO", this));
-            boxes.back()->move(20*i, 20*j);
+            boxes.back()->move(0, 20*j);
             boxes.append(new QCheckBox( QString::number(j) + "PIK", this));
-            boxes.back()->move(20*i, 21*j);
+            boxes.back()->move(50, 20*j);
             boxes.append(new QCheckBox( QString::number(j) + "TREF", this));
-            boxes.back()->move(20*i, 22*j);
+            boxes.back()->move(100, 20*j);
             boxes.append(new QCheckBox( QString::number(j) + "HERC", this));
-            boxes.back()->move(20*i, 23*j);
+            boxes.back()->move(150, 20*j);
         }
     }
     for(int i=0; i<4; i++) {
-        boxes.append(new QCheckBox( QString::number(0) + "HERC", this));
-        boxes.back()->move(20*i, 0);
+        boxes.append(new QCheckBox( QString("JOKER ") + "HERC", this));
+        boxes.back()->move(50*i, 0);
     }
 }
 
