@@ -47,10 +47,10 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
+    void on_lineEdit_returnPressed();
 
 public slots:
     void appendMessage(const QString& message);
-    void sendMessage();
 
 private:
     Server* server;
