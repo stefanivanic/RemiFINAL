@@ -33,7 +33,6 @@ public:
     enum player { PLAYER1, PLAYER2};
 
     static int const EXIT_CODE_REBOOT = -666;
-    static int const EXIT_CODE_SELECT_CARDS = 666;
 
     Card* createCardByString(const QString& string);
 
@@ -48,7 +47,7 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
-
+    void cardsPreordered(QVector<QString> cardsName);
     //OVDE DODATO
     void on_lineEdit_returnPressed();
 

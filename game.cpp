@@ -61,6 +61,7 @@ void Game::initSnS()
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
 
+
     //PROBA ZA SERVER
     connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
     connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(sendMessage()));
@@ -451,6 +452,10 @@ void Game::on_actionChoose_cards_triggered()
 {
     chooseCards = new ChooseCards(this);
     chooseCards->show();
+
+
+    connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString> cardsName)),
+                    this, SLOT(cardsPreordered(QVector<QString> cardsName)));
 }
 
 void Game::appendMessage(const QString &message)
@@ -462,6 +467,17 @@ void Game::on_lineEdit_returnPressed()
 {
     QString s(ui->lineEdit->text());
     //client->sendMessage(s);
+}
+
+void Game::cardsPreordered(QVector<QString> cardsName)
+{
+    qDebug() << "doso do slota";
+
+    delete deck;
+    deck = new Deck(this, 50, 50, 100, 100, cardsName); // init i shuffle
+
+    for(int i=0; i<15; i++)
+        _Player1->addCard(deck->getLastCard(), true);
 }
 
 void Game::sendMessage()
