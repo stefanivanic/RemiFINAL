@@ -24,8 +24,6 @@ Game::Game(QWidget *parent) :
     // moze ovako da ostane jer mora dinamicki da se menja
     // broj karata koje protivnik ima u ruci
 
-
-
     talon = new Talon(this, 0, 250, 100, 100);
     deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
 
@@ -41,9 +39,6 @@ Game::Game(QWidget *parent) :
     for(int i=0; i<15; i++)
         _Player1->addCard(deck->getLastCard(), true);
     // u add card vise ne mora da se prosledjuje bool
-
-    myNickName = client.nickName();
-    newParticipant(myNickName);
 
 } // END CONSTRUCTOR
 
@@ -65,24 +60,6 @@ void Game::initSnS()
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
 
-    // S&S za mreze
-    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()),
-            this, SLOT(on_lineEdit_returnPressed()));
-    connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()),
-            this, SLOT(on_lineEdit_returnPressed()));
-    connect(&client, SIGNAL(newMessage(QString,QString)),
-            this, SLOT(appendMessage(QString,QString)));
-    connect(&client, SIGNAL(newParticipant(QString)),
-            this, SLOT(newParticipant(QString)));
-    connect(&client, SIGNAL(participantLeft(QString)),
-            this, SLOT(participantLeft(QString)));
-
-    //OVDE DODATO
-    connect(&client, SIGNAL(cardThrown(QString)),
-            this, SLOT(appendCard(QString)));
-
-    connect(&client, SIGNAL(groupThrown(QString)),
-            this, SLOT(appendGroupOfCards(QString)));
 }
 
 void Game::playerToTalon()
@@ -201,16 +178,12 @@ void Game::on_throwGroup_clicked()
 
                 // i dodajemo u grupu i brisemo iz playera
 
-
-                //OVDE DODATO-------------------------------------------------
-                onGroupOfCardsThrown();
                 cdc->addCards(_Player1->group->getCards());
                 _Player1->deleteCardsFromGroup();
 
                 groupsThrown++;
 
                 table.push_back(cdc); 
-
             }
         }
     }
@@ -363,8 +336,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
-                        onCardThrown();
-                        playerToTalon();
+                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
@@ -456,154 +428,6 @@ void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); 
 void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
 
 Game::~Game() { delete ui; }
-
-//DODATO
-void Game::appendMessage(const QString &from, const QString &message)
-{
-    if (from.isEmpty() || message.isEmpty())
-        return;
-
-    ui->textEdit->append(message);
-
-}
-
-
-void Game::newParticipant(const QString &nick)
-{
-    if (nick.isEmpty())
-        return;
-
-    ui->textEdit->append(nick +" has joined");
-
-}
-
-void Game::participantLeft(const QString &nick)
-{
-    if (nick.isEmpty())
-        return;
-
-    ui->textEdit->append(nick+" has left");
-
-}
-
-void Game::on_lineEdit_returnPressed()
-{
-    QString text = ui->lineEdit->text();
-    if (text.isEmpty())
-        return;
-
-
-     client.sendMessage(text);
-     appendMessage(myNickName, text);
-
-
-    ui->lineEdit->clear();
-}
-
-void Game::onCardThrown()
-{
-    client.sendCard(_Player1->getTempCard()->name());
-}
-
-void Game::appendCard(const QString &card)
-{
-    //ovde
-    Card* c = createCardByString(card);
-
-    talon->addCard(c,true);
-
-}
-
-void Game::onGroupOfCardsThrown()
-{
-    QString cards = "";
-
-    for(int i=0; i<_Player1->group->getCards().size(); i++)
-        cards.append(_Player1->group->getCards()[i]->name()+" ");
-
-    qDebug() << cards << " <--- Karte";
-
-    client.sendGroupOfCards(cards);
-
-}
-
-void Game::appendGroupOfCards(const QString &cards)
-{
-
-    QStringList list = cards.split(' ');
-
-    int w1 = list.size() * 20;
-    int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
-                                table.end(),
-                                200,
-                                [](const int& a, CardTableContainer* cdc)
-                                    { return a + cdc->getContainerWidth(); } );
-    int pos_y = 150 + (table.size() / 3 ) * 100;
-
-    CardTableContainer* cdc =
-            new CardTableContainer(this, pos_x, pos_y, w1, 100);
-
-
-    for(int i=0; i<list.size()-1; i++)
-    {
-        Card* c = createCardByString(list.at(i));
-        cdc->addCard(c,true);
-    }
-
-    table.append(cdc);
-}
-
-Card* Game::createCardByString(const QString& string)
-{
-
-    int number;
-    Sign sign;
-    Card* c;
-
-    if(string.length()==2)
-    {
-    if(string.at(0) == 'A')
-        number=1;
-    else if(string.at(0) == 'K')
-        number=14;
-    else if(string.at(0) == 'Q')
-        number=13;
-    else if(string.at(0) == 'J')
-        number=12;
-    else
-        number = string.at(0).digitValue();
-
-
-    if(string.at(1) == 'P')
-        sign=PIK;
-    else if(string.at(1) == 'K')
-        sign=KARO;
-    else if(string.at(1) == 'T')
-        sign=TREF;
-    else
-        sign=HERC;
-
-        c = new Card(this,number,number,sign);
-    }
-    else if(string.at(0) == 'J')
-    {
-        c = new Card(this,0,0,JOKER);
-    }
-    else{
-        if(string.at(2) == 'P')
-            sign=PIK;
-        else if(string.at(2) == 'K')
-            sign=KARO;
-        else if(string.at(2) == 'T')
-            sign=TREF;
-        else
-            sign=HERC;
-
-        c = new Card(this,10,10,sign);
-    }
-
-    return c;
-}
 
 void Game::on_actionChoose_cards_triggered()
 {

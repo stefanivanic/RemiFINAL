@@ -23,10 +23,6 @@ SOURCES += main.cpp\
     deck.cpp \
     cardcontainer.cpp \
     cardtablecontainer.cpp \
-    client.cpp \
-    server.cpp \
-    connection.cpp \
-    peermanager.cpp \
     choosecards.cpp
 
 HEADERS  += game.h \
@@ -39,10 +35,6 @@ HEADERS  += game.h \
     deck.h \
     cardcontainer.h \
     cardtablecontainer.h \
-    client.h \
-    server.h \
-    connection.h \
-    peermanager.h \
     choosecards.h
 
 FORMS    += game.ui \
