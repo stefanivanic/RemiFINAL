@@ -1,14 +1,25 @@
 #include "deck.h"
 #include "ui_deck.h"
 
+
+
 Deck::Deck(QWidget *parent, int x, int y, int w, int h)
-    : CardContainer(parent, x, y, w, h)
+    : CardContainer(parent, x, y, w, h), chosenCards(false)
 {
-    initializeDeck();
+    QVector<QString> nul;
+    initializeDeck( nul );
     shuffleDeck   ();
 }
 
-void Deck::initializeDeck()
+Deck::Deck(QWidget *parent, int x, int y, int w, int h, QVector<QString> cardNames)
+    : CardContainer(parent, x, y, w, h), chosenCards(true)
+{
+    initializeDeck(cardNames);
+    shuffleDeck   ();
+}
+
+
+void Deck::initializeDeck(QVector<QString> cardNames)
 {
     for(int i=0; i<2; i++){
         for(int j=1; j<15; j++){
@@ -21,6 +32,16 @@ void Deck::initializeDeck()
     }
     for(int i=0; i<4; i++)
         addCard(new Card(parentWidget(), 0,0, Card::JOKER), false);
+
+    if(chosenCards) {
+        for(int i=0; i<cardNames.size(); i++) {
+            for(int j=0; ; j++) {
+                if(cardNames[i] == cards[j]->name()) {
+                    std::swap(cards[j], cards[cards.size()-i]);
+                }
+            }
+        }
+    }
 }
 
 void Deck::shuffleDeck()

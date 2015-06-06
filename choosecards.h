@@ -18,6 +18,9 @@ public:
     explicit ChooseCards(QWidget *parent = 0);
     ~ChooseCards();
 
+signals :
+    void cardsPreorderd(QVector<QString> cardsName);
+
 private slots:
     void on_buttonBox_accepted();
 
