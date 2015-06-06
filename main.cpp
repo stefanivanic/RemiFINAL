@@ -1,4 +1,6 @@
 #include "game.h"
+#include "clientgame.h"
+#include "servergame.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -7,7 +9,7 @@ int main(int argc, char *argv[])
 
     do {
      QApplication a(argc, argv);
-     Game w;
+     ServerGame w;
      w.show();
      currentExitCode = a.exec();
     } while( currentExitCode == Game::EXIT_CODE_REBOOT );

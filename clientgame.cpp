@@ -1,22 +1,21 @@
-#include "game.h"
+#include "clientgame.h"
 #include "ui_game.h"
 
 #include <QTime>
 #include <QStringList>
 
-Game::Game(QWidget *parent) :
+
+
+ClientGame::ClientGame(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
     goodOpening(false), playerTookCardFromTalon(0),
     firstTime(true), groupsThrown(0), groupValue(0),
     endGameFlag(false)
 {
-    //server = new Server();
     client = new Client();
 
     ui->setupUi(this);
-    this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
-
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
     _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
@@ -43,7 +42,7 @@ Game::Game(QWidget *parent) :
 
 } // END CONSTRUCTOR
 
-void Game::initSnS()
+void ClientGame::initSnS()
 {
     // monitoring glega za tempCardPosition
     connect( _Player1, SIGNAL(onPositionChange()),
@@ -62,17 +61,13 @@ void Game::initSnS()
               this, SLOT(slotReboot()));
 
 
-    //PROBA ZA SERVER
-   // connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
-   // connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(sendMessage()));
-
     //PROBA ZA KLIJENTA
     connect(ui->lineEdit, SIGNAL(on_lineEdit_returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
     connect(client,SIGNAL(newMessage(QString)), this, SLOT(appendMessage(QString)));
 
 }
 
-void Game::playerToTalon()
+void ClientGame::playerToTalon()
 {
     // ovo je trentuno
     playerOneOnMove = !playerOneOnMove;
@@ -95,7 +90,7 @@ void Game::playerToTalon()
     playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()
 }
 
-void Game::on_undoGroup_clicked()
+void ClientGame::on_undoGroup_clicked()
 {
     for( int i = 0 ; i < groupsThrown; i++){
         CardTableContainer* cdc = table.back();
@@ -114,7 +109,7 @@ void Game::on_undoGroup_clicked()
 
 }
 
-void Game::changeTempPosText()
+void ClientGame::changeTempPosText()
 {
     QString s("Player1 : tempCardPosition : ");
     s.append( QString::number(_Player1->getTempCardPos()) );
@@ -122,7 +117,7 @@ void Game::changeTempPosText()
 }
 
 // postavljaju se flegovi i ispisuju se loggeri
-void Game::changePlayer()
+void ClientGame::changePlayer()
 {
     playerOneOnMove = !playerOneOnMove;
 
@@ -137,7 +132,7 @@ void Game::changePlayer()
     ui->onMoveLabel->setText(s.append(s1));
 }
 /*
-void Game::delay(double seconds, QString message)
+void ClientGame::delay(double seconds, QString message)
 {
     ui->aiLogger->setText(message);
 
@@ -148,7 +143,7 @@ void Game::delay(double seconds, QString message)
     ui->aiLogger->setText("CHILLING");
 }
 */
-void Game::on_throwGroup_clicked()
+void ClientGame::on_throwGroup_clicked()
 {
 
     if(!playerTookCard) {
@@ -193,7 +188,7 @@ void Game::on_throwGroup_clicked()
 
                 groupsThrown++;
 
-                table.push_back(cdc); 
+                table.push_back(cdc);
             }
         }
     }
@@ -202,7 +197,7 @@ void Game::on_throwGroup_clicked()
         _Player1->alreadyOpened = true;
 }
 
-bool Game::eventFilter(QObject* target, QEvent* event)
+bool ClientGame::eventFilter(QObject* target, QEvent* event)
 {
 
     if(event->type() == QEvent::MouseButtonPress ||
@@ -294,7 +289,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 //ako kartu dodajemo na pocetak
                                 cdc->addCard(_Player1->getTempCard(), true);
                                 _Player1->removeCard();
-                                _Player1->refreshDepth();                    
+                                _Player1->refreshDepth();
 
                                 qDebug() << cdc->printCards();
                                 cdc->refreshDepth();
@@ -431,57 +426,37 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 // gui elementi i ostale nebitne metode
 // ....................................
 
-void Game::slotReboot()
+void ClientGame::slotReboot()
 {
     qDebug() << "Performing application reboot...";
-    qApp->exit( Game::EXIT_CODE_REBOOT );
+    qApp->exit( ClientGame::EXIT_CODE_REBOOT );
 }
 
-void Game::on_actionSelect_theme_triggered()
+void ClientGame::on_actionSelect_theme_triggered()
 {
     selectTheme = new SelectTheme(this);
     selectTheme->show();
 }
 
-void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
-void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
+void ClientGame::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
+void ClientGame::hideOnThrowButton() { ui->throwGroup->hide(); }
 
-Game::~Game() { delete ui; }
+ClientGame::~ClientGame() { delete ui; }
 
-void Game::on_actionChoose_cards_triggered()
+void ClientGame::on_actionChoose_cards_triggered()
 {
     chooseCards = new ChooseCards(this);
     chooseCards->show();
-
-
-    connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString> cardsName)),
-                    this, SLOT(cardsPreordered(QVector<QString> cardsName)));
 }
 
-void Game::appendMessage(const QString &message)
+void ClientGame::appendMessage(const QString &message)
 {
     ui->textEdit->append(message);
 }
 
-void Game::on_lineEdit_returnPressed()
+void ClientGame::on_lineEdit_returnPressed()
 {
     QString s(ui->lineEdit->text());
     client->sendMessage(s);
 }
 
-void Game::cardsPreordered(QVector<QString> cardsName)
-{
-    qDebug() << "doso do slota";
-
-    delete deck;
-    deck = new Deck(this, 50, 50, 100, 100, cardsName); // init i shuffle
-
-    for(int i=0; i<15; i++)
-        _Player1->addCard(deck->getLastCard(), true);
-}
-
-void Game::sendMessage()
-{
-    QString s(ui->lineEdit->text());
-    //server->sendMessage(s);
-}

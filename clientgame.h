@@ -1,5 +1,6 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef CLIENTGAME_H
+#define CLIENTGAME_H
+
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -16,14 +17,13 @@
 #include "client.h"
 
 
-
-class Game : public QMainWindow,private Ui::Game
+class ClientGame : public QMainWindow,private Ui::Game
 {
     Q_OBJECT
 
 public:
-    explicit Game(QWidget *parent = 0);
-    ~Game();
+    explicit ClientGame(QWidget *parent = 0);
+    ~ClientGame();
 
     void playerToTalon();
 
@@ -46,16 +46,14 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
-    void cardsPreordered(QVector<QString> cardsName);
+
     //OVDE DODATO
     void on_lineEdit_returnPressed();
 
 public slots:
     void appendMessage(const QString& message);
-    void sendMessage();
 
 private:
-   //Server* server;
     Client* client;
 
     Ui::Game *ui;
@@ -90,5 +88,4 @@ private:
 
     bool eventFilter(QObject* target, QEvent* event);
 };
-
-#endif // GAME_H
+#endif // CLIENTGAME_H

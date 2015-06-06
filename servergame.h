@@ -1,5 +1,6 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef SERVERGAME_H
+#define SERVERGAME_H
+
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -17,13 +18,13 @@
 
 
 
-class Game : public QMainWindow,private Ui::Game
+class ServerGame : public QMainWindow,private Ui::Game
 {
     Q_OBJECT
 
 public:
-    explicit Game(QWidget *parent = 0);
-    ~Game();
+    explicit ServerGame(QWidget *parent = 0);
+    ~ServerGame();
 
     void playerToTalon();
 
@@ -46,17 +47,14 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
-    void cardsPreordered(QVector<QString> cardsName);
-    //OVDE DODATO
-    void on_lineEdit_returnPressed();
 
 public slots:
     void appendMessage(const QString& message);
     void sendMessage();
 
 private:
-   //Server* server;
-    Client* client;
+    Server* server;
+
 
     Ui::Game *ui;
 
@@ -91,4 +89,4 @@ private:
     bool eventFilter(QObject* target, QEvent* event);
 };
 
-#endif // GAME_H
+#endif // SERVERGAME_H
