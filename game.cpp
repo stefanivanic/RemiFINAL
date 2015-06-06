@@ -4,8 +4,6 @@
 #include <QTime>
 #include <QStringList>
 
-
-
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
@@ -17,6 +15,8 @@ Game::Game(QWidget *parent) :
     client = new Client();
 
     ui->setupUi(this);
+    this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
+
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
     _Player1 = new PlayerContainer(this, 200, 350, 350, 100);

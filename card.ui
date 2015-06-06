@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#Card{
-	border: 1px solid red;
+	border: 2px solid #800000;
 }
 </string>
   </property>

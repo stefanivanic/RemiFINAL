@@ -13,10 +13,13 @@ class Deck : public CardContainer
 
 public:
     Deck(QWidget *parent, int x, int y, int w, int h);
+    Deck(QWidget *parent, int x, int y, int w, int h, QVector<QString> cardNames);
 
 private:
     void shuffleDeck();
-    void initializeDeck();
+    void initializeDeck(QVector<QString> cardNames);
+
+    bool chosenCards;
 };
 
 #endif // DECK_H

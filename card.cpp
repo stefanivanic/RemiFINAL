@@ -45,7 +45,7 @@ QString Card::name(){
 
 QSize Card::setImage(QString theme, bool top)
 {
-    QString image = top ? this->name() : "_background" ;
+    QString image = top ? this->name() : "back" ;
 
     QPixmap pix(QDir::currentPath()
                 + "/slike/" + theme + "/" + image +
