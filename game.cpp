@@ -12,7 +12,7 @@ Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
     goodOpening(false), playerTookCardFromTalon(0),
-    firstTime(true), groupsThrown(0), groupValue(0),
+    firstTime(true), groupsThrown(0), groupValue(0), opponentCards(14),
     endGameFlag(false)
 {
     ui->setupUi(this);
@@ -454,6 +454,13 @@ void Game::on_actionSelect_theme_triggered()
 
 void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
 void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
+
+void Game::drawOpponentCards(int cardNumberChange)
+{
+
+
+}
+
 
 Game::~Game() { delete ui; }
 

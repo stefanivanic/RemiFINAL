@@ -86,6 +86,10 @@ private:
 
     void initSnS();
 
+    QVector<QLabel*> opponentCards;
+    void drawOpponentCards(int cardNumberChange);
+
+
     void setBackgroundColor();
 
     SelectTheme *selectTheme;
