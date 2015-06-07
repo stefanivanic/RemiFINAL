@@ -128,7 +128,7 @@ void Server::sendMessage(const QString &message)
             return;
 
     QString data = "MESSAGE " + message;
-    qDebug() << "Slanje karte " + data;
+    qDebug() << "Slanje poruke " + data;
     socket->write(data.toUtf8());
 }
 
@@ -164,6 +164,7 @@ void Server::sendGroupIndexes(const QString &number)
 
 void Server::sendDeckSignal()
 {
+    qDebug() << "Slanje signala za deck!";
     QString data = "DECK";
     socket->write(data.toUtf8());
 }

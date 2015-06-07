@@ -36,6 +36,7 @@ public:
     Card* createCardByString(const QString& string1);
 
 signals:
+    void onNewMessage(const QString& message);
     void onCardThrown(const QString& card);
     void onGroupOfCardsThrown(const QString& cards);
     void onGroupsReturned(const QString& number);
@@ -53,6 +54,8 @@ private slots:
     void on_undoGroup_clicked();
 
     void on_actionChoose_cards_triggered();
+
+    void on_lineEdit_returnPressed();
 
 protected:
     Ui::Game *ui;

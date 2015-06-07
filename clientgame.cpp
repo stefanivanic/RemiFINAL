@@ -12,7 +12,7 @@ ClientGame::ClientGame(QWidget *parent) :
 {
     client = new Client();
 
-    //signali sa servera
+    //signali od clienta
     connect(client,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
     connect(client,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
     connect(client,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
@@ -20,6 +20,7 @@ ClientGame::ClientGame(QWidget *parent) :
     connect(client,SIGNAL(cardTaken()),this,SLOT(removeCardFromDeck()));
 
     //signali iz game-a
+    connect(this,SIGNAL(onNewMessage(QString)),this,SLOT(sendMessage(QString)));
     connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
     connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
     connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
@@ -32,10 +33,9 @@ void ClientGame::appendMessage(const QString &message)
     ui->textEdit->append(message);
 }
 
-void ClientGame::on_lineEdit_returnPressed()
+void ClientGame::sendMessage(const QString& message)
 {
-    QString s(ui->lineEdit->text());
-    client->sendMessage(s);
+    client->sendMessage(message);
 }
 
 void ClientGame::sendCard(const QString& card)
@@ -96,11 +96,10 @@ void ClientGame::returnGroups(const QString &indexes)
 
         int size = cdc->handSize();
         for(int j = 0 ; j < size ; j++)
-            cdc->removeLastCard();
+        {
+            delete cdc->getLastCard();
+        }
 
-        //TREBALO BI DA REFRESUJE DEO GDE JE UZEO KARTE
-        qDebug() << "ispisuje karte koje su ostale...";
-        cdc->printCards();
         table.pop_back();
     }
 

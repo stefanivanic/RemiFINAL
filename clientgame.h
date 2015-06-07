@@ -26,7 +26,7 @@ public:
     explicit ClientGame(QWidget *parent = 0);
 
 private slots:
-    void on_lineEdit_returnPressed();
+    void sendMessage(const QString& message);
     void sendCard(const QString& card);
     void sendGroupOfCards(const QString& cards);
     void sendGroupIndexes(const QString& number);
