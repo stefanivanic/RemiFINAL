@@ -17,10 +17,12 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
     connect(server,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
     connect(server,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
+    connect(server,SIGNAL(groupsReturned(QString)),this,SLOT(returnGroups(QString)));
 
     //signali iz game-a
     connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
     connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
+    connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
 
 
 } // END CONSTRUCTOR
@@ -82,3 +84,15 @@ void ServerGame::sendGroupOfCards(const QString& cards)
     server->sendGroupOfCards(cards);
 }
 
+void ServerGame::sendGroupIndexes(const QString &number)
+{
+    server->sendGroupIndexes(number);
+}
+
+void ServerGame::returnGroups(const QString &indexes)
+{
+    int n = indexes.at(0).digitValue();
+
+    for(int i=0;i<n;i++)
+        table.pop_back();
+}

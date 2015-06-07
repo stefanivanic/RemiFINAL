@@ -38,6 +38,7 @@ public:
 signals:
     void onCardThrown(const QString& card);
     void onGroupOfCardsThrown(const QString& cards);
+    void onGroupsReturned(const QString& number);
 
 
 private slots:

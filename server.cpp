@@ -81,6 +81,8 @@ void Server::resolveReadyRead(const QString &message)
         currentDataType = Card;
     else if(list.at(0) == "GROUP")
         currentDataType = Group;
+    else if(list.at(0) == "INDEXES")
+        currentDataType = Indexes;
     else
         currentDataType = Undefined;
 
@@ -95,6 +97,8 @@ void Server::resolveReadyRead(const QString &message)
     case Group:
         emit groupThrown(buffer);
         break;
+    case Indexes:
+        emit groupsReturned(buffer);
     default:
         qDebug() << "Nepoznat podatak!";
     }
@@ -142,3 +146,12 @@ void Server::sendGroupOfCards(const QString &cards)
     socket->write(data.toUtf8());
 }
 
+void Server::sendGroupIndexes(const QString &number)
+{
+    if (number.isEmpty())
+            return;
+
+    QString data = "INDEXES " + number;
+    qDebug() << "Slanje indeksa " + data;
+    socket->write(data.toUtf8());
+}

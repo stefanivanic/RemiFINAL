@@ -105,9 +105,10 @@ void Game::on_undoGroup_clicked()
         for(int j = 0 ; j < size ; j++)
             _Player1->addCard(cdc->getLastCard(), true);
 
-        table.pop_back();
+
     }
 
+    emit onGroupsReturned(QString(groupsThrown));
     groupsThrown = 0;
     groupValue = 0;
 
