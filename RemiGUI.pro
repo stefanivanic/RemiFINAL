@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network \
+         multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -57,3 +58,6 @@ FORMS    += game.ui \
     cardtablecontainer.ui \
     choosecards.ui \
     initwindow.ui
+
+RESOURCES += \
+    res.qrc
