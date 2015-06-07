@@ -17,7 +17,7 @@
 
 
 
-class Game : public QMainWindow,private Ui::Game
+class Game : public QMainWindow, private Ui::Game
 {
     Q_OBJECT
 
