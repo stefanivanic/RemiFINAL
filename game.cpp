@@ -105,10 +105,10 @@ void Game::on_undoGroup_clicked()
         for(int j = 0 ; j < size ; j++)
             _Player1->addCard(cdc->getLastCard(), true);
 
-
+        table.pop_back();
     }
 
-    emit onGroupsReturned(QString(groupsThrown));
+    emit onGroupsReturned(QString::number(groupsThrown));
     groupsThrown = 0;
     groupValue = 0;
 
@@ -190,12 +190,12 @@ void Game::on_throwGroup_clicked()
 
 
                 //DEO ZA SERVER
-             /*   QString cards = "";
+                QString cards = "";
 
                 for(int i=0; i<_Player1->group->getCards().size(); i++)
                    cards.append(_Player1->group->getCards()[i]->name()+" ");
 
-                emit onGroupOfCardsThrown(cards); */
+                emit onGroupOfCardsThrown(cards);
 
                 // i dodajemo u grupu i brisemo iz playera
                 cdc->addCards(_Player1->group->getCards());
@@ -374,6 +374,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
+                        emit onCardThrown(_Player1->getTempCard()->name());
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 

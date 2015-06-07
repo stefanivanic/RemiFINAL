@@ -92,7 +92,17 @@ void ServerGame::sendGroupIndexes(const QString &number)
 void ServerGame::returnGroups(const QString &indexes)
 {
     int n = indexes.at(0).digitValue();
+    qDebug() << "Vracamo grupe " << n;
 
-    for(int i=0;i<n;i++)
+    for( int i = 0 ; i < n; i++){
+        CardTableContainer* cdc = table.back();
+
+        int size = cdc->handSize();
+        for(int j = 0 ; j < size ; j++)
+            cdc->removeLastCard();
+
+        //TREBALO BI DA REFRESUJE DEO GDE JE UZEO KARTE
         table.pop_back();
+    }
+
 }

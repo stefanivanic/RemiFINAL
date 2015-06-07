@@ -99,6 +99,7 @@ void Server::resolveReadyRead(const QString &message)
         break;
     case Indexes:
         emit groupsReturned(buffer);
+        break;
     default:
         qDebug() << "Nepoznat podatak!";
     }
