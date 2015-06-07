@@ -1,6 +1,8 @@
 #include "initwindow.h"
 #include "ui_initwindow.h"
 
+#include <QApplication>
+
 InitWindow::InitWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InitWindow)
@@ -15,4 +17,14 @@ InitWindow::InitWindow(QWidget *parent) :
 InitWindow::~InitWindow()
 {
     delete ui;
+}
+
+void InitWindow::on_pushButtonExit_clicked()
+{
+    this->close();
+}
+
+void InitWindow::on_pushButtonCreate_clicked()
+{
+
 }

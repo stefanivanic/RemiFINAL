@@ -18,11 +18,13 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
     connect(server,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
     connect(server,SIGNAL(groupsReturned(QString)),this,SLOT(returnGroups(QString)));
+    connect(server,SIGNAL(cardTaken()),this,SLOT(removeCardFromDeck()));
 
     //signali iz game-a
     connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
     connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
     connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
+    connect(this,SIGNAL(onCardTaken()), this, SLOT(sendDeckSignal()));
 
 
 } // END CONSTRUCTOR
@@ -102,7 +104,20 @@ void ServerGame::returnGroups(const QString &indexes)
             cdc->removeLastCard();
 
         //TREBALO BI DA REFRESUJE DEO GDE JE UZEO KARTE
+        qDebug() << "ispisuje karte koje su ostale...";
+        cdc->printCards();
         table.pop_back();
     }
 
 }
+
+void ServerGame::removeCardFromDeck()
+{
+    deck->removeLastCard();
+}
+
+void ServerGame::sendDeckSignal()
+{
+    server->sendDeckSignal();
+}
+

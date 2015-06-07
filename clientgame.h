@@ -27,14 +27,17 @@ public:
 
 private slots:
     void on_lineEdit_returnPressed();
-    void onCardThrown();
-    void onGroupOfCardsThrown();
+    void sendCard(const QString& card);
+    void sendGroupOfCards(const QString& cards);
+    void sendGroupIndexes(const QString& number);
+    void sendDeckSignal();
 
 public slots:
     void appendMessage(const QString& message);
     void addCard(const QString& card);
     void addGroupOfCards(const QString& cards);
-
+    void returnGroups(const QString& indexes);
+    void removeCardFromDeck();
 private:
     Client* client;
 

@@ -12,6 +12,19 @@ ClientGame::ClientGame(QWidget *parent) :
 {
     client = new Client();
 
+    //signali sa servera
+    connect(client,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
+    connect(client,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
+    connect(client,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
+    connect(client,SIGNAL(groupsReturned(QString)),this,SLOT(returnGroups(QString)));
+    connect(client,SIGNAL(cardTaken()),this,SLOT(removeCardFromDeck()));
+
+    //signali iz game-a
+    connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
+    connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
+    connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
+    connect(this,SIGNAL(onCardTaken()), this, SLOT(sendDeckSignal()));
+
 } // END CONSTRUCTOR
 
 void ClientGame::appendMessage(const QString &message)
@@ -25,9 +38,9 @@ void ClientGame::on_lineEdit_returnPressed()
     client->sendMessage(s);
 }
 
-void ClientGame::onCardThrown()
+void ClientGame::sendCard(const QString& card)
 {
-    client->sendCard(_Player1->getTempCard()->name());
+    client->sendCard(card);
 }
 
 void ClientGame::addCard(const QString &card)
@@ -63,15 +76,44 @@ void ClientGame::addGroupOfCards(const QString &cards)
     table.append(cdc);
 }
 
-void ClientGame::onGroupOfCardsThrown()
+void ClientGame::sendGroupOfCards(const QString& cards)
 {
-    QString cards = "";
-
-    for(int i=0; i<_Player1->group->getCards().size(); i++)
-        cards.append(_Player1->group->getCards()[i]->name()+" ");
-
-    qDebug() << cards << " <--- Karte";
-
     client->sendGroupOfCards(cards);
 }
+
+void ClientGame::sendGroupIndexes(const QString &number)
+{
+    client->sendGroupIndexes(number);
+}
+
+void ClientGame::returnGroups(const QString &indexes)
+{
+    int n = indexes.at(0).digitValue();
+    qDebug() << "Vracamo grupe " << n;
+
+    for( int i = 0 ; i < n; i++){
+        CardTableContainer* cdc = table.back();
+
+        int size = cdc->handSize();
+        for(int j = 0 ; j < size ; j++)
+            cdc->removeLastCard();
+
+        //TREBALO BI DA REFRESUJE DEO GDE JE UZEO KARTE
+        qDebug() << "ispisuje karte koje su ostale...";
+        cdc->printCards();
+        table.pop_back();
+    }
+
+}
+
+void ClientGame::removeCardFromDeck()
+{
+    deck->removeLastCard();
+}
+
+void ClientGame::sendDeckSignal()
+{
+    client->sendDeckSignal();
+}
+
 

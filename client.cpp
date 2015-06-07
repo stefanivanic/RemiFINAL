@@ -61,6 +61,10 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = Card;
     else if(list.at(0) == "GROUP")
         currentDataType = Group;
+    else if(list.at(0) == "INDEXES")
+        currentDataType = Indexes;
+    else if(list.at(0) == "DECK")
+        currentDataType = Deck;
     else
         currentDataType = Undefined;
 
@@ -74,6 +78,12 @@ void Client::resolveReadyRead(const QString &message)
         break;
     case Group:
         emit groupThrown(buffer);
+        break;
+    case Indexes:
+        emit groupsReturned(buffer);
+        break;
+    case Deck:
+        emit cardTaken();
         break;
     default:
         qDebug() << "Nepoznat podatak!";
@@ -111,4 +121,19 @@ void Client::sendGroupOfCards(const QString &cards)
     tcpSocket->write(data.toUtf8());
 }
 
+void Client::sendGroupIndexes(const QString &number)
+{
+    if (number.isEmpty())
+            return;
+
+    QString data = "INDEXES " + number;
+    qDebug() << "Slanje indeksa " + data;
+    tcpSocket->write(data.toUtf8());
+}
+
+void Client::sendDeckSignal()
+{
+    QString data = "DECK";
+    tcpSocket->write(data.toUtf8());
+}
 

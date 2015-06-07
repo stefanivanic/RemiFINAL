@@ -13,7 +13,9 @@ public:
              Message,
              Undefined,
              Card,
-             Group
+             Group,
+             Indexes,
+             Deck
          };
     Client(QObject *parent = 0);
     ~Client();
@@ -23,6 +25,9 @@ public:
     void sendMessage(const QString& message);
     void sendCard(const QString& card);
     void sendGroupOfCards(const QString& cards);
+    void sendGroupIndexes(const QString& number);
+    void sendDeckSignal();
+
 
 private slots:
     void readyRead();
@@ -32,6 +37,9 @@ signals:
     void newMessage(const QString& message);
     void cardThrown(const QString& card);
     void groupThrown(const QString& cards);
+    void groupsReturned(const QString& cards);
+    void cardTaken();
+
 
 private:
     QTcpSocket *tcpSocket;

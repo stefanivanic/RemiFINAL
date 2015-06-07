@@ -1,7 +1,10 @@
 #ifndef INITWINDOW_H
 #define INITWINDOW_H
 
+#include <QApplication>
 #include <QDialog>
+#include "servergame.h"
+#include "clientgame.h"
 
 namespace Ui {
 class InitWindow;
@@ -14,6 +17,11 @@ class InitWindow : public QDialog
 public:
     explicit InitWindow(QWidget *parent = 0);
     ~InitWindow();
+
+private slots:
+    void on_pushButtonExit_clicked();
+
+    void on_pushButtonCreate_clicked();
 
 private:
     Ui::InitWindow *ui;
