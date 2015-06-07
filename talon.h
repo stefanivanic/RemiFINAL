@@ -16,6 +16,9 @@ public:
 
     void printCards();
 private:
+
+protected:
+    Ui::Talon *ui;
 };
 
 

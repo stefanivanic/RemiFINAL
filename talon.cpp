@@ -2,13 +2,11 @@
 #include "ui_talon.h"
 
 Talon::Talon(QWidget *parent, int x, int y, int w, int h)
-    : CardContainer(parent, x, y, w, h)
+    : CardContainer(parent, x, y, w, h), ui(new Ui::Talon)
 {
-        /* background color , bolje da se zameni sa setStyleSheet*/
-        QPalette Pal(palette());
-        Pal.setColor(QPalette::Background, Qt::lightGray);
-        this->setAutoFillBackground(true);
-        this->setPalette(Pal);
+    ui->setupUi(this);
+    QPixmap pix(QDir::currentPath() + "/slike/2/talon.jpg");
+    ui->label->setPixmap(pix);
 }
 
 void Talon::printCards() {
