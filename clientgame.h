@@ -25,8 +25,6 @@ class ClientGame : public Game
 public:
     explicit ClientGame(QWidget *parent = 0);
 
-    Card* createCardByString(const QString& string1);
-
 private slots:
     void on_lineEdit_returnPressed();
     void onCardThrown();

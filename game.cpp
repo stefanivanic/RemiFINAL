@@ -188,6 +188,15 @@ void Game::on_throwGroup_clicked()
                 CardTableContainer* cdc =
                         new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
+
+                //DEO ZA SERVER
+                QString cards = "";
+
+                for(int i=0; i<_Player1->group->getCards().size(); i++)
+                   cards.append(_Player1->group->getCards()[i]->name()+" ");
+
+                emit onGroupOfCardsThrown(cards);
+
                 // i dodajemo u grupu i brisemo iz playera
                 cdc->addCards(_Player1->group->getCards());
                 _Player1->deleteCardsFromGroup();
@@ -381,8 +390,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
-                        //onCardThrown();
+                       // emit onCardThrown(_Player1->getTempCard()->name());
                         playerToTalon();
+                        qDebug() << "Stigo do dela da baci kartu na talon!";
                         talon->mouseReleaseEvent(m_event);
 
 //                        a zasto ovde emit kad moze direkt
@@ -479,4 +489,58 @@ void Game::on_actionChoose_cards_triggered()
 {
     chooseCards->show();
 }
+
+Card* Game::createCardByString(const QString& string1)
+{
+
+    int number;
+    Card::Sign sign;
+    Card* c;
+
+    QString string(string1.trimmed());
+
+    if(string.length()==2)
+    {
+    if(string.at(0) == 'A')
+        number=1;
+    else if(string.at(0) == 'K')
+        number=14;
+    else if(string.at(0) == 'Q')
+        number=13;
+    else if(string.at(0) == 'J')
+        number=12;
+    else
+        number = string.at(0).digitValue();
+
+    if(string.at(1) == 'P')
+        sign=Card::PIK;
+    else if(string.at(1) == 'K')
+        sign=Card::KARO;
+    else if(string.at(1) == 'T')
+        sign=Card::TREF;
+    else
+        sign=Card::HERC;
+
+        c = new Card(this,number,number,sign);
+    }
+    else if(string.at(0) == 'J')
+    {
+        c = new Card(this,0,0,Card::JOKER);
+    }
+    else{
+        if(string.at(2) == 'P')
+            sign=Card::PIK;
+        else if(string.at(2) == 'K')
+            sign=Card::KARO;
+        else if(string.at(2) == 'T')
+            sign=Card::TREF;
+        else
+            sign=Card::HERC;
+
+        c = new Card(this,10,10,sign);
+    }
+
+    return c;
+}
+
 

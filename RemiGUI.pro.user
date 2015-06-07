@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 3.3.2, 2015-06-06T17:19:07. -->
-=======
-<!-- Written by QtCreator 3.4.0, 2015-06-06T19:14:47. -->
->>>>>>> bd8d39cdffd4596c4c2b0db58be23adad0ea16f5
+<!-- Written by QtCreator 3.3.2, 2015-06-07T00:32:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>

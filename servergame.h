@@ -24,12 +24,10 @@ class ServerGame :public Game
 public:
     explicit ServerGame(QWidget *parent = 0);
 
-    Card* createCardByString(const QString& string1);
-
 private slots:
     void on_lineEdit_returnPressed();
-    void onCardThrown();
-    void onGroupOfCardsThrown();
+    void sendCard(const QString& card);
+    void sendGroupOfCards(const QString& cards);
 
 public slots:
     void appendMessage(const QString& message);

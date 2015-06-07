@@ -33,6 +33,12 @@ public:
 
     static int const EXIT_CODE_REBOOT = -666;
 
+    Card* createCardByString(const QString& string1);
+
+signals:
+    void onCardThrown(const QString& card);
+    void onGroupOfCardsThrown(const QString& cards);
+
 
 private slots:
     void on_actionSelect_theme_triggered();
