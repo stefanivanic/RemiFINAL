@@ -125,6 +125,11 @@
       <italic>true</italic>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">#textEdit{
+	color: rgb(255, 255, 255);
+}</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -141,6 +146,11 @@
       <pointsize>10</pointsize>
       <italic>true</italic>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#lineEdit{
+	color: rgb(255, 255, 255);
+}</string>
     </property>
    </widget>
   </widget>
