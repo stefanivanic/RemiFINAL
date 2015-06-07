@@ -12,15 +12,15 @@ Game::Game(QWidget *parent) :
     endGameFlag(false)
 {
     ui->setupUi(this);
-    this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
-    ui->label->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->onMoveLabel->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->errorLogger->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->groupValue->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->lineEdit->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
-    ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url(white.jpg);"));
+    ui->centralWidget->setStyleSheet(QStringLiteral("border-image: url(./slike/2/dark_wood.jpg);"));
+    ui->label->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->onMoveLabel->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->errorLogger->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->groupValue->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->lineEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
 
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
@@ -32,8 +32,8 @@ Game::Game(QWidget *parent) :
 
     chooseCards = new ChooseCards(this);
 
-    talon = new Talon(this, 0, 250, 100, 100);
-    deck = new Deck(this, 50, 50, 100, 100); // init i shuffle
+    talon = new Talon(this, 380, 200, 70, 100);
+    deck = new Deck(this, 280, 200, 70, 100); // init i shuffle
 
     _Player1->installEventFilter(this);
 

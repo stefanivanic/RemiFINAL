@@ -7,7 +7,7 @@ Card::Card(QWidget *parent, short number, short value, Sign sign)
 {
     ui->setupUi(this);
 
-    QString theme = "default";
+    QString theme = "2";
     QSize size = setImage(theme, false);
 
     resize(size.width(), size.height());
@@ -48,7 +48,7 @@ QSize Card::setImage(QString theme, bool top)
     QString image = top ? this->name() : "back" ;
 
     QPixmap pix(QDir::currentPath()
-                + "/slike/" + theme + "/" + image +
+                + "/slike/2/" + image +
                 + ".gif");
     this->setPixmap(pix);
 

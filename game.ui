@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Game</string>
+   <string>Remi</string>
   </property>
   <property name="styleSheet">
    <string notr="true">Game #Talon{

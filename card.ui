@@ -7,17 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>67</width>
-    <height>93</height>
+    <height>97</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#Card{
-	border: 2px solid #800000;
-}
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
