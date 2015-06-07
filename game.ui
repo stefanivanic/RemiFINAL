@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>822</width>
-    <height>533</height>
+    <width>850</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,10 +48,10 @@
    <widget class="QPushButton" name="throwGroup">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>310</y>
-      <width>75</width>
-      <height>23</height>
+      <x>650</x>
+      <y>380</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -96,10 +96,10 @@
    <widget class="QPushButton" name="undoGroup">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>310</y>
-      <width>75</width>
-      <height>23</height>
+      <x>650</x>
+      <y>430</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -112,9 +112,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>630</x>
       <y>130</y>
-      <width>151</width>
+      <width>161</width>
       <height>111</height>
      </rect>
     </property>
@@ -122,10 +122,10 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>650</x>
       <y>250</y>
-      <width>113</width>
-      <height>20</height>
+      <width>121</width>
+      <height>21</height>
      </rect>
     </property>
    </widget>
@@ -135,7 +135,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>822</width>
+     <width>850</width>
      <height>21</height>
     </rect>
    </property>

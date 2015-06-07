@@ -19,12 +19,12 @@ Game::Game(QWidget *parent) :
     ui->groupValue->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
     ui->textEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
     ui->lineEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
+    ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url();"));
+    ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url();"));
 
     ui->throwGroup->hide(); ui->undoGroup->hide();
 
-    _Player1 = new PlayerContainer(this, 200, 350, 350, 100);
+    _Player1 = new PlayerContainer(this, 200, 400, 350, 100);
 
     // napravi kontejner za playera 2 ovo ne
     // moze ovako da ostane jer mora dinamicki da se menja
@@ -32,8 +32,8 @@ Game::Game(QWidget *parent) :
 
     chooseCards = new ChooseCards(this);
 
-    talon = new Talon(this, 380, 200, 70, 100);
-    deck = new Deck(this, 280, 200, 70, 100); // init i shuffle
+    deck = new Deck(this, 10, 200, 70, 100); // init i shuffle
+    talon = new Talon(this, 100, 200, 70, 100);
 
     _Player1->installEventFilter(this);
 
