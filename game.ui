@@ -118,6 +118,13 @@
       <height>111</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Century Schoolbook</family>
+      <pointsize>10</pointsize>
+      <italic>true</italic>
+     </font>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -127,6 +134,13 @@
       <width>121</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Century Schoolbook</family>
+      <pointsize>10</pointsize>
+      <italic>true</italic>
+     </font>
     </property>
    </widget>
   </widget>
