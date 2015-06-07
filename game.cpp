@@ -189,12 +189,12 @@ void Game::on_throwGroup_clicked()
 
 
                 //DEO ZA SERVER
-             /*   QString cards = "";
+                QString cards = "";
 
                 for(int i=0; i<_Player1->group->getCards().size(); i++)
                    cards.append(_Player1->group->getCards()[i]->name()+" ");
 
-                emit onGroupOfCardsThrown(cards); */
+                emit onGroupOfCardsThrown(cards);
 
                 // i dodajemo u grupu i brisemo iz playera
                 cdc->addCards(_Player1->group->getCards());
@@ -373,6 +373,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
+                        emit onCardThrown(_Player1->getTempCard()->name());
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
