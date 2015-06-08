@@ -15,7 +15,8 @@ public:
              Card,
              Group,
              Indexes,
-             Deck
+             Deck,
+             Talon
          };
     Client(QObject *parent = 0);
     ~Client();
@@ -27,6 +28,7 @@ public:
     void sendGroupOfCards(const QString& cards);
     void sendGroupIndexes(const QString& number);
     void sendDeckSignal();
+    void sendTalonSignal();
 
 
 private slots:
@@ -38,8 +40,8 @@ signals:
     void cardThrown(const QString& card);
     void groupThrown(const QString& cards);
     void groupsReturned(const QString& cards);
-    void cardTaken();
-
+    void deckCardTaken();
+    void talonCardTaken();
 
 private:
     QTcpSocket *tcpSocket;

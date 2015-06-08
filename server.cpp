@@ -85,6 +85,8 @@ void Server::resolveReadyRead(const QString &message)
         currentDataType = Indexes;
     else if(list.at(0) == "DECK")
         currentDataType = Deck;
+    else if(list.at(0) == "TALON")
+        currentDataType = Talon;
     else
         currentDataType = Undefined;
 
@@ -103,7 +105,10 @@ void Server::resolveReadyRead(const QString &message)
         emit groupsReturned(buffer);
         break;
     case Deck:
-        emit cardTaken();
+        emit deckCardTaken();
+        break;
+    case Talon:
+        emit talonCardTaken();
         break;
     default:
         qDebug() << "Nepoznat podatak!";
@@ -166,5 +171,12 @@ void Server::sendDeckSignal()
 {
     qDebug() << "Slanje signala za deck!";
     QString data = "DECK";
+    socket->write(data.toUtf8());
+}
+
+void Server::sendTalonSignal()
+{
+    qDebug() << "Slanje signala za talon!";
+    QString data = "TALON";
     socket->write(data.toUtf8());
 }

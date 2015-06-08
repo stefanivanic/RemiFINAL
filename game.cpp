@@ -425,7 +425,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 else if(!playerOneOnMove)
                     ui->errorLogger->setText("SACEKAJ SVOJ RED");
                 else {
-                    emit onCardTaken();
+                    emit onDeckCardTaken();
                     _Player1->addCard(deck->getLastCard(),true);
                     playerTookCard = true;
                     ui->errorLogger->setText("error logger.");
@@ -445,6 +445,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                    playerTookCard           = true;
                    firstTime                = true;
                    //deal card
+                   emit onTalonCardTaken();
                    _Player1->addCard(talon->getLastCard(), true);
                 }
             }

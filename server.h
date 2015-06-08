@@ -14,7 +14,8 @@ public:
             Card,
             Group,
             Indexes,
-            Deck
+            Deck,
+            Talon
         };
    Server(QObject *parent = 0);
    QTcpSocket *socket;
@@ -26,13 +27,15 @@ public:
    void sendGroupOfCards(const QString& cards);
    void sendGroupIndexes(const QString& number);
    void sendDeckSignal();
+   void sendTalonSignal();
 
 signals:
    void newMessage(const QString& message);
    void cardThrown(const QString& card);
    void groupThrown(const QString& cards);
    void groupsReturned(const QString& cards);
-   void cardTaken();
+   void deckCardTaken();
+   void talonCardTaken();
 
 public slots:
     void newConnection();

@@ -10,7 +10,7 @@ Client::Client(QObject *parent)
 
     tcpSocket->abort();
 
-    tcpSocket->connectToHost("192.168.0.11",49848);
+    tcpSocket->connectToHost("127.0.0.1",1234);
 
     if(tcpSocket->waitForConnected(3000))
     {
@@ -65,6 +65,8 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = Indexes;
     else if(list.at(0) == "DECK")
         currentDataType = Deck;
+    else if(list.at(0) == "TALON")
+        currentDataType = Talon;
     else
         currentDataType = Undefined;
 
@@ -83,7 +85,10 @@ void Client::resolveReadyRead(const QString &message)
         emit groupsReturned(buffer);
         break;
     case Deck:
-        emit cardTaken();
+        emit deckCardTaken();
+        break;
+    case Talon:
+        emit talonCardTaken();
         break;
     default:
         qDebug() << "Nepoznat podatak!";
@@ -137,6 +142,13 @@ void Client::sendDeckSignal()
 {
     qDebug() << "Slanje signala za deck!";
     QString data = "DECK";
+    tcpSocket->write(data.toUtf8());
+}
+
+void Client::sendTalonSignal()
+{
+    qDebug() << "Slanje signala za talon!";
+    QString data = "TALON";
     tcpSocket->write(data.toUtf8());
 }
 

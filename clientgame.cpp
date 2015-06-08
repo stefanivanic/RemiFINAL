@@ -17,14 +17,16 @@ ClientGame::ClientGame(QWidget *parent) :
     connect(client,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
     connect(client,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
     connect(client,SIGNAL(groupsReturned(QString)),this,SLOT(returnGroups(QString)));
-    connect(client,SIGNAL(cardTaken()),this,SLOT(removeCardFromDeck()));
+    connect(client,SIGNAL(deckCardTaken()),this,SLOT(removeCardFromDeck()));
+    connect(client,SIGNAL(talonCardTaken()),this,SLOT(removeCardFromTalon()));
 
     //signali iz game-a
     connect(this,SIGNAL(onNewMessage(QString)),this,SLOT(sendMessage(QString)));
     connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
     connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
     connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
-    connect(this,SIGNAL(onCardTaken()), this, SLOT(sendDeckSignal()));
+    connect(this,SIGNAL(onDeckCardTaken()), this, SLOT(sendDeckSignal()));
+    connect(this,SIGNAL(onTalonCardTaken()),this,SLOT(sendTalonSignal()));
 
 } // END CONSTRUCTOR
 
@@ -107,7 +109,14 @@ void ClientGame::returnGroups(const QString &indexes)
 
 void ClientGame::removeCardFromDeck()
 {
-    deck->removeLastCard();
+    delete deck->getLastCard();
+    deck->refreshDepth();
+}
+
+void ClientGame::removeCardFromTalon()
+{
+    delete talon->getLastCard();
+    talon->refreshDepth();
 }
 
 void ClientGame::sendDeckSignal()
@@ -115,4 +124,8 @@ void ClientGame::sendDeckSignal()
     client->sendDeckSignal();
 }
 
+void ClientGame::sendTalonSignal()
+{
+    client->sendTalonSignal();
+}
 

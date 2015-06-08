@@ -26,7 +26,6 @@ public:
 
     void refreshDepth();
     Card* getLastCard();
-    void removeLastCard();
 
     bool isCardTargeted(QObject* target);
 

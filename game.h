@@ -40,8 +40,8 @@ signals:
     void onCardThrown(const QString& card);
     void onGroupOfCardsThrown(const QString& cards);
     void onGroupsReturned(const QString& number);
-    void onCardTaken();
-
+    void onDeckCardTaken();
+    void onTalonCardTaken();
 
 private slots:
     void on_actionSelect_theme_triggered();
