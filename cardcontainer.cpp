@@ -83,7 +83,3 @@ QString CardContainer::printCards()
 
 CardContainer::~CardContainer() { delete ui; }
 
-void CardContainer::removeLastCard()
-{
-    cards.pop_back();
-}

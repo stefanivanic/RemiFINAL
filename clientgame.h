@@ -31,6 +31,7 @@ private slots:
     void sendGroupOfCards(const QString& cards);
     void sendGroupIndexes(const QString& number);
     void sendDeckSignal();
+    void sendTalonSignal();
 
 public slots:
     void appendMessage(const QString& message);
@@ -38,6 +39,8 @@ public slots:
     void addGroupOfCards(const QString& cards);
     void returnGroups(const QString& indexes);
     void removeCardFromDeck();
+    void removeCardFromTalon();
+
 private:
     Client* client;
 
