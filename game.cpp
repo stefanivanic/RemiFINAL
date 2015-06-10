@@ -387,6 +387,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
+
 //                        a zasto ovde emit kad moze direkt
 //                        da se pozove slot metoda? ubaciti
 //                        u odgovarajucu funkciju.

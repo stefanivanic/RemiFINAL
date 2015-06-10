@@ -50,6 +50,7 @@ void ClientGame::addCard(const QString &card)
     Card* c = createCardByString(card);
 
     talon->addCard(c,true);
+    playerOneOnMove = true;
 }
 
 void ClientGame::addGroupOfCards(const QString &cards)
@@ -71,6 +72,9 @@ void ClientGame::addGroupOfCards(const QString &cards)
 
     for(int i=0; i<list.size()-1; i++)
     {
+        if(list.at(i) == "")
+            continue;
+
         Card* c = createCardByString(list.at(i));
         cdc->addCard(c,true);
     }
