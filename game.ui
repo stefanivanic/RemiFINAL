@@ -30,7 +30,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#label {
-	background-color: white;
+
 }</string>
     </property>
     <property name="text">
@@ -48,19 +48,20 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#onMoveLabel {
-	background-color: white;
+	border: 1px solid black;
+	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;);
 }</string>
     </property>
     <property name="text">
-     <string>   on move : player1</string>
+     <string>   Na potezu: Player 1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="throwGroup">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>740</x>
       <y>420</y>
-      <width>171</width>
+      <width>201</width>
       <height>41</height>
      </rect>
     </property>
@@ -94,7 +95,8 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#errorLogger {
-	background-color: white;
+	border: 1px solid black;
+	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;);
 }</string>
     </property>
     <property name="text">
@@ -112,19 +114,21 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#groupValue {
-	background-color: white;
-}</string>
+	border: 1px solid black;
+	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;);
+}
+</string>
     </property>
     <property name="text">
-     <string>  gruopValie : 0</string>
+     <string>   Vrednost grupe: 0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="undoGroup">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>740</x>
       <y>480</y>
-      <width>171</width>
+      <width>201</width>
       <height>41</height>
      </rect>
     </property>
@@ -159,7 +163,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#textEdit{
-	border: 2px solid grey;
+	border: 1px solid black;
 	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;)
 }</string>
     </property>
@@ -184,6 +188,25 @@
      <string notr="true">#lineEdit{
 
 }</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="player_2">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>40</y>
+      <width>311</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#player_2 {
+	border: 1px solid black;
+	border-image: url(&quot;./slike/Teme/2_back_player2.jpg&quot;);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

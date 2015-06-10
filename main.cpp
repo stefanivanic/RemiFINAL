@@ -10,11 +10,9 @@ int main(int argc, char *argv[])
 
     do {
      QApplication a(argc, argv);
-<<<<<<< HEAD
+
      InitWindow w;
-=======
-     ClientGame w;
->>>>>>> 688ce85cb87e641959b8f3293b78485d34d70e4a
+//     ClientGame w;
      w.show();
      currentExitCode = a.exec();
     } while( currentExitCode == Game::EXIT_CODE_REBOOT );

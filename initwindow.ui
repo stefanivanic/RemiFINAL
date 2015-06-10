@@ -43,7 +43,6 @@
     <property name="styleSheet">
      <string notr="true">#pushButtonCreate {
 	border: 1px solid back;
-border-radius: 25px;
 	border-image: url(&quot;./slike/Teme/2_create.jpg&quot;);
 }</string>
     </property>
@@ -63,7 +62,6 @@ border-radius: 25px;
     <property name="styleSheet">
      <string notr="true">#pushButtonLoad {
 	border: 1px solid back;
-border-radius: 25px;
     border-image: url(&quot;./slike/Teme/2_load.jpg&quot;);
 }</string>
     </property>
@@ -83,7 +81,6 @@ border-radius: 25px;
     <property name="styleSheet">
      <string notr="true">#pushButtonExit {
 	border: 1px solid back;
-	border-radius: 25px;
 	border-image: url(&quot;./slike/Teme/2_exit.jpg&quot;);
 }</string>
     </property>
