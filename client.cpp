@@ -10,7 +10,7 @@ Client::Client(QObject *parent)
 
     tcpSocket->abort();
 
-    tcpSocket->connectToHost("127.0.0.1",1234);
+    tcpSocket->connectToHost("109.92.4.185",51054);
 
     if(tcpSocket->waitForConnected(3000))
     {
