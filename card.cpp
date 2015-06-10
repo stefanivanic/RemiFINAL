@@ -45,11 +45,11 @@ QString Card::name(){
 
 QSize Card::setImage(QString theme, bool top)
 {
-    QString image = top ? this->name() : "back" ;
+    QString image = top ? this->name() : "2_back" ;
 
     QPixmap pix(QDir::currentPath()
-                + "/slike/2/" + image +
-                + ".gif");
+                + "/slike/Karte/" + image +
+                + ".jpg");
     this->setPixmap(pix);
 
     return pix.size();

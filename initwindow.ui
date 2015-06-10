@@ -6,51 +6,91 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
-    <height>406</height>
+    <width>580</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Remi</string>
   </property>
-  <widget class="QPushButton" name="pushButtonCreate">
+  <property name="styleSheet">
+   <string notr="true">#InitWindow {
+}</string>
+  </property>
+  <widget class="QWidget" name="buttonWidget" native="true">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>70</y>
-     <width>221</width>
-     <height>61</height>
+     <x>0</x>
+     <y>0</y>
+     <width>581</width>
+     <height>381</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Create</string>
+   <property name="styleSheet">
+    <string notr="true">#buttonWidget{
+	border-image: url(&quot;./slike/Teme/2_init.jpg&quot;);
+}</string>
    </property>
-  </widget>
-  <widget class="QPushButton" name="pushButtonExit">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>230</y>
-     <width>221</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Exit</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButtonLoad">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>150</y>
-     <width>221</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Load</string>
-   </property>
+   <widget class="QPushButton" name="pushButtonCreate">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>80</y>
+      <width>241</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButtonCreate {
+	border: 1px solid back;
+border-radius: 25px;
+	border-image: url(&quot;./slike/Teme/2_create.jpg&quot;);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonLoad">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>160</y>
+      <width>241</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButtonLoad {
+	border: 1px solid back;
+border-radius: 25px;
+    border-image: url(&quot;./slike/Teme/2_load.jpg&quot;);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonExit">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>240</y>
+      <width>241</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButtonExit {
+	border: 1px solid back;
+	border-radius: 25px;
+	border-image: url(&quot;./slike/Teme/2_exit.jpg&quot;);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
