@@ -54,9 +54,7 @@ private slots:
     void on_undoGroup_clicked();
     void cardsPreordered(QVector<QString> cardNames);
     void on_actionChoose_cards_triggered();
-
     void on_lineEdit_returnPressed();
-
     void on_undoTookTalonCard_clicked();
 
 protected:

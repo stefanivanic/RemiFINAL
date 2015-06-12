@@ -73,7 +73,7 @@ void Game::initSnS()
     // za restart aplikacije
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
-
+    // saljemo info o izabranim kartama iz jednog u main window
     connect( chooseCards, SIGNAL(cardsPreorderd(QVector<QString>)),
                     this, SLOT(cardsPreordered(QVector<QString>)));
 
@@ -120,6 +120,8 @@ void Game::on_undoGroup_clicked()
     groupsThrown = 0;
     groupValue = 0;
 
+    ui->undoGroup->hide();
+
     qDebug() << "kliknuto";
 
 }
@@ -134,6 +136,9 @@ void Game::changeTempPosText()
 // postavljaju se flegovi i ispisuju se loggeri
 void Game::changePlayer()
 {
+    // .........................
+    // privremeno, za debug !!!!
+    // .........................
     playerOneOnMove = !playerOneOnMove;
 
     groupsThrown = 0;
@@ -364,9 +369,11 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                         return true;
                     }
+                }// END IF event->type() == QEvent::MouseButtonRelease
+                else { // nije u pitanju drop karte
+                    qDebug() << "deo gde znamo da je u pitanju pokusaj uzimanja karte";
+                    return false;
                 }
-                else // nije u pitanju drop karte
-                    event->ignore(); return false;
             }
 
 
@@ -510,7 +517,7 @@ void Game::on_actionSelect_theme_triggered()
 }
 
 void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
-void Game::hideOnThrowButton() { ui->throwGroup->hide(); ui->undoGroup->hide(); }
+void Game::hideOnThrowButton() { ui->throwGroup->hide();  }
 
 Game::~Game() { delete ui; }
 
@@ -530,27 +537,27 @@ Card* Game::createCardByString(const QString& string1)
 
     if(string.length()==2)
     {
-    if(string.at(0) == 'A')
-        number=1;
-    else if(string.at(0) == 'K')
-        number=14;
-    else if(string.at(0) == 'Q')
-        number=13;
-    else if(string.at(0) == 'J')
-        number=12;
-    else
-        number = string.at(0).digitValue();
+        if(string.at(0) == 'A')
+            number=1;
+        else if(string.at(0) == 'K')
+            number=14;
+        else if(string.at(0) == 'Q')
+            number=13;
+        else if(string.at(0) == 'J')
+            number=12;
+        else
+            number = string.at(0).digitValue();
 
-    if(string.at(1) == 'P')
-        sign=Card::PIK;
-    else if(string.at(1) == 'K')
-        sign=Card::KARO;
-    else if(string.at(1) == 'T')
-        sign=Card::TREF;
-    else
-        sign=Card::HERC;
+        if(string.at(1) == 'P')
+            sign=Card::PIK;
+        else if(string.at(1) == 'K')
+            sign=Card::KARO;
+        else if(string.at(1) == 'T')
+            sign=Card::TREF;
+        else
+            sign=Card::HERC;
 
-        c = new Card(this,number,number,sign);
+            c = new Card(this,number,number,sign);
     }
     else if(string.at(0) == 'J')
     {
