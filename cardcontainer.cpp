@@ -81,5 +81,10 @@ QString CardContainer::printCards()
     return rez;
 }
 
-CardContainer::~CardContainer() { delete ui; }
+CardContainer::~CardContainer()
+{
+    for(Card* c : cards)
+        delete c;
+    delete ui;
+}
 

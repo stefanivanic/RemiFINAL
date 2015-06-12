@@ -52,7 +52,7 @@ private slots:
     void hideOnThrowButton();
     void slotReboot();
     void on_undoGroup_clicked();
-
+    void cardsPreordered(QVector<QString> cardNames);
     void on_actionChoose_cards_triggered();
 
     void on_lineEdit_returnPressed();

@@ -49,11 +49,11 @@ Game::Game(QWidget *parent) :
         _Player1->addCard(deck->getLastCard(), true);
     // u add card vise ne mora da se prosledjuje bool
 
+    /*
     QMediaPlayer *song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
-    //song->play();
-
-
+    song->play();
+    */
 } // END CONSTRUCTOR
 
 void Game::initSnS()
@@ -350,7 +350,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
                         for(int i = tableContainterPosition + 1; i < table.size(); i++){
                             table[i]->moveRight();
-                                }
+                        }
 
                         return true;
                     }
@@ -464,6 +464,27 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 // gui elementi i ostale nebitne metode
 // ....................................
 
+
+void Game::cardsPreordered(QVector<QString> cardNames)
+{
+    delete _Player1; delete talon; delete deck;
+
+    _Player1 = new PlayerContainer(this, 300, 450, 350, 100);
+    deck = new Deck(this, 10, 250, 70, 100, cardNames); // init i shuffle
+    talon = new Talon(this, 100, 250, 70, 100);
+
+    _Player1->installEventFilter(this);
+    talon->installEventFilter(this);
+    deck->installEventFilter(this);
+
+    // inicijalizacija signal-slotova
+    initSnS();
+
+    // podela karata
+    for(int i=0; i<15; i++)
+        _Player1->addCard(deck->getLastCard(), true);
+}
+
 void Game::slotReboot()
 {
     qDebug() << "Performing application reboot...";
@@ -477,7 +498,7 @@ void Game::on_actionSelect_theme_triggered()
 }
 
 void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
-void Game::hideOnThrowButton() { ui->throwGroup->hide(); }
+void Game::hideOnThrowButton() { ui->throwGroup->hide(); ui->undoGroup->hide(); }
 
 Game::~Game() { delete ui; }
 

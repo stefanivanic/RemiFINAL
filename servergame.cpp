@@ -78,6 +78,7 @@ void ServerGame::addGroupOfCards(const QString &cards)
 
         Card* c = createCardByString(list.at(i));
         cdc->addCard(c,true);
+
         qDebug() << "Dodajem kartu:" + list.at(i);
     }
 
