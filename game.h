@@ -49,7 +49,7 @@ private slots:
     void changeTempPosText();
     void changePlayer();
     void showOnThrowButton();
-    void hideOnThrowButton();
+    void hideOnThrowButton(bool);
     void slotReboot();
     void on_undoGroup_clicked();
     void cardsPreordered(QVector<QString> cardNames);

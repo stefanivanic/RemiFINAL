@@ -43,7 +43,7 @@ signals:
     void onPositionChange(); // nesrecno ime
     void onThrowCard     ();
     void onAddingCardtoGroup();
-    void onEmptyGroup();
+    void onEmptyGroup(bool); // nesto nije u redu ovde
 
 private:
     const int cardDistance =

@@ -68,8 +68,8 @@ void Game::initSnS()
     connect( _Player1, SIGNAL(onAddingCardtoGroup()),
                  this, SLOT(showOnThrowButton()));
     // nema grupe => nema dugmeta
-    connect( _Player1, SIGNAL(onEmptyGroup()),
-                 this, SLOT(hideOnThrowButton()));
+    connect( _Player1, SIGNAL(onEmptyGroup(bool)),
+                 this, SLOT(hideOnThrowButton(bool)));
     // za restart aplikacije
     connect( ui->menuBarRestartGame, SIGNAL(triggered()),
               this, SLOT(slotReboot()));
@@ -240,7 +240,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                            [](CardTableContainer* cdc){return cdc->isInArea(); });
 
             if(!talon->isInArea() && !isInTable) {
-//
+                qDebug() << " usao ";
                 _Player1->resolveMouseEvent(m_event);
             }
 
@@ -476,7 +476,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
     }
     // ako nije mouse event pustimo ga da radi svoje
     return target->event(event);
-
 }
 
 // ....................................
@@ -517,7 +516,11 @@ void Game::on_actionSelect_theme_triggered()
 }
 
 void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
-void Game::hideOnThrowButton() { ui->throwGroup->hide();  }
+void Game::hideOnThrowButton(bool hideUndoGroup)
+{
+    ui->throwGroup->hide();
+    if( hideUndoGroup ) ui->undoGroup->hide();
+}
 
 Game::~Game() { delete ui; }
 

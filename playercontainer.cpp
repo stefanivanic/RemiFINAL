@@ -28,7 +28,7 @@ void PlayerContainer::deleteCardsFromGroup()
     refreshCardsPosition();
 
     group->clearGroup();
-    emit onEmptyGroup();
+    emit onEmptyGroup(false);
 }
 
 void PlayerContainer::addCard(Card *card, bool background)
@@ -76,7 +76,7 @@ void PlayerContainer::mousePressEvent(QMouseEvent* event)
         else {
             // remove card vraca true ako je grupa ispraznjena
             if( group->removeCard(tempCardObject) )
-                emit onEmptyGroup();
+                emit onEmptyGroup(true);
             tempCardObject->move(position.x() + tempCardPosition*cardDistance,
                              position.y()); // npr 20 nebitno je
         }
