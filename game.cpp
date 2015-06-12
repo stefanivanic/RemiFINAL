@@ -226,7 +226,11 @@ void Game::on_throwGroup_clicked()
 }
 
 bool Game::eventFilter(QObject* target, QEvent* event)
-{
+{/*
+    if(event->type() == QEvent::MouseButtonDblClick) {
+        return true;
+    }
+*/
 
     if(event->type() == QEvent::MouseButtonPress ||
         event->type() == QEvent::MouseButtonRelease||
@@ -240,7 +244,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                            [](CardTableContainer* cdc){return cdc->isInArea(); });
 
             if(!talon->isInArea() && !isInTable) {
-                qDebug() << " usao ";
                 _Player1->resolveMouseEvent(m_event);
             }
 

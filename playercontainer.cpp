@@ -96,6 +96,9 @@ void PlayerContainer::mouseReleaseEvent(QMouseEvent* event)
 
     int areaOfCurrCard = getCurrArea();
 
+    if( tempCardPosition == -1)
+        return;
+
     if( tempCardObject->isLeftClick() ) {
 
 
