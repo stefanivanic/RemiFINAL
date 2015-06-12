@@ -23,7 +23,7 @@ Game::Game(QWidget *parent) :
 */ //   ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_vratigrupu.jpg);"));
  /*   ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url();"));
 */
-    ui->throwGroup->hide(); ui->undoGroup->hide();
+    ui->throwGroup->hide(); ui->undoGroup->hide(); ui->undoTookTalonCard->hide();
 
     _Player1 = new PlayerContainer(this, 300, 450, 350, 100);
 
@@ -397,7 +397,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
-
 //                        a zasto ovde emit kad moze direkt
 //                        da se pozove slot metoda? ubaciti
 //                        u odgovarajucu funkciju.
@@ -416,7 +415,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     }
 
                 } // END IF event->type() == MouseButtonRelease
-                firstTime = false;
+
+                firstTime = false; // ne znam bas dal ovo ide ovde
             } // END IF talon->isInArea()
 
 
@@ -454,6 +454,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                    playerTookCardFromTalon  = true;
                    playerTookCard           = true;
                    firstTime                = true;
+
+                   ui->undoTookTalonCard->show();
+
                    //deal card
                    emit onTalonCardTaken();
                    _Player1->addCard(talon->getLastCard(), true);
@@ -574,4 +577,11 @@ void Game::on_lineEdit_returnPressed()
     ui->textEdit->append(ui->lineEdit->text());
     emit onNewMessage(ui->lineEdit->text());
     ui->lineEdit->setText("");
+}
+
+void Game::on_undoTookTalonCard_clicked()
+{
+    talon->addCard(_Player1->getLastCard(), true);
+    playerTookCardFromTalon = false;
+    ui->undoTookTalonCard->hide();
 }

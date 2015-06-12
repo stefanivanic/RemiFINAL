@@ -57,6 +57,8 @@ private slots:
 
     void on_lineEdit_returnPressed();
 
+    void on_undoTookTalonCard_clicked();
+
 protected:
     Ui::Game *ui;
 

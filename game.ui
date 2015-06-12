@@ -209,6 +209,34 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="undoTookTalonCard">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#throwGroup {
+	border: 1px solid back;
+	border-image: url(&quot;./slike/Teme/2_izbacigrupu.jpg&quot;);
+}</string>
+    </property>
+    <property name="text">
+     <string>vrati kartu sa talona</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -216,7 +244,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
