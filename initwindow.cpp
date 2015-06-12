@@ -27,5 +27,7 @@ void InitWindow::on_pushButtonExit_clicked()
 
 void InitWindow::on_pushButtonCreate_clicked()
 {
-
+     game = new Game();
+     game->show();
+     this->hide();
 }

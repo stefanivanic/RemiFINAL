@@ -25,6 +25,11 @@ private slots:
 
 private:
     Ui::InitWindow *ui;
+
+    ServerGame* sGame;
+    ClientGame* cGame;
+    Game*       game; // samo za debug
+
 };
 
 #endif // INITWINDOW_H
