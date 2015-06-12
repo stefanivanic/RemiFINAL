@@ -5,7 +5,7 @@
 #include "ui_cardtablecontainer.h"
 
 
-class CardTableContainer : public PlayerContainer, public Group,private Ui::CardTableContainer
+class CardTableContainer : public PlayerContainer, public Group, private Ui::CardTableContainer
 {
     Q_OBJECT
 

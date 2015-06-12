@@ -20,9 +20,6 @@ public:
     void addCard(Card* card, bool background);
     void removeCard();
 
-    // za playera2
-    void setTempCard();
-
     // overloudujemo(ili overrajdujemo, nauci da razlikujes)
     // sta treba za drag n drop
     void mousePressEvent(QMouseEvent* event);
@@ -51,8 +48,6 @@ signals:
 private:
     const int cardDistance =
             20; // rastojanje izmedju karata u ruci
-
-    void mouseDoubleClickEvent(QMouseEvent* event);
 
     // za 'animaciju' prilikom pomeranja redosleda karata
     Card*       tempCardObject;

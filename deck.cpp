@@ -48,7 +48,7 @@ void Deck::initializeDeck(QVector<QString> cardNames)
                 }
             }
         }
-        qDebug() << printCards();
+//        qDebug() << printCards();
     }
 
 }

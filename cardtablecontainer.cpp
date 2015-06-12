@@ -27,14 +27,10 @@ void CardTableContainer::addCard(Card *card, bool background)
 }
 
 void CardTableContainer::moveRight() {
-    position.setX(position.x() + cardDistance);
+//    qDebug() << " pozicija x : " << position.x();
 
-    for(Card* c : PlayerContainer::cards) {
-        c->move(position.x() + PlayerContainer::cards.size() * cardDistance,
-                position.y());
-        PlayerContainer::cards.push_back(c);
-        c->raise();
-    }
+    position.setX(position.x() + cardDistance);
+    refreshCardsPosition();
 }
 
 int CardTableContainer::getContainerWidth()

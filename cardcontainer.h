@@ -21,7 +21,7 @@ public:
     virtual ~CardContainer();
 
     void addCard(Card* card1, bool background);
-    bool isInArea();
+    virtual bool isInArea();
     QVector<Card*> getCards();
 
     void refreshDepth();

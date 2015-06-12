@@ -86,18 +86,6 @@ void PlayerContainer::mousePressEvent(QMouseEvent* event)
 void PlayerContainer::mouseMoveEvent(QMouseEvent* event)
 {
     event->accept();
-
-    int areaOfCurrCard = getCurrArea();
-/*
-    if( tempCardObject->isLeftClick()) {
-        if(tempCardPosition != areaOfCurrCard) {
-            if(tempCardPosition == areaOfCurrCard -1 || tempCardPosition == areaOfCurrCard + 1)
-                shiftCards( tempCardPosition < areaOfCurrCard );
-            tempCardPosition = areaOfCurrCard;
-            emit onPositionChange();
-            }
-        }
-        */
 }
 
 void PlayerContainer::mouseReleaseEvent(QMouseEvent* event)
@@ -144,6 +132,8 @@ void PlayerContainer::mouseReleaseEvent(QMouseEvent* event)
                                         position.y());
         }
 
+        cards[tempCardPosition]->e->setOpacity(1);
+        cards[tempCardPosition]->setGraphicsEffect(cards[tempCardPosition]->e);
 
         tempCardPosition = -1;
         emit onPositionChange();
@@ -175,12 +165,3 @@ int PlayerContainer::getCurrArea()
 
     return areaOfCurrCard;
 }
-
-void PlayerContainer::setTempCard()
-{
-    tempCardPosition = 0;
-    tempCardObject = cards[0];
-}
-
-void PlayerContainer::mouseDoubleClickEvent(QMouseEvent* event)
-{ event->ignore(); return; }

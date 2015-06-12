@@ -48,7 +48,7 @@ ChooseCards::~ChooseCards()
 
 void ChooseCards::on_buttonBox_accepted()
 {
-    qDebug() << "kliknuto na ok";
+//    qDebug() << "kliknuto na ok";
 
     QVector<QString> cardNames;
     for(QCheckBox* chb : boxes) {
@@ -56,8 +56,10 @@ void ChooseCards::on_buttonBox_accepted()
             cardNames.append(chb->text());
     }
 
+    /*
     for(QString s : cardNames)
         qDebug() << s;
+    */
 
     emit cardsPreorderd(cardNames);
 }

@@ -50,6 +50,8 @@ void CardContainer::addCard(Card* card, bool background){
     cards.back()->move(position); cards.back()->show();
 
     card->installEventFilter(parentWidget());
+
+    width += 80;
 }
 
 Card* CardContainer::getLastCard()
@@ -57,6 +59,8 @@ Card* CardContainer::getLastCard()
     Card* c = cards.back();
 
     cards.pop_back();
+
+    width -= 80;
 
     return c;
 }

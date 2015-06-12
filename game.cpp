@@ -246,11 +246,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     if(table[i]->isInArea()) {
                         cdc = table[i];
                         tableContainterPosition = i;
-                        break; }
+                        break;
+                    }
                 }
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
 
+                        if( _Player1->getCards().size() == 1) {
+                            ui->errorLogger->setText("Ne mozete praznih ruku");
+                            _Player1->mouseReleaseEvent(m_event); event->ignore(); return true;
+                        }
+
+                        // PETAR NE RAZUME STA CE OVDE INICIJALIZACIJE GRUPE
+                        // A MRZI GA DA GLEDA KOD
                         Group g;
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
@@ -343,20 +351,22 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         _Player1->removeCard();
                         _Player1->refreshDepth();
 
-                        qDebug() << cdc->printCards();
+//                        qDebug() << cdc->printCards();
                         cdc->refreshDepth();
                         cdc->refreshCardsPosition();
 
 //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
-                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                            table[i]->moveRight();
+                        if(tableContainterPosition + 1 < table.size()){
+                            for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                table[i]->moveRight();
+                            }
                         }
 
                         return true;
                     }
                 }
-                else
-                    _Player1->resolveMouseEvent(m_event);
+                else // nije u pitanju drop karte
+                    event->ignore(); return false;
             }
 
 
@@ -432,7 +442,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     ui->errorLogger->setText("error logger.");
                 }
             }
-            event->ignore();
             return true;
         }
         if(talon->isCardTargeted(target)) {
