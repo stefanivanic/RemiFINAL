@@ -13,20 +13,20 @@ ClientGame::ClientGame(QWidget *parent) :
     client = new Client();
 
     //signali od clienta
-    connect(client,SIGNAL(newMessage(QString)),this,SLOT(appendMessage(QString)));
-    connect(client,SIGNAL(cardThrown(QString)),this,SLOT(addCard(QString)));
-    connect(client,SIGNAL(groupThrown(QString)),this,SLOT(addGroupOfCards(QString)));
-    connect(client,SIGNAL(groupsReturned(QString)),this,SLOT(returnGroups(QString)));
-    connect(client,SIGNAL(deckCardTaken()),this,SLOT(removeCardFromDeck()));
-    connect(client,SIGNAL(talonCardTaken()),this,SLOT(removeCardFromTalon()));
+    connect(client, SIGNAL(newMessage(QString)),    this,   SLOT(appendMessage(QString)));
+    connect(client, SIGNAL(cardThrown(QString)),    this,   SLOT(addCard(QString)));
+    connect(client, SIGNAL(groupThrown(QString)),   this,   SLOT(addGroupOfCards(QString)));
+    connect(client, SIGNAL(groupsReturned(QString)),this,   SLOT(returnGroups(QString)));
+    connect(client, SIGNAL(deckCardTaken()),        this,   SLOT(removeCardFromDeck()));
+    connect(client  ,SIGNAL(talonCardTaken()),      this,   SLOT(removeCardFromTalon()));
 
     //signali iz game-a
-    connect(this,SIGNAL(onNewMessage(QString)),this,SLOT(sendMessage(QString)));
-    connect(this,SIGNAL(onCardThrown(QString)),this,SLOT(sendCard(QString)));
-    connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,SLOT(sendGroupOfCards(QString)));
-    connect(this,SIGNAL(onGroupsReturned(QString)),this,SLOT(sendGroupIndexes(QString)));
-    connect(this,SIGNAL(onDeckCardTaken()), this, SLOT(sendDeckSignal()));
-    connect(this,SIGNAL(onTalonCardTaken()),this,SLOT(sendTalonSignal()));
+    connect(this,SIGNAL(onNewMessage(QString)),        this,    SLOT(sendMessage(QString)));
+    connect(this,SIGNAL(onCardThrown(QString)),        this,    SLOT(sendCard(QString)));
+    connect(this,SIGNAL(onGroupOfCardsThrown(QString)),this,    SLOT(sendGroupOfCards(QString)));
+    connect(this,SIGNAL(onGroupsReturned(QString)),    this,    SLOT(sendGroupIndexes(QString)));
+    connect(this,SIGNAL(onDeckCardTaken()),            this,    SLOT(sendDeckSignal()));
+    connect(this,SIGNAL(onTalonCardTaken()),           this,    SLOT(sendTalonSignal()));
 
 } // END CONSTRUCTOR
 
