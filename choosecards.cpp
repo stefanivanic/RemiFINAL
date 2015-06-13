@@ -10,16 +10,6 @@ ChooseCards::ChooseCards(QWidget *parent) :
     ui->setupUi(this);
     this->setStyleSheet(QStringLiteral("border-image: url(./slike/default/dark_wood.jpg);"));
 
-    const QMetaObject &mo = Card::staticMetaObject;
-    int index = mo.indexOfEnumerator("Sign"); // watch out during refactorings
-    QMetaEnum metaEnum = mo.enumerator(index);
-
-    // We can then use the QMetaEnum object as follows:
-    // first, let's convert from an enum value to a string
-    Card::Sign q = Card::KARO;
-    QByteArray str = metaEnum.valueToKey(q);
-    // str now contains "Student"
-
     for(int i=0; i<2; i++){
         for(int j=1; j<15; j++){
             if(j==11) continue;
