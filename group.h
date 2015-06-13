@@ -11,12 +11,16 @@ class Group
 public:
     Group();
 
-    bool addCard(Card* card);
+    enum type { SAME_SIGN, SAME_NUMBER };
+
+    bool    addCard(Card* card);
     bool    removeCard(Card* card);
-    int     isCorrectGroup();
+    int     isCorrectGroup(bool shuffle);
     void    clearGroup();
     void    sortGroup();
     void    correctValues();
+
+    int type();
 
     QVector<Card*> getCards() const { return cards; }
 

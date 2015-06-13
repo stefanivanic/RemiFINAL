@@ -170,7 +170,7 @@ void Game::on_throwGroup_clicked()
         ui->errorLogger->setText("PRVO UZMITEW KARTU");
     }
     else {
-        int retValue = _Player1->group->isCorrectGroup();
+        int retValue = _Player1->group->isCorrectGroup(true);
         if( retValue < 0) {
             switch( retValue ) {
             case -1 : ui->errorLogger->setText("-1 : manje od 3 karte!"); break;
@@ -266,10 +266,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         Group g;
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
+/*
+                        // ignorisemo dodavanje ako je grupa puna ( 4 karte istog broja )
+                        if(g.getCards().size() == 4 && g.type() == Group::SAME_NUMBER && g.getCards().back()->getSign() == Card::JOKER) {
+                            _Player1->mouseReleaseEvent(m_event);
+                            _Player1->refreshDepth();
+                            qDebug() << "uso";
+                            return true;
+                        }
+*/
                         g.addCard(_Player1->getTempCard());
 
-                        int value =g.isCorrectGroup(); //ovde mi izmeni vrednost jokera
-                        qDebug() << value;
+                        int value = g.isCorrectGroup(false); //ovde mi izmeni vrednost jokera
+//                        qDebug() << "isCorrectGroup() vraca : " << value;
 
 
                         // .......................
@@ -277,19 +286,15 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         // .......................
 
                         if(value > 0){
-/*
+
                             qDebug() << "samo ispis";
                             for(Card* c : g.getCards())
                                 qDebug() << c->name();
-*/
+
                             int jokerFlag = -1;
-                            int firstValue, lastValue;
                             int tempCardValue = _Player1->getTempCard()->getValue();
 
                             qDebug() << "temp card value : " << tempCardValue;
-
-                            firstValue = cdc->CardContainer::getCards()[0]->getValue();
-                            lastValue = cdc->CardContainer::getCards().last()->getValue();
 
                             int i;
                             for(i=0; i < g.getCards().size(); i++)
@@ -301,9 +306,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 }
 
                             //sve ovo samo za isti znak
-                            if(jokerFlag != -1 ) // PETAR. ovde je bila jos jedna provera
+                            if(jokerFlag != -1 && g.type() == Group::SAME_SIGN) // PETAR. ovde je bila jos jedna provera
                             {
-                                //ako kartu koju dodajemo menjamo za jokera
                                 _Player1->removeCard();
                                 _Player1->addCard(g.getCards()[jokerFlag], true);
 
@@ -313,48 +317,34 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 _Player1->refreshCardsPosition();
                                 cdc->refreshCardsPosition(); cdc->refreshDepth();
 
-                                qDebug() << "Karta zamenjena za jokera!";
-
+                                qDebug() << "Karta zamenjena za jokera! SAME SIGN";
+                                return true;
                             }
-                            else if(tempCardValue == (lastValue+1)
-                                    || ( tempCardValue == (lastValue+2) && lastValue == 10))
+                            if(jokerFlag != -1 && g.type() == Group::SAME_NUMBER)
                             {
-                                //ako kartu dodajemo na kraj
-                                cdc->addCard(_Player1->getTempCard(), true);
                                 _Player1->removeCard();
-                                _Player1->refreshDepth();
-                                cdc->refreshDepth();
-                                qDebug() << "Karta dodata na kraj!";
-                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
-                            }
-                            else if((tempCardValue == firstValue-1 && firstValue != 1)
-                                    || ( tempCardValue == firstValue-2 && firstValue == 12 ))
-                            {
-                                //ako kartu dodajemo na pocetak
-                                cdc->addCard(_Player1->getTempCard(), true);
-                                _Player1->removeCard();
-                                _Player1->refreshDepth();
+                                cdc->removeCards();
 
-                                qDebug() << cdc->printCards();
-                                cdc->refreshDepth();
-                                cdc->refreshCardsPosition();
-                                qDebug() << "Karta dodata na pocetak";
-                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
-                            }
-                            else if(tempCardValue == 0)
-                            {
-                                //ako je karta JOKER
-                                if(lastValue == 15)
-                                    {}//dodaj na pocetak
-                                else{}
-                                    //dodaj na kraj
+                                if(g.getCards().size() == 5) {
+                                    _Player1->addCard(g.getCards()[jokerFlag], true);
+                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                }
+                                else {
+                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+            //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
+                                    if(tableContainterPosition + 1 < table.size()){
+                                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                            table[i]->moveRight();
+                                        }
+                                    }
+                                }
+                                cdc->print();
 
-                            }
-                            else if(lastValue < firstValue)
-                            {
-                                //ovo je slucaj kad je joker na kraju, a on ga prebaci na pocetak
-                                qDebug() << "Ne znam sta sad!?";
-                                qDebug() << "Lastvalue: " << lastValue << "firstVAlue: " << firstValue;
+                                _Player1->refreshCardsPosition();
+                                cdc->refreshCardsPosition(); cdc->refreshDepth();
+
+                                qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
+                                return true;
                             }
                         }
                         else

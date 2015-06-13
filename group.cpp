@@ -61,9 +61,8 @@ void Group::correctValues()
  *  -5 istog znaka ali brojevi nisu dobri
  *  , u suprotnom vraca vrednost grupe karata
 */
-int Group::isCorrectGroup(){
-
-
+int Group::isCorrectGroup(bool shuffle)
+{
     bool allEqualSign = false;
     short counters[] = {0,0,0,0,0};
     bool allDifferentSign = true;
@@ -99,13 +98,13 @@ int Group::isCorrectGroup(){
 
     }
 
-
     if(!allEqualSign && !allDifferentSign)
         return -3; // niti su istog znaka niti su svi razlicitog
 
    //sort stavlja jokera na pocetak jer mu je value 0 valjda
     correctValues();
-    sortGroup();
+//    if( shuffle )
+        sortGroup();
 
     if(allDifferentSign)
     {
@@ -113,14 +112,13 @@ int Group::isCorrectGroup(){
             if(cards[i]->getNumber() != cards[1]->getNumber())
                 return -4;
 
+        if(cards[0]->getSign() == Card::JOKER)
+            std::swap(cards[0], cards[cards.size()-1]);
+
         //ako je dobra grupa vraca vrednost grupe
         if(cards[1]->getNumber() == 1 || cards[1]->getNumber() > 10)
             return 10 * cards.size();
         else
-            // mislim da ce ovde nesto morati da se menja
-            //zato sto grupa ima konstantan broj pokazivaca za
-            // sad, to sto neki pokazuju na NULL ova metoda
-            //mislim da nece moci da prepozna
             return cards[1]->getValue() * cards.size();
     }
 
@@ -143,7 +141,7 @@ int Group::isCorrectGroup(){
             i = 1;
         else
             i = 0;
-        for(i; i<cards.size()-1; i++)
+        for(; i<cards.size()-1; i++)
         {
             int distance = cards[i+1]->getValue() - cards[i]->getValue();
 
@@ -216,5 +214,14 @@ int Group::isCorrectGroup(){
 
         return sum;
     }
+
     return 0;
+}
+
+int Group::type()
+{
+    if(cards[1]->getSign() == cards[0]->getSign() || cards[1]->getSign() == cards[2]->getSign())
+        return SAME_SIGN;
+    else
+        return SAME_NUMBER;
 }
