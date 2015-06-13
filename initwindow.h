@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QDialog>
+
 #include "servergame.h"
 #include "clientgame.h"
 

@@ -2,6 +2,8 @@
 
 #include <QHostAddress>
 
+int Client::CONN_ERROR = 0;
+
 Client::Client(QObject *parent, QString ip, int port)
     :QObject(parent)
 {
@@ -19,6 +21,7 @@ Client::Client(QObject *parent, QString ip, int port)
     }
     else
     {
+        CONN_ERROR = 1;
         qDebug() << "Connection Error！";
     }
 

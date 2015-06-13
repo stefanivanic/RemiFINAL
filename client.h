@@ -21,6 +21,8 @@ public:
     Client(QObject *parent = 0, QString ip = "", int port = 0);
     ~Client();
 
+    static int CONN_ERROR;
+
     void resolveReadyRead(const QString& message);
 
     void sendMessage(const QString& message);

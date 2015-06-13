@@ -41,9 +41,12 @@ void InitWindow::on_pushButtonLoad_clicked()
     if( ipAddress == "" || port == 0 )
         return;
 
-    // ovcde treba neka provera, ako ne se javi conn error da ne otvara ovo
-    // nego da ostane u initwindow za ponovni pokusaj
     cGame = new ClientGame(this, ipAddress, port);
+
+    if( Client::CONN_ERROR == 1 ) {
+        delete cGame;   return;
+    }
+
     cGame->show();
     this->hide();
 }
