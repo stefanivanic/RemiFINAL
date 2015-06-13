@@ -65,8 +65,8 @@ void Game::initSnS()
     connect( _Player1, SIGNAL(onThrowCard()),
                  this, SLOT(changePlayer()));
     // aktiviramo grupu => prikaz dugmeta za izbacivanje grupe
-    connect( _Player1, SIGNAL(onAddingCardtoGroup()),
-                 this, SLOT(showOnThrowButton()));
+    connect( _Player1, SIGNAL(onAddingCardtoGroup(bool)),
+                 this, SLOT(showOnThrowButton(bool)));
     // nema grupe => nema dugmeta
     connect( _Player1, SIGNAL(onEmptyGroup(bool)),
                  this, SLOT(hideOnThrowButton(bool)));
@@ -209,6 +209,7 @@ void Game::on_throwGroup_clicked()
                    cards.append(_Player1->group->getCards()[i]->name()+" ");
 
                 emit onGroupOfCardsThrown(cards);
+                ui->undoGroup->show();
 
                 // i dodajemo u grupu i brisemo iz playera
                 cdc->addCards(_Player1->group->getCards());
@@ -226,12 +227,7 @@ void Game::on_throwGroup_clicked()
 }
 
 bool Game::eventFilter(QObject* target, QEvent* event)
-{/*
-    if(event->type() == QEvent::MouseButtonDblClick) {
-        return true;
-    }
-*/
-
+{
     if(event->type() == QEvent::MouseButtonPress ||
         event->type() == QEvent::MouseButtonRelease||
         event->type() == QEvent::MouseMove) {
@@ -373,12 +369,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         return true;
                     }
                 }// END IF event->type() == QEvent::MouseButtonRelease
-                else { // nije u pitanju drop karte
-                    qDebug() << "deo gde znamo da je u pitanju pokusaj uzimanja karte";
-                    return false;
-                }
             }
-
 
             if( talon->isInArea()) {
                 if(event->type() == QEvent::MouseButtonRelease && !firstTime) {
@@ -439,6 +430,15 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             return true;
         } */
 
+        // blokiramo diranje karata sa table
+        bool isTableCardTarget = std::count_if(table.begin(), table.end(),
+                                       [target](CardTableContainer* cdc){return cdc->isCardTargeted(target); });
+        if( isTableCardTarget ) {
+            event->ignore();
+            return true;
+        }
+
+
         if(deck->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCard)
@@ -454,6 +454,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             }
             return true;
         }
+
         if(talon->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCardFromTalon || playerTookCard)
@@ -518,7 +519,11 @@ void Game::on_actionSelect_theme_triggered()
     selectTheme->show();
 }
 
-void Game::showOnThrowButton() { ui->throwGroup->show(); ui->undoGroup->show(); }
+void Game::showOnThrowButton(bool showUndoGroup)
+{
+    ui->throwGroup->show();
+    if( showUndoGroup ) ui->undoGroup->show();
+}
 void Game::hideOnThrowButton(bool hideUndoGroup)
 {
     ui->throwGroup->hide();
@@ -527,10 +532,7 @@ void Game::hideOnThrowButton(bool hideUndoGroup)
 
 Game::~Game() { delete ui; }
 
-void Game::on_actionChoose_cards_triggered()
-{
-    chooseCards->show();
-}
+void Game::on_actionChoose_cards_triggered() {   chooseCards->show();    }
 
 Card* Game::createCardByString(const QString& string1)
 {

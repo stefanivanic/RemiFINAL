@@ -42,7 +42,7 @@ public:
 signals:
     void onPositionChange(); // nesrecno ime
     void onThrowCard     ();
-    void onAddingCardtoGroup();
+    void onAddingCardtoGroup(bool);
     void onEmptyGroup(bool); // nesto nije u redu ovde
 
 private:

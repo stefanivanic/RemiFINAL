@@ -48,7 +48,7 @@ private slots:
     void on_throwGroup_clicked();
     void changeTempPosText();
     void changePlayer();
-    void showOnThrowButton();
+    void showOnThrowButton(bool);
     void hideOnThrowButton(bool);
     void slotReboot();
     void on_undoGroup_clicked();

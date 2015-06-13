@@ -27,7 +27,7 @@ public:
     void refreshDepth();
     Card* getLastCard();
 
-    bool isCardTargeted(QObject* target);
+    virtual bool isCardTargeted(QObject* target);
 
     QString printCards();
 

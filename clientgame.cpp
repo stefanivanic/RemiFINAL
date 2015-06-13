@@ -132,4 +132,3 @@ void ClientGame::sendTalonSignal()
 {
     client->sendTalonSignal();
 }
-

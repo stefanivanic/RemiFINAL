@@ -71,7 +71,7 @@ void PlayerContainer::mousePressEvent(QMouseEvent* event)
         if( group->addCard(tempCardObject) ) {
             tempCardObject->move(position.x() + tempCardPosition*cardDistance,
                              position.y() - 20); // npr 20 nebitno je
-            emit onAddingCardtoGroup();
+            emit onAddingCardtoGroup(false);
         }
         else {
             // remove card vraca true ako je grupa ispraznjena
