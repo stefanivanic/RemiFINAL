@@ -277,36 +277,42 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         // .......................
 
                         if(value > 0){
-
+/*
                             qDebug() << "samo ispis";
                             for(Card* c : g.getCards())
                                 qDebug() << c->name();
-
+*/
                             int jokerFlag = -1;
                             int firstValue, lastValue;
                             int tempCardValue = _Player1->getTempCard()->getValue();
+
+                            qDebug() << "temp card value : " << tempCardValue;
 
                             firstValue = cdc->CardContainer::getCards()[0]->getValue();
                             lastValue = cdc->CardContainer::getCards().last()->getValue();
 
                             int i;
-                            for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                                if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
+                            for(i=0; i < g.getCards().size(); i++)
+                                if(g.getCards()[i]->getSign() == Card::JOKER)
                                 {
                                     jokerFlag = i;
-                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
+                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << g.getCards()[jokerFlag]->getValue();
                                     break;
                                 }
 
-
                             //sve ovo samo za isti znak
-                            if(jokerFlag != -1 && tempCardValue == cdc->CardContainer::getCards()[jokerFlag]->getValue())
+                            if(jokerFlag != -1 ) // PETAR. ovde je bila jos jedna provera
                             {
                                 //ako kartu koju dodajemo menjamo za jokera
-                                _Player1->addCard(cdc->CardContainer::getCards()[jokerFlag], true);
-                                cdc->CardContainer::getCards()[jokerFlag] = _Player1->getTempCard();
-                                _Player1->refreshDepth();
-                                cdc->refreshDepth();
+                                _Player1->removeCard();
+                                _Player1->addCard(g.getCards()[jokerFlag], true);
+
+                                cdc->removeCards();
+                                cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+
+                                _Player1->refreshCardsPosition();
+                                cdc->refreshCardsPosition(); cdc->refreshDepth();
+
                                 qDebug() << "Karta zamenjena za jokera!";
 
                             }
@@ -375,6 +381,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         cdc->refreshDepth();
                         cdc->refreshCardsPosition();
 */
+                        /*
 //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
                         if(tableContainterPosition + 1 < table.size()){
                             for(int i = tableContainterPosition + 1; i < table.size(); i++){
@@ -383,6 +390,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         }
 
                         return true;
+                        */
                         // .....................
                         // end PETAR
                         // .....................

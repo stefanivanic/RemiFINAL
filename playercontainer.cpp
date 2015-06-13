@@ -10,9 +10,12 @@ PlayerContainer::PlayerContainer(QWidget *parent, int x, int y, int w, int h) :
 
 void PlayerContainer::refreshCardsPosition()
 {
-    for(int i = 0; i < cards.size(); i++)
+    for(int i = 0; i < cards.size(); i++) {
         cards[i]->move(position.x() + i * cardDistance,
                        position.y());
+        cards[i]->e->setOpacity(1);
+        cards[i]->setGraphicsEffect(cards[i]->e);
+    }
 }
 
 void PlayerContainer::deleteCardsFromGroup()

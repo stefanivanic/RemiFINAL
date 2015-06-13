@@ -16,7 +16,7 @@ public:
 
     void addCards(QVector<Card*> _cards);
     void addCard(Card *card, bool background);
-
+    void removeCards();
     void moveRight();
 
     int getContainerWidth();

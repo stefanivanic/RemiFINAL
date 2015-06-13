@@ -38,3 +38,8 @@ int CardTableContainer::getContainerWidth()
     // 80 je otprilike sirina karte
     return (PlayerContainer::cards.size() - 1) * cardDistance + 100;
 }
+
+void CardTableContainer::removeCards()
+{
+    PlayerContainer::cards.clear();
+}
