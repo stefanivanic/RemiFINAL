@@ -305,7 +305,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     break;
                                 }
 
-                            //sve ovo samo za isti znak
                             if(jokerFlag != -1 && g.type() == Group::SAME_SIGN) // PETAR. ovde je bila jos jedna provera
                             {
                                 _Player1->removeCard();
@@ -331,14 +330,13 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 }
                                 else {
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-            //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
-                                    if(tableContainterPosition + 1 < table.size()){
-                                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                                            table[i]->moveRight();
-                                        }
+//                                    if(tableContainterPosition + 1 < table.size()){
+                                    for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                        table[i]->moveRight();
                                     }
+//                                    }
                                 }
-                                cdc->print();
+//                                cdc->print();
 
                                 _Player1->refreshCardsPosition();
                                 cdc->refreshCardsPosition(); cdc->refreshDepth();
@@ -346,6 +344,20 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
                                 return true;
                             }
+                            cdc->addCard(_Player1->getTempCard(), true);
+                            _Player1->removeCard();
+                            _Player1->refreshDepth();
+
+                            cdc->refreshDepth();
+                            cdc->refreshCardsPosition();
+
+                            if(tableContainterPosition + 1 < table.size()){
+                                for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                    table[i]->moveRight();
+                                }
+                            }
+
+                            return true;
                         }
                         else
                         {
@@ -356,33 +368,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                         // .....................
                         // end dodavanje u grupu
-                        // .....................
-
-                        // .....................
-                        // begin PETAR
-                        // .....................
-/*
-//OVDE DODAJE KARTU U GRUPU
-                        cdc->addCard(_Player1->getTempCard(), true);
-                        _Player1->removeCard();
-                        _Player1->refreshDepth();
-
-//                        qDebug() << cdc->printCards();
-                        cdc->refreshDepth();
-                        cdc->refreshCardsPosition();
-*/
-                        /*
-//OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
-                        if(tableContainterPosition + 1 < table.size()){
-                            for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                                table[i]->moveRight();
-                            }
-                        }
-
-                        return true;
-                        */
-                        // .....................
-                        // end PETAR
                         // .....................
                     }
                 }// END IF event->type() == QEvent::MouseButtonRelease
@@ -439,13 +424,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
 
         }// END IF _Player1->isCardTargeted(target)
-
-        /*
-        // blokiraj diranje tudjih karata
-        if( _Player2->isCardTargeted(target) ) {
-            event->ignore();
-            return true;
-        } */
 
         // blokiramo diranje karata sa table
         bool isTableCardTarget = std::count_if(table.begin(), table.end(),
@@ -506,14 +484,12 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
 void Game::cardsPreordered(QVector<QString> cardNames)
 {
-    delete _Player1; delete talon; delete deck;
+    delete _Player1; delete deck;
 
     _Player1 = new PlayerContainer(this, 300, 450, 350, 100);
     deck = new Deck(this, 10, 250, 70, 100, cardNames); // init i shuffle
-    talon = new Talon(this, 100, 250, 70, 100);
 
     _Player1->installEventFilter(this);
-    talon->installEventFilter(this);
     deck->installEventFilter(this);
 
     // inicijalizacija signal-slotova
@@ -614,6 +590,7 @@ void Game::on_lineEdit_returnPressed()
 void Game::on_undoTookTalonCard_clicked()
 {
     talon->addCard(_Player1->getLastCard(), true);
+    playerTookCard = false;
     playerTookCardFromTalon = false;
     ui->undoTookTalonCard->hide();
 }
