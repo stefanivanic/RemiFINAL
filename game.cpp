@@ -168,62 +168,58 @@ void Game::on_throwGroup_clicked()
 
     if(!playerTookCard) {
         ui->errorLogger->setText("PRVO UZMITEW KARTU");
+        return;
     }
-    else {
-        int retValue = _Player1->group->isCorrectGroup(true);
-        if( retValue < 0) {
-            switch( retValue ) {
-            case -1 : ui->errorLogger->setText("-1 : manje od 3 karte!"); break;
-            case -2 : ui->errorLogger->setText("-2 : vise djokera!"); break;
-            case -3 : ui->errorLogger->setText("-3 : niti su istog znaka niti su svi razlicitog"); break;
-            case -4 : ui->errorLogger->setText("-4 : razlicitog znaka ali i razlicite vr"); break;
-            case -5 : ui->errorLogger->setText("-5 : istog znaka ali brojevi nisu dobri"); break;
-            default : ui->errorLogger->setText("nepoznaa greska" + QString::number(retValue)); break;
-            }
+    int retValue = _Player1->group->isCorrectGroup(true);
+    if( retValue < 0) {
+        switch( retValue ) {
+        case -1 : ui->errorLogger->setText("-1 : manje od 3 karte!"); break;
+        case -2 : ui->errorLogger->setText("-2 : vise djokera!"); break;
+        case -3 : ui->errorLogger->setText("-3 : niti su istog znaka niti su svi razlicitog"); break;
+        case -4 : ui->errorLogger->setText("-4 : razlicitog znaka ali i razlicite vr"); break;
+        case -5 : ui->errorLogger->setText("-5 : istog znaka ali brojevi nisu dobri"); break;
+        default : ui->errorLogger->setText("nepoznaa greska" + QString::number(retValue)); break;
         }
-        else {
-            if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
-                ui->errorLogger->setText("mora da vam ostane bar 1 karta");
-            }
-            else {
-//                ui->errorLogger->setText("");
-                groupValue += retValue;
-                ui->groupValue->setText("group value :" + QString::number(groupValue));
-
-                int w1 = _Player1->group->getCards().size() * 20;
-                int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
-                                            table.end(),
-                                            200,
-                                            [](const int& a, CardTableContainer* cdc)
-                                                { return a + cdc->getContainerWidth(); } );
-                int pos_y = 150 + (table.size() / 3 ) * 100;
-
-                CardTableContainer* cdc =
-                        new CardTableContainer(this, pos_x, pos_y, w1, 100);
-
-
-                //DEO ZA MREZU!!!
-                QString cards = "";
-
-                for(int i=0; i<_Player1->group->getCards().size(); i++)
-                   cards.append(_Player1->group->getCards()[i]->name()+" ");
-
-                emit onGroupOfCardsThrown(cards);
-                ui->undoGroup->show();
-
-                // i dodajemo u grupu i brisemo iz playera
-                cdc->addCards(_Player1->group->getCards());
-                _Player1->deleteCardsFromGroup();
-
-                groupsThrown++;
-
-                table.push_back(cdc); 
-            }
-        }
+        return;
     }
+    if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
+        ui->errorLogger->setText("mora da vam ostane bar 1 karta");
+        return;
+    }
+//      ui->errorLogger->setText("");
+    groupValue += retValue;
+    ui->groupValue->setText("group value :" + QString::number(groupValue));
 
-    if(groupValue > 51)
-        _Player1->alreadyOpened = true;
+    int w1 = _Player1->group->getCards().size() * 20;
+    int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
+                                table.end(),
+                                200,
+                                [](const int& a, CardTableContainer* cdc)
+                                    { return a + cdc->getContainerWidth(); } );
+    int pos_y = 150 + (table.size() / 3 ) * 100;
+
+    CardTableContainer* cdc =
+            new CardTableContainer(this, pos_x, pos_y, w1, 100);
+
+
+    //DEO ZA MREZU!!!
+    QString cards = "";
+
+    for(int i=0; i<_Player1->group->getCards().size(); i++)
+       cards.append(_Player1->group->getCards()[i]->name()+" ");
+
+    emit onGroupOfCardsThrown(cards);
+    ui->undoGroup->show();
+
+    // i dodajemo u grupu i brisemo iz playera
+    cdc->addCards(_Player1->group->getCards());
+    _Player1->deleteCardsFromGroup();
+
+    groupsThrown++;
+
+    table.push_back(cdc);
+
+    if(groupValue > 51) _Player1->alreadyOpened = true;
 }
 
 bool Game::eventFilter(QObject* target, QEvent* event)
