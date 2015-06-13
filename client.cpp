@@ -2,7 +2,7 @@
 
 #include <QHostAddress>
 
-Client::Client(QObject *parent)
+Client::Client(QObject *parent, QString ip, int port)
     :QObject(parent)
 {
 
@@ -10,7 +10,7 @@ Client::Client(QObject *parent)
 
     tcpSocket->abort();
 
-    tcpSocket->connectToHost("192.168.0.248", 51229);
+    tcpSocket->connectToHost(ip, port);
 
     if(tcpSocket->waitForConnected(3000))
     {

@@ -23,7 +23,7 @@ class ClientGame : public Game
     Q_OBJECT
 
 public:
-    explicit ClientGame(QWidget *parent = 0);
+    explicit ClientGame(QWidget *parent = 0, QString ip = "", int port = 0);
 
 private slots:
     void sendMessage(const QString& message);

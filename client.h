@@ -18,7 +18,7 @@ public:
              Deck,
              Talon
          };
-    Client(QObject *parent = 0);
+    Client(QObject *parent = 0, QString ip = "", int port = 0);
     ~Client();
 
     void resolveReadyRead(const QString& message);

@@ -7,10 +7,10 @@
 
 
 
-ClientGame::ClientGame(QWidget *parent) :
+ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     Game(parent)
 {
-    client = new Client();
+    client = new Client(this, ip, port);
 
     //signali od clienta
     connect(client, SIGNAL(newMessage(QString)),    this,   SLOT(appendMessage(QString)));
@@ -18,7 +18,7 @@ ClientGame::ClientGame(QWidget *parent) :
     connect(client, SIGNAL(groupThrown(QString)),   this,   SLOT(addGroupOfCards(QString)));
     connect(client, SIGNAL(groupsReturned(QString)),this,   SLOT(returnGroups(QString)));
     connect(client, SIGNAL(deckCardTaken()),        this,   SLOT(removeCardFromDeck()));
-    connect(client  ,SIGNAL(talonCardTaken()),      this,   SLOT(removeCardFromTalon()));
+    connect(client, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
 
     //signali iz game-a
     connect(this,SIGNAL(onNewMessage(QString)),        this,    SLOT(sendMessage(QString)));

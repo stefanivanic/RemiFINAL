@@ -27,7 +27,23 @@ void InitWindow::on_pushButtonExit_clicked()
 
 void InitWindow::on_pushButtonCreate_clicked()
 {
-     game = new Game();
+     game = new Game(); // sGame = new ServerGame();
      game->show();
      this->hide();
+}
+
+void InitWindow::on_pushButtonLoad_clicked()
+{
+    QString ipAddress = ui->inputIp->text();
+    int port = ui->inputPort->text().toInt();
+
+    // osnovna provera - ne vrsi posao kad dodje do conn errora
+    if( ipAddress == "" || port == 0 )
+        return;
+
+    // ovcde treba neka provera, ako ne se javi conn error da ne otvara ovo
+    // nego da ostane u initwindow za ponovni pokusaj
+    cGame = new ClientGame(this, ipAddress, port);
+    cGame->show();
+    this->hide();
 }
