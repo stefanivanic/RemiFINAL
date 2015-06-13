@@ -271,7 +271,16 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         int value =g.isCorrectGroup(); //ovde mi izmeni vrednost jokera
                         qDebug() << value;
 
-                        /* if(value > 0){
+
+                        // .......................
+                        // begin dodavanje u grupu
+                        // .......................
+
+                        if(value > 0){
+
+                            qDebug() << "samo ispis";
+                            for(Card* c : g.getCards())
+                                qDebug() << c->name();
 
                             int jokerFlag = -1;
                             int firstValue, lastValue;
@@ -282,7 +291,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                             int i;
                             for(i=0; i<cdc->CardContainer::getCards().size(); i++)
-                                if(cdc->CardContainer::getCards()[i]->getSign() == JOKER)
+                                if(cdc->CardContainer::getCards()[i]->getSign() == Card::JOKER)
                                 {
                                     jokerFlag = i;
                                     qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << cdc->CardContainer::getCards()[jokerFlag]->getValue();
@@ -348,8 +357,15 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->refreshDepth();
                             qDebug() << "Karta ne odgovara za grupu!";
                         }
-                        */
 
+                        // .....................
+                        // end dodavanje u grupu
+                        // .....................
+
+                        // .....................
+                        // begin PETAR
+                        // .....................
+/*
 //OVDE DODAJE KARTU U GRUPU
                         cdc->addCard(_Player1->getTempCard(), true);
                         _Player1->removeCard();
@@ -358,7 +374,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 //                        qDebug() << cdc->printCards();
                         cdc->refreshDepth();
                         cdc->refreshCardsPosition();
-
+*/
 //OVDE AZURIRA POZICIJU ZA OSTALE GRUPE
                         if(tableContainterPosition + 1 < table.size()){
                             for(int i = tableContainterPosition + 1; i < table.size(); i++){
@@ -367,6 +383,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         }
 
                         return true;
+                        // .....................
+                        // end PETAR
+                        // .....................
                     }
                 }// END IF event->type() == QEvent::MouseButtonRelease
             }
