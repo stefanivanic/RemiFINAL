@@ -257,29 +257,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->mouseReleaseEvent(m_event); event->ignore(); return true;
                         }
 
-                        // PETAR NE RAZUME STA CE OVDE INICIJALIZACIJE GRUPE
-                        // A MRZI GA DA GLEDA KOD
                         Group g;
                         for(int i=0; i<cdc->CardContainer::getCards().size(); i++)
                             g.addCard(cdc->CardContainer::getCards()[i]);
-/*
-                        // ignorisemo dodavanje ako je grupa puna ( 4 karte istog broja )
-                        if(g.getCards().size() == 4 && g.type() == Group::SAME_NUMBER && g.getCards().back()->getSign() == Card::JOKER) {
-                            _Player1->mouseReleaseEvent(m_event);
-                            _Player1->refreshDepth();
-                            qDebug() << "uso";
-                            return true;
-                        }
-*/
+
                         g.addCard(_Player1->getTempCard());
 
                         int value = g.isCorrectGroup(false); //ovde mi izmeni vrednost jokera
 //                        qDebug() << "isCorrectGroup() vraca : " << value;
-
-
-                        // .......................
-                        // begin dodavanje u grupu
-                        // .......................
 
                         if(value > 0){
 
@@ -361,10 +346,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->refreshDepth();
                             qDebug() << "Karta ne odgovara za grupu!";
                         }
-
-                        // .....................
-                        // end dodavanje u grupu
-                        // .....................
                     }
                 }// END IF event->type() == QEvent::MouseButtonRelease
             }
@@ -396,9 +377,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
-//                        a zasto ovde emit kad moze direkt
-//                        da se pozove slot metoda? ubaciti
-//                        u odgovarajucu funkciju.
                         emit _Player1->onThrowCard();
 //                        groupValue = 0;
 
