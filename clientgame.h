@@ -42,6 +42,7 @@ public slots:
     void removeCardFromDeck();
     void removeCardFromTalon();
     void changeGroup(const QString& message);
+    void initializeCards(const QString& cards);
 
 private:
     Client* client;

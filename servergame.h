@@ -25,6 +25,7 @@ public:
     explicit ServerGame(QWidget *parent = 0);
 
 private slots:
+    void clientConnected();
     void sendMessage(const QString& message);
     void sendCard(const QString& card);
     void sendGroupOfCards(const QString& cards);

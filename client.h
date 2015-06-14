@@ -17,7 +17,8 @@ public:
              Indexes,
              Deck,
              Talon,
-             GroupIndex
+             GroupIndex,
+             InitCards
          };
     Client(QObject *parent = 0, QString ip = "", int port = 0);
     ~Client();
@@ -47,6 +48,7 @@ signals:
     void deckCardTaken();
     void talonCardTaken();
     void newGroupIndex(const QString& message);
+    void initCards(const QString& cards);
 
 private:
     QTcpSocket *tcpSocket;

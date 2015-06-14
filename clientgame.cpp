@@ -13,6 +13,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     client = new Client(this, ip, port);
 
     //signali od clienta
+    connect(client, SIGNAL(initCards(QString)),     this,   SLOT(initializeCards(QString)));
     connect(client, SIGNAL(newMessage(QString)),    this,   SLOT(appendMessage(QString)));
     connect(client, SIGNAL(cardThrown(QString)),    this,   SLOT(addCard(QString)));
     connect(client, SIGNAL(groupThrown(QString)),   this,   SLOT(addGroupOfCards(QString)));
@@ -171,5 +172,22 @@ void ClientGame::changeGroup(const QString &message)
 
     cdc->refreshDepth();
     cdc->refreshCardsPosition();
+}
+
+void ClientGame::initializeCards(const QString &cards)
+{
+    QVector<Card*> vector;
+
+    QStringList list = cards.split(' ');
+
+    for(int i=0; i<list.size()-1; i++)
+    {
+        if(list[i] == "")
+            continue;
+
+        vector.push_back(createCardByString(list[i]));
+    }
+
+    qDebug() << "Dobio karte: " << cards;
 }
 

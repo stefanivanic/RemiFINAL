@@ -45,6 +45,8 @@ void Server::newConnection()
     connect(socket,SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(socket,SIGNAL(disconnected()), this, SLOT(disconnected()));
 
+    emit newClient();
+
     qDebug() << "Connected!";
 
 }
@@ -192,5 +194,12 @@ void Server::sendGroupCards(const QString &message)
 {
     qDebug() << "Slanje indeksa grupe";
     QString data = "GROUPINDEX " + message;
+    socket->write(data.toUtf8());
+}
+
+void Server::sendInitCards(const QString &cards)
+{
+    qDebug() << "Slanje intit cards";
+    QString data = "INITCARDS " + cards;
     socket->write(data.toUtf8());
 }

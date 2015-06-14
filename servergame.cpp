@@ -12,6 +12,7 @@ ServerGame::ServerGame(QWidget *parent) :
     server = new Server();
 
     //signali sa servera
+    connect(server, SIGNAL(newClient()),        this, SLOT(clientConnected()));
     connect(server, SIGNAL(newMessage(QString)),    this,   SLOT(appendMessage(QString)));
     connect(server, SIGNAL(cardThrown(QString)),    this,   SLOT(addCard(QString)));
     connect(server, SIGNAL(groupThrown(QString)),   this,   SLOT(addGroupOfCards(QString)));
@@ -171,4 +172,19 @@ void ServerGame::changeGroup(const QString &message)
 
     cdc->refreshDepth();
     cdc->refreshCardsPosition();
+}
+
+void ServerGame::clientConnected()
+{
+    QString cards("");
+
+    for(int i=0; i<deck->getCards().size(); i++)
+    {
+        cards.append(deck->getCards()[i]->name());
+        cards.append(" ");
+    }
+
+    qDebug() << "Karte :" << cards;
+
+    server->sendInitCards(cards);
 }

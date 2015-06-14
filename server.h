@@ -30,8 +30,10 @@ public:
    void sendDeckSignal();
    void sendTalonSignal();
    void sendGroupCards(const QString& message);
+   void sendInitCards(const QString& cards);
 
 signals:
+   void newClient();
    void newMessage(const QString& message);
    void cardThrown(const QString& card);
    void groupThrown(const QString& cards);

@@ -71,6 +71,8 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = Talon;
     else if(list.at(0) == "GROUPINDEX")
         currentDataType = GroupIndex;
+    else if(list.at(0) == "INITCARDS")
+        currentDataType = InitCards;
     else
         currentDataType = Undefined;
 
@@ -96,6 +98,9 @@ void Client::resolveReadyRead(const QString &message)
         break;
     case GroupIndex:
         emit newGroupIndex(buffer);
+        break;
+    case InitCards:
+        emit initCards(buffer);
         break;
     default:
         qDebug() << "Nepoznat podatak!";
