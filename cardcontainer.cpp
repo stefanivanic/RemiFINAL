@@ -50,7 +50,6 @@ void CardContainer::addCard(Card* card, bool background){
     cards.back()->move(position); cards.back()->show();
 
 
-
     card->installEventFilter(parentWidget());
 
     width += 80;

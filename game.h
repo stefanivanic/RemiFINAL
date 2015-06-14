@@ -91,6 +91,10 @@ protected:
 
     bool endGameFlag;
 
+    int playerTwoCardNumber;
+    void playerTwoModCardNumber(int offset);
+    QVector<QLabel*> playerTwoCards;
+
     bool eventFilter(QObject* target, QEvent* event);
 };
 
