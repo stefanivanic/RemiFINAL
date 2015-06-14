@@ -189,5 +189,10 @@ void ClientGame::initializeCards(const QString &cards)
     }
 
     qDebug() << "Dobio karte: " << cards;
+
+    deck->deleteCards();
+
+    deck->setNewCards(vector);
+
 }
 

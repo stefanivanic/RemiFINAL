@@ -60,3 +60,19 @@ void Deck::shuffleDeck()
 
     refreshDepth();
 }
+
+void Deck::deleteCards()
+{
+    for(int i=0; i<cards.size(); i++)
+    {
+        delete cards[i];
+    }
+
+    cards.clear();
+}
+
+void Deck::setNewCards(QVector<Card *> cards)
+{
+    for(int i=0; i<cards.size(); i++)
+        cards.push_back(cards[i]);
+}

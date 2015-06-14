@@ -16,6 +16,7 @@
 #include "server.h"
 #include "client.h"
 #include "game.h"
+#include "cardcontainer.h"
 
 
 class ClientGame : public Game
