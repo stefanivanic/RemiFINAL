@@ -242,10 +242,11 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             int tableContainterPosition;
             if(isInTable) {
                 CardTableContainer* cdc = NULL;
-                for(int i=0; i<table.size(); i++) {
-                    if(table[i]->isInArea()) {
-                        cdc = table[i];
-                        tableContainterPosition = i;
+                int k;
+                for(k=0; k<table.size(); k++) {
+                    if(table[k]->isInArea()) {
+                        cdc = table[k];
+                        tableContainterPosition = k;
                         break;
                     }
                 }
@@ -326,6 +327,21 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             }
                             else {
                                 cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+
+                                //DEO ZA MREZU!
+                                QString message("");
+
+                                //iterator za grupu
+                                message.append(QString::number(k));
+                                message.append(" ");
+
+                                for(int i=0; i<g.getCards().size(); i++){
+                                    message.append(g.getCards()[i]->name());
+                                    message.append(" ");
+                                }
+
+                                emit onGroupCardAdd(message);
+                                qDebug() << "Poslat signal za dodavanje na grupu! " << message;
 
                                 if(tableContainterPosition + 1 < table.size()){
                                     for(int i = tableContainterPosition + 1; i < table.size(); i++){

@@ -17,7 +17,6 @@ Client::Client(QObject *parent, QString ip, int port)
     if(tcpSocket->waitForConnected(3000))
     {
        qDebug() << "Connected！";
-
     }
     else
     {
@@ -70,6 +69,8 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = Deck;
     else if(list.at(0) == "TALON")
         currentDataType = Talon;
+    else if(list.at(0) == "GROUPINDEX")
+        currentDataType = GroupIndex;
     else
         currentDataType = Undefined;
 
@@ -92,6 +93,9 @@ void Client::resolveReadyRead(const QString &message)
         break;
     case Talon:
         emit talonCardTaken();
+        break;
+    case GroupIndex:
+        emit newGroupIndex(buffer);
         break;
     default:
         qDebug() << "Nepoznat podatak!";
@@ -154,4 +158,12 @@ void Client::sendTalonSignal()
     QString data = "TALON";
     tcpSocket->write(data.toUtf8());
 }
+
+void Client::sendGroupCards(const QString &message)
+{
+    qDebug() << "Slanje indeksa grupe";
+    QString data = "GROUPINDEX " + message;
+    tcpSocket->write(data.toUtf8());
+}
+
 

@@ -42,6 +42,7 @@ signals:
     void onGroupsReturned(const QString& number);
     void onDeckCardTaken();
     void onTalonCardTaken();
+    void onGroupCardAdd(const QString& cards);
 
 private slots:
     void on_actionSelect_theme_triggered();

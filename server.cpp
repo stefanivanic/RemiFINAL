@@ -87,6 +87,8 @@ void Server::resolveReadyRead(const QString &message)
         currentDataType = Deck;
     else if(list.at(0) == "TALON")
         currentDataType = Talon;
+    else if(list.at(0) == "GROUPINDEX")
+        currentDataType = GroupIndex;
     else
         currentDataType = Undefined;
 
@@ -110,6 +112,9 @@ void Server::resolveReadyRead(const QString &message)
     case Talon:
         emit talonCardTaken();
         break;
+    case GroupIndex:
+        emit newGroupIndex(buffer);
+        break;
     default:
         qDebug() << "Nepoznat podatak!";
     }
@@ -129,6 +134,8 @@ void Server::disconnected()
 
 void Server::sendMessage(const QString &message)
 {
+
+    qDebug() << "provera da li je prazna poruka...";
     if (message.isEmpty())
             return;
 
@@ -178,5 +185,12 @@ void Server::sendTalonSignal()
 {
     qDebug() << "Slanje signala za talon!";
     QString data = "TALON";
+    socket->write(data.toUtf8());
+}
+
+void Server::sendGroupCards(const QString &message)
+{
+    qDebug() << "Slanje indeksa grupe";
+    QString data = "GROUPINDEX " + message;
     socket->write(data.toUtf8());
 }

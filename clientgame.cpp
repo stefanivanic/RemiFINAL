@@ -19,6 +19,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(client, SIGNAL(groupsReturned(QString)),this,   SLOT(returnGroups(QString)));
     connect(client, SIGNAL(deckCardTaken()),        this,   SLOT(removeCardFromDeck()));
     connect(client, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
+    connect(client, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
 
     //signali iz game-a
     connect(this,SIGNAL(onNewMessage(QString)),        this,    SLOT(sendMessage(QString)));
@@ -27,6 +28,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(this,SIGNAL(onGroupsReturned(QString)),    this,    SLOT(sendGroupIndexes(QString)));
     connect(this,SIGNAL(onDeckCardTaken()),            this,    SLOT(sendDeckSignal()));
     connect(this,SIGNAL(onTalonCardTaken()),           this,    SLOT(sendTalonSignal()));
+    connect(this, SIGNAL(onGroupCardAdd(QString)),        this, SLOT(sendGroupCards(QString)));
 
 } // END CONSTRUCTOR
 
@@ -132,3 +134,14 @@ void ClientGame::sendTalonSignal()
 {
     client->sendTalonSignal();
 }
+
+void ClientGame::sendGroupCards(const QString &message)
+{
+    client->sendGroupCards(message);
+}
+
+void ClientGame::changeGroup(const QString &message)
+{
+    qDebug() << message;
+}
+
