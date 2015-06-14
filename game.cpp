@@ -10,7 +10,7 @@ Game::Game(QWidget *parent) :
     theme("default"), playerOneOnMove(true), playerTookCard(true),
     goodOpening(false), playerTookCardFromTalon(0),
     firstTime(true), groupsThrown(0), groupValue(0),
-    endGameFlag(false)
+    endGameFlag(false), playerTwoCardNumber(0)
 {
     ui->setupUi(this);
   /*  ui->centralWidget->setStyleSheet(QStringLiteral("border-image: url(./slike/2/dark_wood.jpg);"));
@@ -54,6 +54,9 @@ Game::Game(QWidget *parent) :
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->play();
     */
+
+    // inicijalizacija protivnikovih karata
+    playerTwoModCardNumber(14);
 } // END CONSTRUCTOR
 
 void Game::initSnS()
@@ -461,6 +464,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                    ui->undoTookTalonCard->show();
 
                    cardFromTalon = talon->getLastCard();
+
                    //deal card
                    emit onTalonCardTaken();
                    _Player1->addCard(cardFromTalon, true);
@@ -592,4 +596,28 @@ void Game::on_undoTookTalonCard_clicked()
     playerTookCard = false;
     playerTookCardFromTalon = false;
     ui->undoTookTalonCard->hide();
+}
+
+void Game::playerTwoModCardNumber(int offset)
+{
+    playerTwoCardNumber += offset;
+
+    for(QLabel* c : playerTwoCards)
+        delete c;
+    playerTwoCards.clear();
+
+    for(int i=0; i<playerTwoCardNumber; i++) {
+        playerTwoCards.push_back(new QLabel(this));
+
+        QPixmap pix(QDir::currentPath()
+                    + "/slike/Karte/" + "2_back" +
+                    + ".jpg");
+        playerTwoCards.back()->setPixmap(pix);
+
+        playerTwoCards.back()->resize(pix.size().width(), pix.size().height());
+
+        playerTwoCards.back()->move(310 + i*20, 40);
+        playerTwoCards.back()->raise();
+        playerTwoCards.back()->show();
+    }
 }
