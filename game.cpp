@@ -317,7 +317,10 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     // samo dodajemo kartu, i pomeramo sve ostale cdc udesno
                                     else {
                                         cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-                                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
+
+                                        int granica = (tableContainterPosition/3 + 1) * 3;
+                                        qDebug() << "granica : " << granica;
+                                        for(int i = tableContainterPosition + 1 ; i < granica && i < table.size() ; i++){
                                             table[i]->moveRight();
                                         }
                                     }
@@ -344,11 +347,10 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 qDebug() << "Poslat signal za dodavanje na grupu! " << message;
                                 //KRAJ DELA ZA MREZU!
 
-
-                                if(tableContainterPosition + 1 < table.size()){
-                                    for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                                        table[i]->moveRight();
-                                    }
+                                int granica = (tableContainterPosition/3 +1) * 3;
+                                qDebug() << "granica : " << granica;
+                                for(int i = tableContainterPosition + 1; i < granica && i < table.size() ; i++){
+                                    table[i]->moveRight();
                                 }
                             }
 
