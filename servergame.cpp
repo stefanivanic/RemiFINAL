@@ -149,7 +149,10 @@ void ServerGame::changeGroup(const QString &message)
 
     CardTableContainer* cdc = NULL;
     cdc = table[k];
-    cdc->removeCards();
+
+    int size = cdc->handSize();
+    for(int j = 0 ; j < size ; j++)
+        delete cdc->getLastCard();
 
     for(int i=1; i<list.size()-1; i++)
     {
