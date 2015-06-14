@@ -147,7 +147,9 @@ void ClientGame::changeGroup(const QString &message)
 
     int k = list[0].toInt();
 
-    Group g;
+    CardTableContainer* cdc = NULL;
+    cdc = table[k];
+    cdc->removeCards();
 
     for(int i=1; i<list.size()-1; i++)
     {
@@ -155,19 +157,14 @@ void ClientGame::changeGroup(const QString &message)
             continue;
 
         Card* c = createCardByString(list[i]);
-        g.addCard(c);
+        cdc->addCard(c,true);
     }
 
-    CardTableContainer* cdc = NULL;
-
-    cdc = table[k];
-    cdc->removeCards();
-
-    cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
     for(int i = k + 1; i < table.size(); i++){
         table[i]->moveRight();
     }
 
-    cdc->refreshDepth(); cdc->refreshCardsPosition();
+    cdc->refreshDepth();
+    cdc->refreshCardsPosition();
 }
 
