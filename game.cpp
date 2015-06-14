@@ -196,7 +196,7 @@ void Game::on_throwGroup_clicked()
                                 200,
                                 [](const int& a, CardTableContainer* cdc)
                                     { return a + cdc->getContainerWidth(); } );
-    int pos_y = 150 + (table.size() / 3 ) * 100;
+    int pos_y = 150 + (table.size() / 3 ) * 150;
 
     CardTableContainer* cdc =
             new CardTableContainer(this, pos_x, pos_y, w1, 100);
