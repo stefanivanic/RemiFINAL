@@ -401,6 +401,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 //                        groupValue = 0;
 
                         ui->undoGroup->hide();
+                        ui->undoTookTalonCard->hide();
 
                         playerTookCardFromTalon = false;
 
