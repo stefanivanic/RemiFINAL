@@ -143,5 +143,30 @@ void ServerGame::sendGroupCards(const QString &message)
 
 void ServerGame::changeGroup(const QString &message)
 {
-    qDebug() << message;
+    QStringList list = message.split(' ');
+
+    int k = list[0].toInt();
+
+    Group g;
+
+    for(int i=1; i<list.size()-1; i++)
+    {
+        if(list[i] == "")
+            continue;
+
+        Card* c = createCardByString(list[i]);
+        g.addCard(c);
+    }
+
+    CardTableContainer* cdc = NULL;
+
+    cdc = table[k];
+    cdc->removeCards();
+
+    cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+    for(int i = k + 1; i < table.size(); i++){
+        table[i]->moveRight();
+    }
+
+    cdc->refreshDepth(); cdc->refreshCardsPosition();
 }

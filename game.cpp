@@ -288,7 +288,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     break;
                                 }
 
-                            qDebug() << "joker value : " << g.getCards()[jokerFlag]->getValue();
+                            //qDebug() << "joker value : " << g.getCards()[jokerFlag]->getValue();
 
                             // .........................................
                             // BEGIN PROVERE ZA UBACIVANJE KARTE U GRUPU
@@ -336,12 +336,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 message.append(" ");
 
                                 for(int i=0; i<g.getCards().size(); i++){
-                                    message.append(g.getCards()[i]->name());
-                                    message.append(" ");
+                                      message.append(g.getCards()[i]->name());
+                                      message.append(" ");
                                 }
 
                                 emit onGroupCardAdd(message);
                                 qDebug() << "Poslat signal za dodavanje na grupu! " << message;
+                                //KRAJ DELA ZA MREZU!
+
 
                                 if(tableContainterPosition + 1 < table.size()){
                                     for(int i = tableContainterPosition + 1; i < table.size(); i++){
