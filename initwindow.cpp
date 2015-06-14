@@ -28,7 +28,9 @@ void InitWindow::on_pushButtonExit_clicked()
 void InitWindow::on_pushButtonCreate_clicked()
 {
      sGame = new ServerGame(); // sGame = new ServerGame();
-     game->show();
+
+     sGame->show();
+
      this->hide();
 }
 

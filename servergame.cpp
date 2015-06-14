@@ -18,6 +18,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server, SIGNAL(groupsReturned(QString)),this,   SLOT(returnGroups(QString)));
     connect(server, SIGNAL(deckCardTaken()),        this,   SLOT(removeCardFromDeck()));
     connect(server, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
+    connect(server, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
 
     //signali iz game-a
     connect(this,   SIGNAL(onNewMessage(QString)),        this, SLOT(sendMessage(QString)));
@@ -26,7 +27,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(this,   SIGNAL(onGroupsReturned(QString)),    this, SLOT(sendGroupIndexes(QString)));
     connect(this,   SIGNAL(onDeckCardTaken()),            this, SLOT(sendDeckSignal()));
     connect(this,   SIGNAL(onTalonCardTaken()),           this, SLOT(sendTalonSignal()));
-
+    connect(this, SIGNAL(onGroupCardAdd(QString)),        this, SLOT(sendGroupCards(QString)));
 
 } // END CONSTRUCTOR
 
@@ -133,4 +134,14 @@ void ServerGame::sendDeckSignal()
 void ServerGame::sendTalonSignal()
 {
     server->sendTalonSignal();
+}
+
+void ServerGame::sendGroupCards(const QString &message)
+{
+    server->sendGroupCards(message);
+}
+
+void ServerGame::changeGroup(const QString &message)
+{
+    qDebug() << message;
 }
