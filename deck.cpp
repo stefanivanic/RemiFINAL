@@ -74,5 +74,5 @@ void Deck::deleteCards()
 void Deck::setNewCards(QVector<Card *> cards)
 {
     for(int i=0; i<cards.size(); i++)
-        cards.push_back(cards[i]);
+        addCard(cards[i],false);
 }
