@@ -287,60 +287,64 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     break;
                                 }
 
+
                             qDebug() << "joker value : " << g.getCards()[jokerFlag]->getValue();
 
-                            // .........................................
-                            // BEGIN PROVERE ZA UBACIVANJE KARTE U GRUPU
-                            // .........................................
+                            if(jokerFlag != -1 && g.type() == Group::SAME_SIGN && _Player1->getTempCard()->getSign() != Card::JOKER) // PETAR. ovde je bila jos jedna provera
+                            {
+                                _Player1->removeCard();
+                                _Player1->addCard(g.getCards()[jokerFlag], true);
 
-                            _Player1->removeCard();
-                            cdc->removeCards();
+                                cdc->removeCards();
+                                cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
 
-                            if(jokerFlag != -1 && _Player1->getTempCard()->getSign() != Card::JOKER) {
-                                if(g.type() == Group::SAME_SIGN)
-                                {
+                                _Player1->refreshCardsPosition();
+                                cdc->refreshCardsPosition(); cdc->refreshDepth();
+
+                                qDebug() << "Karta zamenjena za jokera! SAME SIGN";
+                                return true;
+                            }
+                            if(jokerFlag != -1 && g.type() == Group::SAME_NUMBER && _Player1->getTempCard()->getSign() != Card::JOKER)
+                            {
+                                _Player1->removeCard();
+                                cdc->removeCards();
+
+                                if(g.getCards().size() == 5) {
                                     _Player1->addCard(g.getCards()[jokerFlag], true);
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
-
-                                    qDebug() << "Karta zamenjena za jokera! SAME SIGN";
                                 }
-                                if(g.type() == Group::SAME_NUMBER)
-                                {
-                                    // VEC SU SVI ZNAKOVI ISTOG BROJA,
-                                    // i dodajemo kartu i uzimamo dzokera
-                                    if(g.getCards().size() == 5) {
-                                        _Player1->addCard(g.getCards()[jokerFlag], true);
-                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
-                                    }
-
-                                    // samo dodajemo kartu, i pomeramo sve ostale cdc udesno
-                                    else {
-                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-                                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                                            table[i]->moveRight();
-                                        }
-                                    }
-
-                                    qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
-                                }
-                            }
-                            else {
-                                cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-
-                                if(tableContainterPosition + 1 < table.size()){
+                                else {
+                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+//                                    if(tableContainterPosition + 1 < table.size()){
                                     for(int i = tableContainterPosition + 1; i < table.size(); i++){
                                         table[i]->moveRight();
                                     }
+//                                    }
+                                }
+//                                cdc->print();
+
+                                _Player1->refreshCardsPosition();
+                                cdc->refreshCardsPosition(); cdc->refreshDepth();
+
+                                qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
+                                return true;
+                            }
+                            cdc->removeCards();
+                            cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+
+                            _Player1->removeCard();
+                            _Player1->refreshDepth();
+
+                            cdc->refreshDepth();
+                            cdc->refreshCardsPosition();
+
+                            if(tableContainterPosition + 1 < table.size()){
+                                for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                    table[i]->moveRight();
                                 }
                             }
 
-                            _Player1->refreshDepth();
-                            cdc->refreshDepth(); cdc->refreshCardsPosition();
-
                             return true;
-                            // .......................................
-                            // END PROVERE ZA UBACIVANJE KARTE U GRUPU
-                            // .......................................
                         }
                         else
                         {
@@ -439,10 +443,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                    ui->undoTookTalonCard->show();
 
-                   cardFromTalon = talon->getLastCard();
                    //deal card
                    emit onTalonCardTaken();
-                   _Player1->addCard(cardFromTalon, true);
+                   _Player1->addCard(talon->getLastCard(), true);
                 }
             }
             event->ignore();
@@ -566,8 +569,7 @@ void Game::on_lineEdit_returnPressed()
 
 void Game::on_undoTookTalonCard_clicked()
 {
-    _Player1->removeCard(cardFromTalon);
-    talon->addCard(cardFromTalon, true);
+    talon->addCard(_Player1->getLastCard(), true);
     playerTookCard = false;
     playerTookCardFromTalon = false;
     ui->undoTookTalonCard->hide();

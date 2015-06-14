@@ -171,3 +171,14 @@ int PlayerContainer::getCurrArea()
 
     return areaOfCurrCard;
 }
+
+void PlayerContainer::removeCard(Card* card)
+{
+    for(int i=0; i < cards.size(); i++)
+    {
+        if(card == cards[i]) {
+            cards.erase(cards.begin() + i);
+        }
+    }
+    refreshCardsPosition();
+}

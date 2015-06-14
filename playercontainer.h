@@ -19,7 +19,7 @@ public:
 
     void addCard(Card* card, bool background);
     void removeCard();
-
+    void removeCard(Card* card);
     // overloudujemo(ili overrajdujemo, nauci da razlikujes)
     // sta treba za drag n drop
     void mousePressEvent(QMouseEvent* event);

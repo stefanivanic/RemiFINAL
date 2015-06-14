@@ -67,6 +67,8 @@ protected:
     Talon* talon;
     Deck*   deck;
 
+    Card* cardFromTalon;
+
     ChooseCards* chooseCards;
 
     QVector<CardTableContainer*> table;
