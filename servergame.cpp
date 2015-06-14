@@ -163,7 +163,9 @@ void ServerGame::changeGroup(const QString &message)
         cdc->addCard(c,true);
     }
 
-    for(int i = k + 1; i < table.size(); i++){
+    int granica = (k/3 +1) * 3;
+    qDebug() << "granica : " << granica;
+    for(int i = k + 1; i < granica && i < table.size() ; i++){
         table[i]->moveRight();
     }
 
