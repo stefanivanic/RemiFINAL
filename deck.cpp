@@ -76,4 +76,6 @@ void Deck::setNewCards(QVector<Card *> cards)
 {
     for(int i=0; i<cards.size(); i++)
         addCard(cards[i],false);
+
+    refreshDepth();
 }

@@ -15,6 +15,7 @@ public:
     Deck(QWidget *parent, int x, int y, int w, int h);
     Deck(QWidget *parent, int x, int y, int w, int h, QVector<QString> cardNames);
 
+
     void deleteCards();
     void setNewCards(QVector<Card*> cards);
 

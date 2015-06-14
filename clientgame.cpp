@@ -180,7 +180,7 @@ void ClientGame::initializeCards(const QString &cards)
 
     QStringList list = cards.split(' ');
 
-    for(int i=list.size()-1; i>-1; i--)
+    for(int i=0; i<list.size(); i++)
     {
         if(list[i] == "")
             continue;
