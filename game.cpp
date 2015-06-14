@@ -275,7 +275,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             int jokerFlag = -1;
                             int tempCardValue = _Player1->getTempCard()->getValue();
 
-                            qDebug() << "temp card value : " << tempCardValue;
+//                            qDebug() << "temp card value : " << tempCardValue;
+
 
                             int i;
                             for(i=0; i < g.getCards().size(); i++)
@@ -286,59 +287,60 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     break;
                                 }
 
-                            if(jokerFlag != -1 && g.type() == Group::SAME_SIGN) // PETAR. ovde je bila jos jedna provera
-                            {
-                                _Player1->removeCard();
-                                _Player1->addCard(g.getCards()[jokerFlag], true);
+                            qDebug() << "joker value : " << g.getCards()[jokerFlag]->getValue();
 
-                                cdc->removeCards();
-                                cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                            // .........................................
+                            // BEGIN PROVERE ZA UBACIVANJE KARTE U GRUPU
+                            // .........................................
 
-                                _Player1->refreshCardsPosition();
-                                cdc->refreshCardsPosition(); cdc->refreshDepth();
+                            _Player1->removeCard();
+                            cdc->removeCards();
 
-                                qDebug() << "Karta zamenjena za jokera! SAME SIGN";
-                                return true;
-                            }
-                            if(jokerFlag != -1 && g.type() == Group::SAME_NUMBER)
-                            {
-                                _Player1->removeCard();
-                                cdc->removeCards();
-
-                                if(g.getCards().size() == 5) {
+                            if(jokerFlag != -1 && _Player1->getTempCard()->getSign() != Card::JOKER) {
+                                if(g.type() == Group::SAME_SIGN)
+                                {
                                     _Player1->addCard(g.getCards()[jokerFlag], true);
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+
+                                    qDebug() << "Karta zamenjena za jokera! SAME SIGN";
                                 }
-                                else {
-                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-//                                    if(tableContainterPosition + 1 < table.size()){
+                                if(g.type() == Group::SAME_NUMBER)
+                                {
+                                    // VEC SU SVI ZNAKOVI ISTOG BROJA,
+                                    // i dodajemo kartu i uzimamo dzokera
+                                    if(g.getCards().size() == 5) {
+                                        _Player1->addCard(g.getCards()[jokerFlag], true);
+                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                    }
+
+                                    // samo dodajemo kartu, i pomeramo sve ostale cdc udesno
+                                    else {
+                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+                                        for(int i = tableContainterPosition + 1; i < table.size(); i++){
+                                            table[i]->moveRight();
+                                        }
+                                    }
+
+                                    qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
+                                }
+                            }
+                            else {
+                                cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+
+                                if(tableContainterPosition + 1 < table.size()){
                                     for(int i = tableContainterPosition + 1; i < table.size(); i++){
                                         table[i]->moveRight();
                                     }
-//                                    }
                                 }
-//                                cdc->print();
-
-                                _Player1->refreshCardsPosition();
-                                cdc->refreshCardsPosition(); cdc->refreshDepth();
-
-                                qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
-                                return true;
                             }
-                            cdc->addCard(_Player1->getTempCard(), true);
-                            _Player1->removeCard();
+
                             _Player1->refreshDepth();
-
-                            cdc->refreshDepth();
-                            cdc->refreshCardsPosition();
-
-                            if(tableContainterPosition + 1 < table.size()){
-                                for(int i = tableContainterPosition + 1; i < table.size(); i++){
-                                    table[i]->moveRight();
-                                }
-                            }
+                            cdc->refreshDepth(); cdc->refreshCardsPosition();
 
                             return true;
+                            // .......................................
+                            // END PROVERE ZA UBACIVANJE KARTE U GRUPU
+                            // .......................................
                         }
                         else
                         {
@@ -462,10 +464,10 @@ void Game::cardsPreordered(QVector<QString> cardNames)
 
     _Player1 = new PlayerContainer(this, 300, 450, 350, 100);
     deck = new Deck(this, 10, 250, 70, 100, cardNames); // init i shuffle
-
+/*
     _Player1->installEventFilter(this);
     deck->installEventFilter(this);
-
+*/
     // inicijalizacija signal-slotova
     initSnS();
 
