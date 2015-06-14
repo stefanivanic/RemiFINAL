@@ -32,7 +32,8 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
 
 void ClientGame::appendMessage(const QString &message)
 {
-    ui->textEdit->append(message);
+    qDebug() << "Primio poruku!";
+  //  ui->textEdit->append(message);
 }
 
 void ClientGame::sendMessage(const QString& message)
