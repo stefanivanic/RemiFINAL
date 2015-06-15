@@ -153,7 +153,7 @@ void ClientGame::changeGroup(const QString &message)
     if(list[0].size()==2)
     {
         //zamenio kartu za jokera
-        k=list[0].at(0).Number_Letter;
+        k=list[0].at(0).digitValue();
 
         //DODAJ KARTU PLAYERU 2
         playerTwoModCardNumber(1);
