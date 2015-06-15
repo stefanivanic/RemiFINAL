@@ -177,8 +177,8 @@ void ClientGame::changeGroup(const QString &message)
 void ClientGame::initializeCards(const QString &cards)
 {
     changePlayer();
-
-    QVector<Card*> vector;
+    changePlayer();
+    changePlayer();
 
     QStringList list = cards.split(' ');
 
@@ -192,18 +192,21 @@ void ClientGame::initializeCards(const QString &cards)
         _Player1->addCard(createCardByString(list[i]),true);
     }
 
+    QString c("");
+
     for(int i=14; i<list.size(); i++)
     {
         if(list[i] == "")
             continue;
 
-        vector.push_back(createCardByString(list[i]));
+        c.append(list[i]);
+        c.append(" ");
     }
 
     qDebug() << "Dobio karte: " << cards;
 
     deck->deleteCards();
-    deck->setNewCards(vector);
+    deck->setNewCards(c);
 
 }
 

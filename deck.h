@@ -17,7 +17,8 @@ public:
 
 
     void deleteCards();
-    void setNewCards(QVector<Card*> cards);
+    void setNewCards(const QString& cardsList);
+    Card* createCardByString(const QString& string1);
 
 private:
     void shuffleDeck();
