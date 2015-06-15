@@ -137,5 +137,5 @@ void Deck::setNewCards(const QString& cardsList)
         qDebug() << "dodata karta: " << list[i];
     }
 
-    //refreshDepth();
+    refreshDepth();
 }
