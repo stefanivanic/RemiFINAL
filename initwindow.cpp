@@ -41,12 +41,13 @@ void InitWindow::on_pushButtonLoad_clicked()
     ui->inputIp->show();
     ui->labelIp->show();
 
-    QString ipAddress = ui->inputIp->text();
-   /* int port = ui->inputPort->text().toInt();
+    QStringList list = ui->inputIp->text().split(":");
 
-    // osnovna provera - ne vrsi posao kad dodje do conn errora
-    if( ipAddress == "" || port == 0 )
+    if(list.size()<2 || list.size()>2)
         return;
+
+    QString ipAddress = list[0];
+    int port = list[1].toInt();
 
     cGame = new ClientGame(this, ipAddress, port);
 
@@ -55,5 +56,5 @@ void InitWindow::on_pushButtonLoad_clicked()
     }
 
     cGame->show();
-    this->hide();*/
+    this->hide();
 }
