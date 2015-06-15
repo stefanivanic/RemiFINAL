@@ -13,16 +13,7 @@ Game::Game(QWidget *parent) :
     endGameFlag(false), playerTwoCardNumber(0)
 {
     ui->setupUi(this);
-  /*  ui->centralWidget->setStyleSheet(QStringLiteral("border-image: url(./slike/2/dark_wood.jpg);"));
-    ui->label->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->onMoveLabel->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->errorLogger->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->groupValue->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-    ui->textEdit->setStyleSheet(QStringLiteral("border-image: url();"));
-    ui->lineEdit->setStyleSheet(QStringLiteral("border-image: url(./slike/2/white.jpg);"));
-*/ //   ui->throwGroup->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_vratigrupu.jpg);"));
- /*   ui->undoGroup->setStyleSheet(QStringLiteral("border-image: url();"));
-*/
+
     ui->throwGroup->hide(); ui->undoGroup->hide(); ui->undoTookTalonCard->hide();
 
     _Player1 = new PlayerContainer(this, 330, 490, 350, 100);
