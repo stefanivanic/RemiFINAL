@@ -44,8 +44,9 @@ void InitWindow::on_pushButtonLoad_clicked()
     QStringList list = ui->inputIp->text().split(":");
 
     if(list.size()<2 || list.size()>2)
+    {
         return;
-
+    }
     QString ipAddress = list[0];
     int port = list[1].toInt();
 
