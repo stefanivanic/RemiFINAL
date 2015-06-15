@@ -61,59 +61,6 @@ void Deck::shuffleDeck()
     refreshDepth();
 }
 
-Card* Deck::createCardByString(const QString& string1)
-{
-
-    int number;
-    Card::Sign sign;
-    Card* c;
-
-    QString string(string1.trimmed());
-
-    if(string.length()==2)
-    {
-        if(string.at(0) == 'A')
-            number=1;
-        else if(string.at(0) == 'K')
-            number=14;
-        else if(string.at(0) == 'Q')
-            number=13;
-        else if(string.at(0) == 'J')
-            number=12;
-        else
-            number = string.at(0).digitValue();
-
-        if(string.at(1) == 'P')
-            sign=Card::PIK;
-        else if(string.at(1) == 'K')
-            sign=Card::KARO;
-        else if(string.at(1) == 'T')
-            sign=Card::TREF;
-        else
-            sign=Card::HERC;
-
-            c = new Card(this,number,number,sign);
-    }
-    else if(string.at(0) == 'J')
-    {
-        c = new Card(this,0,0,Card::JOKER);
-    }
-    else{
-        if(string.at(2) == 'P')
-            sign=Card::PIK;
-        else if(string.at(2) == 'K')
-            sign=Card::KARO;
-        else if(string.at(2) == 'T')
-            sign=Card::TREF;
-        else
-            sign=Card::HERC;
-
-        c = new Card(this,10,10,sign);
-    }
-
-    return c;
-}
-
 void Deck::deleteCards()
 {
     for(int i=0; i<cards.size(); i++)
@@ -124,18 +71,13 @@ void Deck::deleteCards()
     cards.clear();
 }
 
-void Deck::setNewCards(const QString& cardsList)
+void Deck::setNewCards(QVector<Card *> cards)
 {
-    QStringList list = cardsList.split(' ');
 
-    for(int i=0; i<list.size(); i++)
+    for(int i=0; i<cards.size(); i++)
     {
-        if(list[i] == "")
-            continue;
-
-        this->addCard(createCardByString(list[i]),false);
-        qDebug() << "dodata karta: " << list[i];
+        addCard(cards[i],false);
     }
 
-    this->refreshDepth();
+    refreshDepth();
 }

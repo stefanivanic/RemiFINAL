@@ -205,21 +205,20 @@ void ClientGame::initializeCards(const QString &cards)
         _Player1->addCard(createCardByString(list[i]),true);
     }
 
-    QString c("");
+    QVector<Card*> vector;
 
     for(int i=14; i<list.size(); i++)
     {
         if(list[i] == "")
             continue;
 
-        c.append(list[i]);
-        c.append(" ");
+        vector.push_back(createCardByString(list[i]));
     }
 
     qDebug() << "Dobio karte: " << cards;
 
-   // deck->deleteCards();
-   // deck->setNewCards(c);
+    deck->deleteCards();
+    deck->setNewCards(vector);
 
 }
 
