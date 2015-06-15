@@ -54,7 +54,7 @@ void ClientGame::addCard(const QString &card)
     Card* c = createCardByString(card);
 
     talon->addCard(c,true);
-    playerOneOnMove = true;
+    changePlayer();
 }
 
 void ClientGame::addGroupOfCards(const QString &cards)
@@ -180,7 +180,17 @@ void ClientGame::initializeCards(const QString &cards)
 
     QStringList list = cards.split(' ');
 
-    for(int i=0; i<list.size(); i++)
+    _Player1->deleteCards();
+
+    for(int i=0; i<14; i++)
+    {
+        if(list[i] == "")
+            continue;
+
+        _Player1->addCard(createCardByString(list[i]),true);
+    }
+
+    for(int i=14; i<list.size(); i++)
     {
         if(list[i] == "")
             continue;
@@ -191,7 +201,6 @@ void ClientGame::initializeCards(const QString &cards)
     qDebug() << "Dobio karte: " << cards;
 
     deck->deleteCards();
-
     deck->setNewCards(vector);
 
 }

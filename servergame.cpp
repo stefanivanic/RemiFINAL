@@ -53,7 +53,7 @@ void ServerGame::addCard(const QString &card)
     Card* c = createCardByString(card);
 
     talon->addCard(c,true);
-    playerOneOnMove = true;
+    changePlayer();
 }
 
 void ServerGame::addGroupOfCards(const QString &cards)

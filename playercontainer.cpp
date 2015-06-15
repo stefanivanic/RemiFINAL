@@ -182,3 +182,21 @@ void PlayerContainer::removeCard(Card* card)
     }
     refreshCardsPosition();
 }
+
+void PlayerContainer::deleteCards()
+{
+    for(int i=0; i<cards.size(); i++)
+    {
+        delete cards[i];
+    }
+
+    cards.clear();
+}
+
+void PlayerContainer::setNewCards(QVector<Card *> cards)
+{
+    for(int i=0; i<14; i++)
+      addCard(cards[i],true);
+
+    refreshDepth();
+}

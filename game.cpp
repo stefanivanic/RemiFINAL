@@ -398,6 +398,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     }*/
                     else {
                         //DEO ZA MREZU!!!!
+                        changePlayer();
                         emit onCardThrown(_Player1->getTempCard()->name());
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);

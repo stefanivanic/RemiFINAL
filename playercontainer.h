@@ -17,6 +17,9 @@ public:
                     int x = 0, int y = 0,
                     int w = 0, int h = 0);
 
+    void deleteCards();
+    void setNewCards(QVector<Card*> cards);
+
     void addCard(Card* card, bool background);
     void removeCard();
     void removeCard(Card* card);

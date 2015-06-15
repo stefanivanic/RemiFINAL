@@ -44,11 +44,13 @@ signals:
     void onTalonCardTaken();
     void onGroupCardAdd(const QString& cards);
 
+public slots:
+    void changePlayer();
+
 private slots:
     void on_actionSelect_theme_triggered();
     void on_throwGroup_clicked();
     void changeTempPosText();
-    void changePlayer();
     void showOnThrowButton(bool);
     void hideOnThrowButton(bool);
     void slotReboot();

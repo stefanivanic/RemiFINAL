@@ -69,7 +69,6 @@ void Deck::deleteCards()
     }
 
     cards.clear();
-    refreshDepth();
 }
 
 void Deck::setNewCards(QVector<Card *> cards)
