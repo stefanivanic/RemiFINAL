@@ -307,9 +307,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     qDebug() << "radi se o grupi gde su istog znaka";
 
                                     _Player1->addCard(g.getCards()[jokerFlag], true);
-                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
-                                    qDebug() << "Karta zamenjena za jokera! SAME SIGN";
                                     QString message("");
 
                                     //iterator za grupu
@@ -385,7 +384,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 //KRAJ DELA ZA MREZU!
 
                                 int granica = (tableContainterPosition/3 +1) * 3;
-                                qDebug() << "granica : " << granica;
+//                                qDebug() << "granica : " << granica;
                                 for(int i = tableContainterPosition + 1; i < granica && i < table.size() ; i++){
                                     table[i]->moveRight();
                                 }
