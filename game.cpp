@@ -25,7 +25,7 @@ Game::Game(QWidget *parent) :
 */
     ui->throwGroup->hide(); ui->undoGroup->hide(); ui->undoTookTalonCard->hide();
 
-    _Player1 = new PlayerContainer(this, 300, 450, 350, 100);
+    _Player1 = new PlayerContainer(this, 330, 490, 350, 100);
 
     // napravi kontejner za playera 2 ovo ne
     // moze ovako da ostane jer mora dinamicki da se menja
@@ -33,8 +33,8 @@ Game::Game(QWidget *parent) :
 
     chooseCards = new ChooseCards(this);
 
-    deck = new Deck(this, 10, 250, 70, 100); // init i shuffle
-    talon = new Talon(this, 100, 250, 70, 100);
+    deck = new Deck(this, 30, 250, 70, 100); // init i shuffle
+    talon = new Talon(this, 120, 250, 70, 100);
 
     _Player1->installEventFilter(this);
 
@@ -147,7 +147,7 @@ void Game::changePlayer()
     groupsThrown = 0;
     groupValue   = 0;
 
-    ui->errorLogger->setText("error logger.");
+    ui->errorLogger->setText("");
     ui->groupValue->setText("group value : 0");
 
     QString s("on move : ");
