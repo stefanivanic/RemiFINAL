@@ -359,11 +359,11 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                             }
                                         }
                                     }
-                                }
+                                }/*
                                 else // djoker se baca u grupu
                                 {
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()));
-                                }
+                                }*/
                             }
                             else {
                                 qDebug() << "nema dzokera, samo dodajemo kartu u grupu na kraj";
