@@ -122,12 +122,14 @@ void ClientGame::removeCardFromDeck()
 {
     delete deck->getLastCard();
     deck->refreshDepth();
+    playerTwoModCardNumber(1);
 }
 
 void ClientGame::removeCardFromTalon()
 {
     delete talon->getLastCard();
     talon->refreshDepth();
+    playerTwoModCardNumber(1);
 }
 
 void ClientGame::sendDeckSignal()
