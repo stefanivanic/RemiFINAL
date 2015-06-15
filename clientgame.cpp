@@ -176,6 +176,8 @@ void ClientGame::changeGroup(const QString &message)
 
 void ClientGame::initializeCards(const QString &cards)
 {
+    changePlayer();
+
     QVector<Card*> vector;
 
     QStringList list = cards.split(' ');
