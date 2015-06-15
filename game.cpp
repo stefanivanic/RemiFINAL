@@ -301,12 +301,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             cdc->removeCards();
 
                             if(jokerFlag != -1 && _Player1->getTempCard()->getSign() != Card::JOKER) {
+                                qDebug() << "postoji dzoker u grupi ali ne zamenjujemo nego dodajemo";
                                 if(g.type() == Group::SAME_SIGN)
                                 {
-                                    _Player1->addCard(g.getCards()[jokerFlag], true);
-                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                    qDebug() << "radi se o grupi gde su istog znaka";
 
-                                    qDebug() << "Karta zamenjena za jokera! SAME SIGN";
+                                    _Player1->addCard(g.getCards()[jokerFlag], true);
+                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+
                                     QString message("");
 
                                     //iterator za grupu
@@ -324,6 +326,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 }
                                 if(g.type() == Group::SAME_NUMBER)
                                 {
+                                    qDebug() << "radi se o grupi gde su iste vrednosti";
+
                                     // VEC SU SVI ZNAKOVI ISTOG BROJA,
                                     // i dodajemo kartu i uzimamo dzokera
                                     if(g.getCards().size() == 5) {
@@ -356,11 +360,11 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                             table[i]->moveRight();
                                         }
                                     }
-
-                                    qDebug() << "Karta zamenjena za jokera! SAME NUMBER";
                                 }
                             }
                             else {
+                                qDebug() << "nema dzokera, samo dodajemo kartu u grupu na kraj";
+
                                 cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
                                 //DEO ZA MREZU!
@@ -380,7 +384,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 //KRAJ DELA ZA MREZU!
 
                                 int granica = (tableContainterPosition/3 +1) * 3;
-                                qDebug() << "granica : " << granica;
+//                                qDebug() << "granica : " << granica;
                                 for(int i = tableContainterPosition + 1; i < granica && i < table.size() ; i++){
                                     table[i]->moveRight();
                                 }
