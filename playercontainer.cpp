@@ -47,6 +47,8 @@ void PlayerContainer::removeCard()
     cards[tempCardPosition]->hide();
     cards.erase(cards.begin() + tempCardPosition);
 
+    width -= 80;
+
     refreshCardsPosition();
 }
 

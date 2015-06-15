@@ -273,14 +273,24 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 //                            qDebug() << "temp card value : " << tempCardValue;
 
 
-                            int i;
-                            for(i=0; i < g.getCards().size(); i++)
-                                if(g.getCards()[i]->getSign() == Card::JOKER)
+                            bool imaDjokera = false;
+                            for(int i=0; i < cdc->PlayerContainer::getCards().size(); i++) {
+                                if(cdc->PlayerContainer::getCards()[i]->getSign() == Card::JOKER)
                                 {
-                                    jokerFlag = i;
-                                    qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << g.getCards()[jokerFlag]->getValue();
+                                    imaDjokera = true;
                                     break;
                                 }
+                            }
+
+                            if(imaDjokera) {
+                                for(int i=0; i < g.getCards().size(); i++)
+                                    if(g.getCards()[i]->getSign() == Card::JOKER)
+                                    {
+                                        jokerFlag = i;
+                                        qDebug() << "Jokerflag: " << jokerFlag << "vrednost: " << g.getCards()[jokerFlag]->getValue();
+                                        break;
+                                    }
+                            }
 
                             //qDebug() << "joker value : " << g.getCards()[jokerFlag]->getValue();
 
@@ -291,7 +301,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->removeCard();
                             cdc->removeCards();
 
-                            if(jokerFlag != -1)
+                            if(jokerFlag != -1) // postoji djoker u grupi
                             {
                                 if(_Player1->getTempCard()->getSign() != Card::JOKER)
                                 {
@@ -365,7 +375,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()));
                                 }
                             }
-                            else {
+                            else { // ne postoji djoker
                                 qDebug() << "nema dzokera, samo dodajemo kartu u grupu na kraj";
 
                                 cdc->addCards(g.getCards().mid(0, g.getCards().size()));
@@ -405,6 +415,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         {
                             _Player1->mouseReleaseEvent(m_event);
                             _Player1->refreshDepth();
+                            _Player1->refreshCardsPosition();
                             qDebug() << "Karta ne odgovara za grupu!";
                         }
                     }
