@@ -21,6 +21,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(client, SIGNAL(deckCardTaken()),        this,   SLOT(removeCardFromDeck()));
     connect(client, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
     connect(client, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
+    connect(client, SIGNAL(talonCardRetSignal(QString)),this, SLOT(addTalonCard(QString)));
 
     //signali iz game-a
     connect(this,SIGNAL(onNewMessage(QString)),        this,    SLOT(sendMessage(QString)));
@@ -29,7 +30,8 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(this,SIGNAL(onGroupsReturned(QString)),    this,    SLOT(sendGroupIndexes(QString)));
     connect(this,SIGNAL(onDeckCardTaken()),            this,    SLOT(sendDeckSignal()));
     connect(this,SIGNAL(onTalonCardTaken()),           this,    SLOT(sendTalonSignal()));
-    connect(this, SIGNAL(onGroupCardAdd(QString)),        this, SLOT(sendGroupCards(QString)));
+    connect(this, SIGNAL(onGroupCardAdd(QString)),     this,    SLOT(sendGroupCards(QString)));
+    connect(this,SIGNAL(talonCardReturned(QString)),   this,    SLOT(sendTalonCardRetSignal(QString)));
 
 } // END CONSTRUCTOR
 
@@ -224,3 +226,15 @@ void ClientGame::initializeCards(const QString &cards)
 
 }
 
+void ClientGame::sendTalonCardRetSignal(const QString &card)
+{
+    client->sendTalonCardRetSignal(card);
+}
+
+void ClientGame::addTalonCard(const QString &card)
+{
+    Card* c = createCardByString(card);
+
+    talon->addCard(c,true);
+    playerTwoModCardNumber(-1);
+}

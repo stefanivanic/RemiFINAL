@@ -73,6 +73,8 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = GroupIndex;
     else if(list.at(0) == "INITCARDS")
         currentDataType = InitCards;
+    else if(list.at(0) == "TCARDRET")
+        currentDataType = TCardRet;
     else
         currentDataType = Undefined;
 
@@ -101,6 +103,9 @@ void Client::resolveReadyRead(const QString &message)
         break;
     case InitCards:
         emit initCards(buffer);
+        break;
+    case TCardRet:
+        emit talonCardRetSignal(buffer);
         break;
     default:
         qDebug() << "Nepoznat podatak!";
@@ -171,4 +176,8 @@ void Client::sendGroupCards(const QString &message)
     tcpSocket->write(data.toUtf8());
 }
 
-
+void Client::sendTalonCardRetSignal(const QString &card)
+{
+    QString data = "TCARDRET " + card;
+    tcpSocket->write(data.toUtf8());
+}

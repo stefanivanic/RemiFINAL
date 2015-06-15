@@ -626,6 +626,7 @@ void Game::on_undoTookTalonCard_clicked()
     playerTookCard = false;
     playerTookCardFromTalon = false;
     ui->undoTookTalonCard->hide();
+    emit talonCardReturned(cardFromTalon->name());
 }
 
 void Game::playerTwoModCardNumber(int offset)
