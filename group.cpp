@@ -223,7 +223,9 @@ int Group::isCorrectGroup(bool shuffle)
 
 int Group::type()
 {
-    if(cards[1]->getSign() == cards[0]->getSign() || cards[1]->getSign() == cards[2]->getSign())
+    if(cards[1]->getSign() == cards[0]->getSign() ||
+            cards[1]->getSign() == cards[2]->getSign() ||
+            cards[0]->getSign() == cards[2]->getSign())
         return SAME_SIGN;
     else
         return SAME_NUMBER;

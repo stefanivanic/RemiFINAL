@@ -300,14 +300,18 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->removeCard();
                             cdc->removeCards();
 
-                            if(jokerFlag != -1 && _Player1->getTempCard()->getSign() != Card::JOKER) {
-                                qDebug() << "postoji dzoker u grupi ali ne zamenjujemo nego dodajemo";
+                            if(jokerFlag != -1 && _Player1->getTempCard()->getSign() != Card::JOKER)
+                            {
                                 if(g.type() == Group::SAME_SIGN)
                                 {
                                     qDebug() << "radi se o grupi gde su istog znaka";
 
                                     _Player1->addCard(g.getCards()[jokerFlag], true);
-                                    cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+
+                                    if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER)
+                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                    else
+                                        cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
                                     QString message("");
 
@@ -351,7 +355,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     }
 
                                     // samo dodajemo kartu, i pomeramo sve ostale cdc udesno
-                                    else {
+                                    else
+                                    {
                                         cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
                                         int granica = (tableContainterPosition/3 + 1) * 3;
