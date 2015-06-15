@@ -2,3 +2,5 @@
 build/
 release/
 ui_*
+Makefile*
+object_*
