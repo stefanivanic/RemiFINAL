@@ -45,7 +45,7 @@ void Server::newConnection()
     connect(socket,SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(socket,SIGNAL(disconnected()), this, SLOT(disconnected()));
 
-    emit newClient();
+    //emit newClient();
 
     qDebug() << "Connected!";
 
