@@ -133,9 +133,9 @@ void Deck::setNewCards(const QString& cardsList)
         if(list[i] == "")
             continue;
 
-        addCard(createCardByString(list[i]),false);
+        this->addCard(createCardByString(list[i]),false);
         qDebug() << "dodata karta: " << list[i];
     }
 
-    refreshDepth();
+    this->refreshDepth();
 }

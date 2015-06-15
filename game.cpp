@@ -307,6 +307,20 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
 
                                     qDebug() << "Karta zamenjena za jokera! SAME SIGN";
+                                    QString message("");
+
+                                    //iterator za grupu
+                                    message.append(QString::number(k));
+                                    message.append("J ");
+
+                                    for(int i=0; i<g.getCards().size(); i++){
+                                          message.append(g.getCards()[i]->name());
+                                          message.append(" ");
+                                    }
+
+                                    emit onGroupCardAdd(message);
+                                    qDebug() << "Poslat signal za dodavanje na grupu! " << message;
+                                    //KRAJ DELA ZA MREZU!
                                 }
                                 if(g.type() == Group::SAME_NUMBER)
                                 {
@@ -315,6 +329,21 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     if(g.getCards().size() == 5) {
                                         _Player1->addCard(g.getCards()[jokerFlag], true);
                                         cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+
+                                        QString message("");
+
+                                        //iterator za grupu
+                                        message.append(QString::number(k));
+                                        message.append("J ");
+
+                                        for(int i=0; i<g.getCards().size(); i++){
+                                              message.append(g.getCards()[i]->name());
+                                              message.append(" ");
+                                        }
+
+                                        emit onGroupCardAdd(message);
+                                        qDebug() << "Poslat signal za dodavanje na grupu! " << message;
+                                        //KRAJ DELA ZA MREZU!
                                     }
 
                                     // samo dodajemo kartu, i pomeramo sve ostale cdc udesno

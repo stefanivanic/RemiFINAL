@@ -55,6 +55,7 @@ void ClientGame::addCard(const QString &card)
 
     talon->addCard(c,true);
     changePlayer();
+    playerTwoModCardNumber(-1);
 }
 
 void ClientGame::addGroupOfCards(const QString &cards)
@@ -73,8 +74,8 @@ void ClientGame::addGroupOfCards(const QString &cards)
     CardTableContainer* cdc =
             new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
-
-    for(int i=0; i<list.size()-1; i++)
+    int i;
+    for(i=0; i<list.size()-1; i++)
     {
         if(list.at(i) == "")
             continue;
@@ -84,6 +85,7 @@ void ClientGame::addGroupOfCards(const QString &cards)
     }
 
     table.append(cdc);
+    playerTwoModCardNumber(-i);
 }
 
 void ClientGame::sendGroupOfCards(const QString& cards)
@@ -105,11 +107,12 @@ void ClientGame::returnGroups(const QString &indexes)
         CardTableContainer* cdc = table.back();
 
         int size = cdc->handSize();
-        for(int j = 0 ; j < size ; j++)
+        int j;
+        for(j = 0 ; j < size ; j++)
         {
             delete cdc->getLastCard();
         }
-
+        playerTwoModCardNumber(j);
         table.pop_back();
     }
 
@@ -146,7 +149,17 @@ void ClientGame::changeGroup(const QString &message)
 {
     QStringList list = message.split(' ');
 
-    int k = list[0].toInt();
+    int k=0;
+    if(list[0].size()==2)
+    {
+        //zamenio kartu za jokera
+        k=list[0].at(0).Number_Letter;
+
+        //DODAJ KARTU PLAYERU 2
+        playerTwoModCardNumber(1);
+    }
+    else
+        k=list[0].toInt();
 
     CardTableContainer* cdc = NULL;
     cdc = table[k];
@@ -205,8 +218,8 @@ void ClientGame::initializeCards(const QString &cards)
 
     qDebug() << "Dobio karte: " << cards;
 
-    deck->deleteCards();
-    deck->setNewCards(c);
+   // deck->deleteCards();
+   // deck->setNewCards(c);
 
 }
 
