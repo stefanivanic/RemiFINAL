@@ -34,6 +34,7 @@ private slots:
     void sendDeckSignal();
     void sendTalonSignal();
     void sendGroupCards(const QString& message);
+    void sendTalonCardRetSignal(const QString& card);
 
 public slots:
     void appendMessage(const QString& message);
@@ -44,6 +45,7 @@ public slots:
     void removeCardFromTalon();
     void changeGroup(const QString& message);
     void initializeCards(const QString& cards);
+    void addTalonCard(const QString& card);
 
 private:
     Client* client;

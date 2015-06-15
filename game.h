@@ -43,6 +43,7 @@ signals:
     void onDeckCardTaken();
     void onTalonCardTaken();
     void onGroupCardAdd(const QString& cards);
+    void talonCardReturned(const QString& card);
 
 public slots:
     void changePlayer();
