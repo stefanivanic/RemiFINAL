@@ -75,6 +75,8 @@ void Client::resolveReadyRead(const QString &message)
         currentDataType = InitCards;
     else if(list.at(0) == "TCARDRET")
         currentDataType = TCardRet;
+    else if(list.at(0) == "GAMEENDED")
+        currentDataType = GameEnded;
     else
         currentDataType = Undefined;
 
@@ -107,6 +109,9 @@ void Client::resolveReadyRead(const QString &message)
     case TCardRet:
         emit talonCardRetSignal(buffer);
         break;
+    case GameEnded:
+        emit gameEndedSignal();
+        break;
     default:
         qDebug() << "Nepoznat podatak!";
     }
@@ -118,66 +123,7 @@ void Client::showError(QAbstractSocket::SocketError)
    qDebug() <<  tcpSocket->errorString();
 }
 
-void Client::sendMessage(const QString &message)
+void Client::sendSignal(const QString &data)
 {
-    QString data("MESSAGE "+message);
-    qDebug() << "Slanje poruke " + message;
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendCard(const QString &card)
-{
-    if (card.isEmpty())
-            return;
-
-    qDebug() << "Slanje karte:" + card;
-    QString data("CARD "+card);
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendGroupOfCards(const QString &cards)
-{
-    if (cards.isEmpty())
-            return;
-
-    qDebug() << "Slanje grupe:" + cards;
-    QString data = "GROUP " + cards;
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendGroupIndexes(const QString &number)
-{
-    if (number.isEmpty())
-            return;
-
-    QString data = "INDEXES " + number;
-    qDebug() << "Slanje indeksa " + data;
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendDeckSignal()
-{
-    qDebug() << "Slanje signala za deck!";
-    QString data = "DECK";
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendTalonSignal()
-{
-    qDebug() << "Slanje signala za talon!";
-    QString data = "TALON";
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendGroupCards(const QString &message)
-{
-    qDebug() << "Slanje indeksa grupe";
-    QString data = "GROUPINDEX " + message;
-    tcpSocket->write(data.toUtf8());
-}
-
-void Client::sendTalonCardRetSignal(const QString &card)
-{
-    QString data = "TCARDRET " + card;
     tcpSocket->write(data.toUtf8());
 }

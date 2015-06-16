@@ -19,7 +19,8 @@ public:
              Talon,
              GroupIndex,
              InitCards,
-             TCardRet
+             TCardRet,
+             GameEnded
          };
     Client(QObject *parent = 0, QString ip = "", int port = 0);
     ~Client();
@@ -27,15 +28,7 @@ public:
     static int CONN_ERROR;
 
     void resolveReadyRead(const QString& message);
-
-    void sendMessage(const QString& message);
-    void sendCard(const QString& card);
-    void sendGroupOfCards(const QString& cards);
-    void sendGroupIndexes(const QString& number);
-    void sendDeckSignal();
-    void sendTalonSignal();
-    void sendGroupCards(const QString& message);
-    void sendTalonCardRetSignal(const QString& card);
+    void sendSignal(const QString& data);
 
 
 private slots:
@@ -52,6 +45,7 @@ signals:
     void newGroupIndex(const QString& message);
     void initCards(const QString& cards);
     void talonCardRetSignal(const QString& card);
+    void gameEndedSignal();
 
 private:
     QTcpSocket *tcpSocket;

@@ -83,6 +83,8 @@ void Game::playerToTalon()
 
     // player je pobedio
     if(_Player1->handSize() == 0) {
+
+        emit gameEnded();
         endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
                                         QMessageBox::Yes|QMessageBox::No);
@@ -323,6 +325,10 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                         message.append("J ");
 
                                         for(int i=0; i<g.getCards().size(); i++){
+                                              //da ne salje Jokera, on je zamenjen!
+                                              if(g.getCards()[i]->name() == "J")
+                                                  continue;
+
                                               message.append(g.getCards()[i]->name());
                                               message.append(" ");
                                         }
@@ -348,6 +354,10 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                             message.append("J ");
 
                                             for(int i=0; i<g.getCards().size(); i++){
+
+                                                  if(g.getCards()[i]->name() == "J")
+                                                      continue;
+
                                                   message.append(g.getCards()[i]->name());
                                                   message.append(" ");
                                             }

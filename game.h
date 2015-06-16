@@ -44,6 +44,7 @@ signals:
     void onTalonCardTaken();
     void onGroupCardAdd(const QString& cards);
     void talonCardReturned(const QString& card);
+    void gameEnded();
 
 public slots:
     void changePlayer();

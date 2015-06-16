@@ -17,22 +17,15 @@ public:
             Deck,
             Talon,
             GroupIndex,
-            TCardRet
+            TCardRet,
+            GameEnded
         };
    Server(QObject *parent = 0);
    QTcpSocket *socket;
 
    void resolveReadyRead(const QString& message);
 
-   void sendMessage(const QString& message);
-   void sendCard(const QString& card);
-   void sendGroupOfCards(const QString& cards);
-   void sendGroupIndexes(const QString& number);
-   void sendDeckSignal();
-   void sendTalonSignal();
-   void sendGroupCards(const QString& message);
-   void sendInitCards(const QString& cards);
-   void sendTalonCardRetSignal(const QString& card);
+   void sendSignal(const QString& data);
 
 signals:
    void newClient();
@@ -44,6 +37,7 @@ signals:
    void talonCardTaken();
    void newGroupIndex(const QString& message);
    void talonCardRetSignal(const QString& card);
+   void gameEndedSignal();
 
 public slots:
     void newConnection();

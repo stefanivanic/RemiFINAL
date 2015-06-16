@@ -35,6 +35,7 @@ private slots:
     void sendTalonSignal();
     void sendGroupCards(const QString& message);
     void sendTalonCardRetSignal(const QString& card);
+    void sendGameEndedSignal();
 
 public slots:
     void appendMessage(const QString& message);
@@ -46,6 +47,7 @@ public slots:
     void changeGroup(const QString& message);
     void initializeCards(const QString& cards);
     void addTalonCard(const QString& card);
+    void playerTwoWins();
 
 private:
     Client* client;

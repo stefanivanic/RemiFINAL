@@ -93,6 +93,8 @@ void Server::resolveReadyRead(const QString &message)
         currentDataType = GroupIndex;
     else if(list.at(0)== "TCARDRET")
         currentDataType = TCardRet;
+    else if(list.at(0) == "GAMEENDED")
+        currentDataType = GameEnded;
     else
         currentDataType = Undefined;
 
@@ -122,6 +124,9 @@ void Server::resolveReadyRead(const QString &message)
     case TCardRet:
         emit talonCardRetSignal(buffer);
         break;
+    case GameEnded:
+        emit gameEndedSignal();
+        break;
     default:
         qDebug() << "Nepoznat podatak!";
     }
@@ -136,81 +141,10 @@ void Server::disconnected()
 
     //exit(0);
 
-
 }
 
-void Server::sendMessage(const QString &message)
+void Server::sendSignal(const QString &data)
 {
-
-    qDebug() << "provera da li je prazna poruka...";
-    if (message.isEmpty())
-            return;
-
-    QString data = "MESSAGE " + message;
-    qDebug() << "Slanje poruke " + data;
     socket->write(data.toUtf8());
 }
 
-void Server::sendCard(const QString &card)
-{
-    if (card.isEmpty())
-            return;
-
-    QString data = "CARD " + card;
-    qDebug() << "Slanje karte " + data;
-    socket->write(data.toUtf8());
-}
-
-void Server::sendGroupOfCards(const QString &cards)
-{
-    if (cards.isEmpty())
-            return;
-
-    QString data = "GROUP " + cards;
-    qDebug() << "Slanje grupe " + data;
-    socket->write(data.toUtf8());
-}
-
-void Server::sendGroupIndexes(const QString &number)
-{
-    if (number.isEmpty())
-            return;
-
-    QString data = "INDEXES " + number;
-    qDebug() << "Slanje indeksa " + data;
-    socket->write(data.toUtf8());
-}
-
-void Server::sendDeckSignal()
-{
-    qDebug() << "Slanje signala za deck!";
-    QString data = "DECK";
-    socket->write(data.toUtf8());
-}
-
-void Server::sendTalonSignal()
-{
-    qDebug() << "Slanje signala za talon!";
-    QString data = "TALON";
-    socket->write(data.toUtf8());
-}
-
-void Server::sendGroupCards(const QString &message)
-{
-    qDebug() << "Slanje indeksa grupe";
-    QString data = "GROUPINDEX " + message;
-    socket->write(data.toUtf8());
-}
-
-void Server::sendInitCards(const QString &cards)
-{
-    qDebug() << "Slanje intit cards";
-    QString data = "INITCARDS " + cards;
-    socket->write(data.toUtf8());
-}
-
-void Server::sendTalonCardRetSignal(const QString &card)
-{
-    QString data = "TCARDRET " + card;
-    socket->write(data.toUtf8());
-}

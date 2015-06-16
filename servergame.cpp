@@ -21,6 +21,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
     connect(server, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
     connect(server, SIGNAL(talonCardRetSignal(QString)),this, SLOT(addTalonCard(QString)));
+    connect(server, SIGNAL(gameEndedSignal()),      this, SLOT(playerTwoWins()));
 
     //signali iz game-a
     connect(this,   SIGNAL(onNewMessage(QString)),        this, SLOT(sendMessage(QString)));
@@ -31,6 +32,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(this,   SIGNAL(onTalonCardTaken()),           this, SLOT(sendTalonSignal()));
     connect(this, SIGNAL(onGroupCardAdd(QString)),        this, SLOT(sendGroupCards(QString)));
     connect(this, SIGNAL(talonCardReturned(QString)),     this, SLOT(sendTalonCardRetSignal(QString)));
+    connect(this, SIGNAL(gameEnded()),                    this, SLOT(sendGameEndedSignal()));
 
 } // END CONSTRUCTOR
 
@@ -41,13 +43,14 @@ void ServerGame::appendMessage(const QString &message)
 
 void ServerGame::sendMessage(const QString &message)
 {
-    server->sendMessage(message);
+    QString data = "MESSAGE " + message;
+    server->sendSignal(data);
 }
 
 void ServerGame::sendCard(const QString& card)
 {
-    qDebug() << "Stigo do dela da posalje kartu -> " + card;
-    server->sendCard(card);
+    QString data = "CARD " + card;
+    server->sendSignal(data);
 }
 
 void ServerGame::addCard(const QString &card)
@@ -93,12 +96,14 @@ void ServerGame::addGroupOfCards(const QString &cards)
 
 void ServerGame::sendGroupOfCards(const QString& cards)
 {
-    server->sendGroupOfCards(cards);
+    QString data = "GROUP " + cards;
+    server->sendSignal(data);
 }
 
 void ServerGame::sendGroupIndexes(const QString &number)
 {
-    server->sendGroupIndexes(number);
+    QString data = "INDEXES " + number;
+    server->sendSignal(data);
 }
 
 void ServerGame::returnGroups(const QString &indexes)
@@ -136,18 +141,20 @@ void ServerGame::removeCardFromTalon()
 
 void ServerGame::sendDeckSignal()
 {
-    delete deck->getLastCard();
-    deck->refreshDepth();
+    QString data = "DECK";
+    server->sendSignal(data);
 }
 
 void ServerGame::sendTalonSignal()
 {
-    server->sendTalonSignal();
+    QString data = "TALON";
+    server->sendSignal(data);
 }
 
 void ServerGame::sendGroupCards(const QString &message)
 {
-    server->sendGroupCards(message);
+    QString data = "GROUPINDEX "+message;
+    server->sendSignal(data);
 }
 
 void ServerGame::changeGroup(const QString &message)
@@ -204,12 +211,13 @@ void ServerGame::clientConnected()
 
     qDebug() << "Karte :" << cards;
 
-    server->sendInitCards(cards);
+    server->sendSignal("INITCARDS "+cards);
 }
 
 void ServerGame::sendTalonCardRetSignal(const QString &card)
 {
-    server->sendTalonCardRetSignal(card);
+    QString data = "TCARDRET " + card;
+    server->sendSignal(data);
 }
 
 void ServerGame::addTalonCard(const QString &card)
@@ -218,4 +226,14 @@ void ServerGame::addTalonCard(const QString &card)
 
     talon->addCard(c,true);
     playerTwoModCardNumber(-1);
+}
+
+void ServerGame::sendGameEndedSignal()
+{
+    server->sendSignal("GAMEENDED");
+}
+
+void ServerGame::playerTwoWins()
+{
+    //POBEDIO PLAYER 2!
 }
