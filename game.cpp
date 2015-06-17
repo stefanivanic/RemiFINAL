@@ -18,10 +18,6 @@ Game::Game(QWidget *parent) :
 
     _Player1 = new PlayerContainer(this, 330, 490, 350, 100);
 
-    // napravi kontejner za playera 2 ovo ne
-    // moze ovako da ostane jer mora dinamicki da se menja
-    // broj karata koje protivnik ima u ruci
-
     chooseCards = new ChooseCards(this);
 
     deck = new Deck(this, 30, 250, 70, 100); // init i shuffle
@@ -315,6 +311,8 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                                         if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER)
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
+                                        else if(g.getCards()[0]->getSign() == Card::JOKER)
+                                             cdc->addCards(g.getCards().mid(1, g.getCards().size()));
                                         else
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
@@ -415,6 +413,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
                             _Player1->refreshDepth(); _Player1->refreshCardsPosition();
                             cdc->refreshDepth(); cdc->refreshCardsPosition();
+
+                                qDebug() << _Player1->printCards();
+                                qDebug() << cdc->printCards();
 
                             return true;
                             // .......................................
