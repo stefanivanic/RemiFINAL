@@ -43,7 +43,6 @@
     <property name="styleSheet">
      <string notr="true">#pushButtonCreate {
 	border: 1px solid back;
-	border-image: url(&quot;./slike/Teme/2_create.jpg&quot;);
 }</string>
     </property>
     <property name="text">
@@ -78,7 +77,6 @@
     <property name="styleSheet">
      <string notr="true">#pushButtonExit {
 	border: 1px solid back;
-	border-image: url(&quot;./slike/Teme/2_exit.jpg&quot;);
 }</string>
     </property>
     <property name="text">
