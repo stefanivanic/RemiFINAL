@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QMediaPlayer>
 
 #include "playercontainer.h"
 #include "card.h"
@@ -35,6 +36,8 @@ public:
 
     Card* createCardByString(const QString& string1);
 
+    QMediaPlayer *song;
+
 signals:
     void onNewMessage(const QString& message);
     void onCardThrown(const QString& card);
@@ -61,6 +64,8 @@ private slots:
     void on_actionChoose_cards_triggered();
     void on_lineEdit_returnPressed();
     void on_undoTookTalonCard_clicked();
+
+    void on_playStop_clicked();
 
 protected:
     Ui::Game *ui;
