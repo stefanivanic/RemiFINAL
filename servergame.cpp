@@ -235,5 +235,5 @@ void ServerGame::sendGameEndedSignal()
 
 void ServerGame::playerTwoWins()
 {
-    //POBEDIO PLAYER 2!
+    qDebug() << "Pobedio je player 2!";
 }

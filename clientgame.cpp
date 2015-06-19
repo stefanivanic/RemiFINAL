@@ -257,4 +257,5 @@ void ClientGame::sendGameEndedSignal()
 void ClientGame::playerTwoWins()
 {
     //POBEDIO PLAYER 2
+    qDebug() << "Pobedio je player 2!";
 }
