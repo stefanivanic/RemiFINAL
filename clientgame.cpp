@@ -75,7 +75,7 @@ void ClientGame::addGroupOfCards(const QString &cards)
                                 200,
                                 [](const int& a, CardTableContainer* cdc)
                                     { return a + cdc->getContainerWidth(); } );
-    int pos_y = 150 + (table.size() / 3 ) * 100;
+    int pos_y = 180 + (table.size() / 3 ) * 100;
 
     CardTableContainer* cdc =
             new CardTableContainer(this, pos_x, pos_y, w1, 100);
@@ -91,7 +91,7 @@ void ClientGame::addGroupOfCards(const QString &cards)
     }
 
     table.append(cdc);
-    playerTwoModCardNumber(-i);
+    playerTwoModCardNumber(-(i-1));
 }
 
 void ClientGame::sendGroupOfCards(const QString& cards)
