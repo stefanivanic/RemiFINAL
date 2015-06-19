@@ -308,12 +308,16 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     {
                                         qDebug() << "radi se o grupi gde su istog znaka";
 
-                                        _Player1->addCard(g.getCards()[jokerFlag], true);
 
-                                        if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER)
+
+                                        if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER) {
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
-                                        else if(g.getCards()[0]->getSign() == Card::JOKER)
+                                            _Player1->addCard(g.getCards()[jokerFlag], true);
+                                        }
+                                        else if(g.getCards()[0]->getSign() == Card::JOKER) {
                                              cdc->addCards(g.getCards().mid(1, g.getCards().size()));
+                                             _Player1->addCard(g.getCards()[jokerFlag], true);
+                                        }
                                         else
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
