@@ -220,7 +220,7 @@ void ClientGame::initializeCards(const QString &cards)
     changePlayer();
     changePlayer();
 
-    playerTwoModCardNumber(1);
+    playerTwoModCardNumber(15);
 
     QStringList list = cards.split(' ');
 
