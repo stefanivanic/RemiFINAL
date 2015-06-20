@@ -678,11 +678,10 @@ void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
           {
               if(jokerFlag==1)
                   continue;
-              else{
-                  message.append(g->getCards()[i]->name());
-                  message.append(" ");
-              }
           }
+
+          message.append(g->getCards()[i]->name());
+          message.append(" ");
     }
 
     emit onGroupCardAdd(message);
