@@ -98,6 +98,9 @@ void ServerGame::addGroupOfCards(const QString &cards)
         qDebug() << "Dodajem kartu:" + list.at(i);
     }
 
+    cdc->addCards(vector);
+    cdc->refreshDepth();
+
     table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
 
@@ -172,7 +175,7 @@ void ServerGame::changeGroup(const QString &message)
     QStringList list = message.split(' ');
 
     int k=0;
-    if(list[0].size()==1)
+    if(list[0].size()==2)
     {
         //zamenio kartu za jokera
         k=list[0].at(0).digitValue();
@@ -181,7 +184,10 @@ void ServerGame::changeGroup(const QString &message)
         playerTwoModCardNumber(1);
     }
     else
+    {
         k=list[0].toInt();
+        playerTwoModCardNumber(-1);
+    }
 
     CardTableContainer* cdc = NULL;
     cdc = table[k];
