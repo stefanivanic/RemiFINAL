@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     do {
      QApplication a(argc, argv);
-     Game iw;
+     InitWindow iw;
      iw.show();
      currentExitCode = a.exec();
     } while( currentExitCode == Game::EXIT_CODE_REBOOT );
