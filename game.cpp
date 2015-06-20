@@ -313,32 +313,20 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                         if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER) {
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
                                             _Player1->addCard(g.getCards()[jokerFlag], true);
+                                            resolveGroupChanged(&g,k,1);
                                         }
                                         else if(g.getCards()[0]->getSign() == Card::JOKER) {
                                              cdc->addCards(g.getCards().mid(1, g.getCards().size()));
                                              _Player1->addCard(g.getCards()[jokerFlag], true);
+                                             resolveGroupChanged(&g,k,1);
                                         }
-                                        else
+                                        else{
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+                                            resolveGroupChanged(&g,k,0);
 
-                                        QString message("");
 
-                                        //iterator za grupu
-                                        message.append(QString::number(k));
-                                        message.append("J ");
-
-                                        for(int i=0; i<g.getCards().size(); i++){
-                                              //da ne salje Jokera, on je zamenjen!
-                                              if(g.getCards()[i]->name() == "J")
-                                                  continue;
-
-                                              message.append(g.getCards()[i]->name());
-                                              message.append(" ");
                                         }
 
-                                        emit onGroupCardAdd(message);
-                                        qDebug() << "Poslat signal za dodavanje na grupu! " << message;
-                                        //KRAJ DELA ZA MREZU!
                                     }
                                     if(g.type() == Group::SAME_NUMBER)
                                     {
@@ -350,30 +338,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                             _Player1->addCard(g.getCards()[jokerFlag], true);
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
 
-                                            QString message("");
-
-                                            //iterator za grupu
-                                            message.append(QString::number(k));
-                                            message.append("J ");
-
-                                            for(int i=0; i<g.getCards().size(); i++){
-
-                                                  if(g.getCards()[i]->name() == "J")
-                                                      continue;
-
-                                                  message.append(g.getCards()[i]->name());
-                                                  message.append(" ");
-                                            }
-
-                                            emit onGroupCardAdd(message);
-                                            qDebug() << "Poslat signal za dodavanje na grupu! " << message;
-                                            //KRAJ DELA ZA MREZU!
+                                            resolveGroupChanged(&g,k,1);
                                         }
 
                                         // samo dodajemo kartu, i pomeramo sve ostale cdc udesno
                                         else
                                         {
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+                                            resolveGroupChanged(&g,k,0);
 
                                             int granica = (tableContainterPosition/3 + 1) * 3;
                                             qDebug() << "granica : " << granica;
@@ -386,6 +358,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 else // djoker se baca u grupu
                                 {
                                     cdc->addCards(g.getCards().mid(0, g.getCards().size()));
+                                    resolveGroupChanged(&g,k,0);
                                 }
                             }
                             else { // ne postoji djoker
@@ -394,19 +367,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                 cdc->addCards(g.getCards().mid(0, g.getCards().size()));
 
                                 //DEO ZA MREZU!
-                                QString message("");
-
-                                //iterator za grupu
-                                message.append(QString::number(k));
-                                message.append(" ");
-
-                                for(int i=0; i<g.getCards().size(); i++){
-                                      message.append(g.getCards()[i]->name());
-                                      message.append(" ");
-                                }
-
-                                emit onGroupCardAdd(message);
-                                qDebug() << "Poslat signal za dodavanje na grupu! " << message;
+                                resolveGroupChanged(&g,k,0);
                                 //KRAJ DELA ZA MREZU!
 
                                 int granica = (tableContainterPosition/3 +1) * 3;
@@ -696,4 +657,31 @@ void Game::on_playStop_clicked()
         song->play();
         playing=true;
     }
+}
+
+void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
+{
+    //DEO ZA MREZU!
+    QString message("");
+
+    //iterator za grupu
+    message.append(QString::number(k));
+    message.append(" ");
+
+    for(int i=0; i<g->getCards().size(); i++){
+
+          if(g->getCards()[i]->name()=="J")
+          {
+              if(jokerFlag==1)
+                  continue;
+              else{
+                  message.append(g->getCards()[i]->name());
+                  message.append(" ");
+              }
+          }
+    }
+
+    emit onGroupCardAdd(message);
+    qDebug() << "Poslat signal za dodavanje na grupu! " << message;
+    //KRAJ DELA ZA MREZU!
 }

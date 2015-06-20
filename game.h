@@ -36,6 +36,8 @@ public:
 
     Card* createCardByString(const QString& string1);
 
+    void resolveGroupChanged(Group* g, int k, int jokerFlag);
+
 signals:
     void onNewMessage(const QString& message);
     void onCardThrown(const QString& card);
