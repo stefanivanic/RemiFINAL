@@ -134,7 +134,7 @@ void ClientGame::returnGroups(const QString &indexes)
         {
             delete cdc->getLastCard();
         }
-        playerTwoModCardNumber(j);
+        playerTwoModCardNumber(j-1);
         table.pop_back();
     }
 

@@ -132,7 +132,7 @@ void ServerGame::returnGroups(const QString &indexes)
         for(j = 0 ; j < size ; j++)
             delete cdc->getLastCard();
 
-        playerTwoModCardNumber(j);
+        playerTwoModCardNumber(j-1);
         table.pop_back();
     }
 
