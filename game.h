@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QMediaPlayer>
 
 #include "playercontainer.h"
 #include "card.h"
@@ -62,10 +63,14 @@ private slots:
     void on_lineEdit_returnPressed();
     void on_undoTookTalonCard_clicked();
 
+    void on_playStop_clicked();
+
 protected:
     Ui::Game *ui;
 
     QString theme;
+    QMediaPlayer *song;
+    bool playing = true;
 
     PlayerContainer *_Player1;
 

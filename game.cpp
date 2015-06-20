@@ -37,10 +37,10 @@ Game::Game(QWidget *parent) :
     // u add card vise ne mora da se prosledjuje bool
 
 
-    QMediaPlayer *song = new QMediaPlayer();
+    song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
-    //song->play();
+    song->play();
 
 
     // inicijalizacija protivnikovih karata
@@ -684,5 +684,16 @@ void Game::playerTwoModCardNumber(int offset)
         playerTwoCards.back()->move(310 + i*20, 40);
         playerTwoCards.back()->raise();
         playerTwoCards.back()->show();
+    }
+}
+void Game::on_playStop_clicked()
+{
+    if(playing) {
+        song->stop();
+        playing=false;
+    }
+    else {
+        song->play();
+        playing=true;
     }
 }

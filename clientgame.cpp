@@ -40,7 +40,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
 void ClientGame::appendMessage(const QString &message)
 {
     qDebug() << "Primio poruku: " << message;
-  //  ui->textEdit->append(message);
+    //ui->textEdit->append(message);
 }
 
 void ClientGame::sendMessage(const QString& message)
@@ -75,7 +75,7 @@ void ClientGame::addGroupOfCards(const QString &cards)
                                 200,
                                 [](const int& a, CardTableContainer* cdc)
                                     { return a + cdc->getContainerWidth(); } );
-    int pos_y = 180 + (table.size() / 3 ) * 100;
+    int pos_y = 180 + (table.size() / 3 ) * 130;
 
     CardTableContainer* cdc =
             new CardTableContainer(this, pos_x, pos_y, w1, 100);
@@ -230,8 +230,8 @@ void ClientGame::initializeCards(const QString &cards)
 
     qDebug() << "Dobio karte: " << cards;
 
-    deck->deleteCards();
-    deck->setNewCards(vector);
+  //  deck->deleteCards();
+  //  deck->setNewCards(vector);
 
 }
 
