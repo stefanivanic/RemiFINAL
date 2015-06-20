@@ -157,8 +157,7 @@ void Game::delay(double seconds, QString message)
 }
 */
 void Game::on_throwGroup_clicked()
-{
-
+{    
     if(!playerTookCard) {
         ui->errorLogger->setText("Prvo uzmite kartu");
         return;
@@ -169,9 +168,10 @@ void Game::on_throwGroup_clicked()
         case -1 : ui->errorLogger->setText("Manje od 3 karte!"); break;
         case -2 : ui->errorLogger->setText("Više džokera!"); break;
         case -3 : ui->errorLogger->setText("Karte nisu ni sve istog, ni sve različitog znaka"); break;
-        case -4 : ui->errorLogger->setText("Različitog znaka, ali i različite vrednosti"); break;
+        case -4 : ui->errorLogger->setText("Karte su različitog i znaka i vrednosti"); break;
         case -5 : ui->errorLogger->setText("Istog znaka, ali neogovarajuće vrednosti"); break;
-        default : ui->errorLogger->setText("Nepoznata greška" + QString::number(retValue)); break;
+        default : ui->errorLogger->setText("Nepoznata greška"); break;
+        //default : ui->errorLogger->setText("Nepoznata greška" + QString::number(retValue)); break;
         }
         return;
     }

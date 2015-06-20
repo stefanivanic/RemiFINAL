@@ -22,8 +22,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>9</y>
+      <x>820</x>
+      <y>30</y>
       <width>149</width>
       <height>16</height>
      </rect>
@@ -103,8 +103,8 @@
      <rect>
       <x>330</x>
       <y>420</y>
-      <width>341</width>
-      <height>18</height>
+      <width>381</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -186,8 +186,8 @@
    <widget class="QPushButton" name="playStop">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>520</y>
+      <x>110</x>
+      <y>510</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -225,9 +225,9 @@
    <widget class="QLabel" name="onMoveLabel">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>30</x>
       <y>450</y>
-      <width>215</width>
+      <width>221</width>
       <height>20</height>
      </rect>
     </property>
@@ -252,9 +252,9 @@
    <widget class="QLabel" name="groupValue">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>30</x>
       <y>480</y>
-      <width>211</width>
+      <width>221</width>
       <height>20</height>
      </rect>
     </property>
