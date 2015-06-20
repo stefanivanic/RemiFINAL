@@ -13,7 +13,7 @@ InitWindow::InitWindow(QWidget *parent) :
     ui->pushButtonCreate->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_create.jpg);"));
     ui->pushButtonLoad->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_load.jpg);"));
     ui->pushButtonExit->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_exit.jpg);"));
-    ui->labelIp->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_ip.jpg);"));
+    ui->labelIp->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/2_ipport.jpg);"));
 
     ui->inputIp->hide();
     ui->labelIp->hide();
