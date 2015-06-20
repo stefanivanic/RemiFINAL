@@ -44,7 +44,7 @@ Game::Game(QWidget *parent) :
 
 
     // inicijalizacija protivnikovih karata
-    playerTwoModCardNumber(14);
+//    playerTwoModCardNumber(14);
 } // END CONSTRUCTOR
 
 void Game::initSnS()
