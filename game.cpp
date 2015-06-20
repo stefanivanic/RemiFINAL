@@ -240,6 +240,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                     if(table[k]->isInArea()) {
                         cdc = table[k];
                         tableContainterPosition = k;
+                        qDebug() << "provera koji je table : " << tableContainterPosition;
                         break;
                     }
                 }
