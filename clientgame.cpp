@@ -82,19 +82,30 @@ void ClientGame::addGroupOfCards(const QString &cards)
             new CardTableContainer(this, pos_x, pos_y, w1, 100);
 
     int i;
+    QVector<Card*> vector;
     for(i=0; i<list.size()-1; i++)
     {
         if(list.at(i) == "")
             continue;
 
         Card* c = createCardByString(list.at(i));
-        cdc->addCard(c,true);
+
+        QString theme = "2";
+        QSize size = c->setImage(theme, true);
+
+        c->resize(size.width(), size.height());
+
+        vector.push_back(c);
     }
+
+    cdc->addCards(vector);
+    cdc->refreshDepth();
 
     table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
 
     qDebug()<< "Velicina table-a " << table.size();
+
 }
 
 void ClientGame::sendGroupOfCards(const QString& cards)
