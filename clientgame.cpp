@@ -186,7 +186,10 @@ void ClientGame::changeGroup(const QString &message)
         playerTwoModCardNumber(1);
     }
     else
+    {
         k=list[0].toInt();
+        playerTwoModCardNumber(-1);
+    }
 
     CardTableContainer* cdc = NULL;
     cdc = table[k];
