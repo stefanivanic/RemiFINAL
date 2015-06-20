@@ -92,6 +92,8 @@ void ServerGame::addGroupOfCards(const QString &cards)
 
     table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
+
+    qDebug() << "Velicina tabel-a " << table.size();
 }
 
 void ServerGame::sendGroupOfCards(const QString& cards)

@@ -93,6 +93,8 @@ void ClientGame::addGroupOfCards(const QString &cards)
 
     table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
+
+    qDebug()<< "Velicina table-a " << table.size();
 }
 
 void ClientGame::sendGroupOfCards(const QString& cards)
