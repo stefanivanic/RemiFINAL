@@ -55,7 +55,6 @@ public slots:
 private slots:
     void on_actionSelect_theme_triggered();
     void on_throwGroup_clicked();
-    void changeTempPosText();
     void showOnThrowButton(bool);
     void hideOnThrowButton(bool);
     void slotReboot();

@@ -19,24 +19,6 @@
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>30</y>
-      <width>149</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#label {
-
-}</string>
-    </property>
-    <property name="text">
-     <string>   Player1 : tempCardPosition : </string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="throwGroup">
     <property name="geometry">
      <rect>
@@ -118,7 +100,6 @@
     <property name="styleSheet">
      <string notr="true">#errorLogger {
 	color: grey;
-	border: 1px solid black;
 	qproperty-alignment: AlignCenter;
 }</string>
     </property>
@@ -246,7 +227,7 @@
 }</string>
     </property>
     <property name="text">
-     <string>   Na potezu: Player 1</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="groupValue">
@@ -269,12 +250,12 @@
     <property name="styleSheet">
      <string notr="true">#groupValue {
 	color: grey;
-	qproperty-alignment: AlignCenter;
+    qproperty-alignment: AlignCenter;
 }
 </string>
     </property>
     <property name="text">
-     <string>   Vrednost grupe: 0</string>
+     <string/>
     </property>
    </widget>
   </widget>
