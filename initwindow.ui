@@ -95,6 +95,9 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="inputMask">
+     <string>999.999.999.999 : 99999</string>
+    </property>
    </widget>
    <widget class="QLabel" name="labelIp">
     <property name="geometry">
