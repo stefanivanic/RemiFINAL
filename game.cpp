@@ -41,10 +41,6 @@ Game::Game(QWidget *parent) :
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
     song->play();
-
-
-    // inicijalizacija protivnikovih karata
-//    playerTwoModCardNumber(14);
 } // END CONSTRUCTOR
 
 void Game::initSnS()
