@@ -36,8 +36,6 @@ public:
 
     Card* createCardByString(const QString& string1);
 
-    QMediaPlayer *song;
-
 signals:
     void onNewMessage(const QString& message);
     void onCardThrown(const QString& card);
@@ -71,6 +69,8 @@ protected:
     Ui::Game *ui;
 
     QString theme;
+    QMediaPlayer *song;
+    bool playing = true;
 
     PlayerContainer *_Player1;
 

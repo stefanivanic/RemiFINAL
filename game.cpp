@@ -688,5 +688,12 @@ void Game::playerTwoModCardNumber(int offset)
 }
 void Game::on_playStop_clicked()
 {
-    song->stop();
+    if(playing) {
+        song->stop();
+        playing=false;
+    }
+    else {
+        song->play();
+        playing=true;
+    }
 }
