@@ -16,7 +16,7 @@ Game::Game(QWidget *parent) :
 
     ui->throwGroup->hide(); ui->undoGroup->hide(); ui->undoTookTalonCard->hide();
 
-    _Player1 = new PlayerContainer(this, 330, 490, 350, 100);
+    _Player1 = new PlayerContainer(this, 340, 490, 350, 100);
 
     chooseCards = new ChooseCards(this);
 
@@ -119,12 +119,12 @@ void Game::on_undoGroup_clicked()
 
 }
 
-void Game::changeTempPosText()
+/*void Game::changeTempPosText()
 {
     QString s("Player1 : tempCardPosition : ");
     s.append( QString::number(_Player1->getTempCardPos()) );
     ui->label->setText(s);
-}
+}*/
 
 // postavljaju se flegovi i ispisuju se loggeri
 void Game::changePlayer()
@@ -137,12 +137,16 @@ void Game::changePlayer()
     groupsThrown = 0;
     groupValue   = 0;
 
-    ui->errorLogger->setText("");
+ /*   ui->errorLogger->setText("");
     ui->groupValue->setText("Vrednost grupe: 0");
+*/
+    QString s;
+    if(playerOneOnMove)
+        s="Vi ste na potezu";
+    else
+        s="Protivnik je na potezu";
 
-    QString s("Na potezu: ");
-    QString s1 = playerOneOnMove ? "player1" : "player2" ;
-    ui->onMoveLabel->setText(s.append(s1));
+    ui->onMoveLabel->setText(s);
 }
 /*
 void Game::delay(double seconds, QString message)
@@ -157,7 +161,7 @@ void Game::delay(double seconds, QString message)
 }
 */
 void Game::on_throwGroup_clicked()
-{    
+{
     if(!playerTookCard) {
         ui->errorLogger->setText("Prvo uzmite kartu");
         return;
