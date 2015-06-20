@@ -11,6 +11,9 @@ ServerGame::ServerGame(QWidget *parent) :
 {
     server = new Server();
 
+    ipPortLabel = new QLabel(this);
+    ipPortLabel->move(450, 280);
+
     //signali sa servera
     connect(server, SIGNAL(newClient()),        this, SLOT(clientConnected()));
     connect(server, SIGNAL(newMessage(QString)),    this,   SLOT(appendMessage(QString)));

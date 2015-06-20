@@ -49,6 +49,7 @@ public slots:
 
 private:
     Server* server;
+    QLabel* ipPortLabel;
 };
 
 #endif // SERVERGAME_H
