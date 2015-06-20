@@ -183,7 +183,7 @@ void Game::on_throwGroup_clicked()
     groupValue += retValue;
     ui->groupValue->setText("Vrednost grupe: " + QString::number(groupValue));
 
-    int w1 = _Player1->group->getCards().size() * 20;
+    int w1 = _Player1->group->getCards().size() * 20 + 60;
     int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
                                 table.end(),
                                 200,
