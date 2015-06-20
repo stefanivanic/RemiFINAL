@@ -12,7 +12,10 @@ ServerGame::ServerGame(QWidget *parent) :
     server = new Server();
 
     ipPortLabel = new QLabel(this);
-    ipPortLabel->move(450, 280);
+    ipPortLabel->move(300, 280);
+    ipPortLabel->setText(server->getIp()+ ":" + QString::number(server->getPort()));
+    ipPortLabel->resize(400, 50);
+    ipPortLabel->setStyleSheet(QStringLiteral("font-size: 40px"));
 
     //signali sa servera
     connect(server, SIGNAL(newClient()),        this, SLOT(clientConnected()));
@@ -220,6 +223,7 @@ void ServerGame::changeGroup(const QString &message)
 
 void ServerGame::clientConnected()
 {
+    delete ipPortLabel;
 
     playerTwoModCardNumber(14);
 
