@@ -90,10 +90,10 @@ void ClientGame::addGroupOfCards(const QString &cards)
 
         Card* c = createCardByString(list.at(i));
 
-                QString theme = "2";
-                QSize size = c->setImage(theme, true);
+        QString theme = "2";
+        QSize size = c->setImage(theme, true);
 
-                c->resize(size.width(), size.height());
+        c->resize(size.width(), size.height());
 
         vector.push_back(c);
     }
