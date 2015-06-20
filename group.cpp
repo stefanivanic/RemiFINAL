@@ -112,7 +112,9 @@ int Group::isCorrectGroup(bool shuffle)
             if(cards[i]->getNumber() != cards[1]->getNumber())
                 return -4;
 
-        if(cards[0]->getSign() != Card::JOKER && cards[0]->getNumber() != cards[1]->getNumber())
+
+        if((cards[0]->getSign() != Card::JOKER && cards[0]->getNumber() != cards[1]->getNumber())
+                || cards.size()>4)
             return -4;
 
         if(cards[0]->getSign() == Card::JOKER)
