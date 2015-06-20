@@ -9,8 +9,7 @@ int main(int argc, char *argv[])
     int currentExitCode = 0;
 
     do {
-     QApplication a(argc, argv);
-
+     QApplication a(argc, argv);\
      InitWindow iw;
      iw.show();
      currentExitCode = a.exec();

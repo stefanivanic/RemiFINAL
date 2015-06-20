@@ -206,6 +206,8 @@ void ClientGame::initializeCards(const QString &cards)
     changePlayer();
     changePlayer();
 
+    playerTwoModCardNumber(1);
+
     QStringList list = cards.split(' ');
 
     _Player1->deleteCards();
