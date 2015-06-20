@@ -666,6 +666,10 @@ void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
 
     //iterator za grupu
     message.append(QString::number(k));
+
+    if(jokerFlag==1)
+        message.append("J");
+
     message.append(" ");
 
     for(int i=0; i<g->getCards().size(); i++){
