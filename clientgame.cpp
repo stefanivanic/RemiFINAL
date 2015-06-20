@@ -91,7 +91,7 @@ void ClientGame::addGroupOfCards(const QString &cards)
         cdc->addCard(c,true);
     }
 
-    table.append(cdc);
+    table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
 }
 
