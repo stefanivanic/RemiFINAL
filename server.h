@@ -24,8 +24,10 @@ public:
    QTcpSocket *socket;
 
    void resolveReadyRead(const QString& message);
-
    void sendSignal(const QString& data);
+
+   QString getIp();
+   int getPort();
 
 signals:
    void newClient();
@@ -47,6 +49,8 @@ public slots:
 private:
     QTcpServer *server;
     DataType currentDataType;
+    QString ipAddress;
+    int port;
 
 };
 
