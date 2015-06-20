@@ -18,7 +18,7 @@ Server::Server(QObject *parent)
         qDebug() << "Listening...";
     }
 
-    QString ipAddress;
+
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     // use the first non-localhost IPv4 address
     for (int i = 0; i < ipAddressesList.size(); ++i) {
@@ -33,6 +33,8 @@ Server::Server(QObject *parent)
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
     qDebug() << "Server is running on :" << ipAddress << " port:" << server->serverPort();
+
+    port = server->serverPort();
 
 }
 
@@ -146,5 +148,15 @@ void Server::disconnected()
 void Server::sendSignal(const QString &data)
 {
     socket->write(data.toUtf8());
+}
+
+QString Server::getIp()
+{
+    return ipAddress;
+}
+
+int Server::getPort()
+{
+    return port;
 }
 
