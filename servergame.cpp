@@ -98,6 +98,9 @@ void ServerGame::addGroupOfCards(const QString &cards)
         qDebug() << "Dodajem kartu:" + list.at(i);
     }
 
+    cdc->addCards(vector);
+    cdc->refreshDepth();
+
     table.push_back(cdc);
     playerTwoModCardNumber(-(i-1));
 
