@@ -410,7 +410,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if( groupValue > 0 && groupValue <52 && !_Player1->alreadyOpened) {
-                        ui->errorLogger->setText("otvaranje mora da ima vrednost preko 52");
+                        ui->errorLogger->setText("otvaranje mora da ima vrednost preko 51");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if(playerTookCardFromTalon && groupValue == 0 && !_Player1->alreadyOpened) {
