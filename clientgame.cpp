@@ -209,6 +209,7 @@ void ClientGame::initializeCards(const QString &cards)
     QStringList list = cards.split(' ');
 
     _Player1->deleteCards();
+    _Player1->refreshDepth();
 
     for(int i=0; i<14; i++)
     {
@@ -217,6 +218,8 @@ void ClientGame::initializeCards(const QString &cards)
 
         _Player1->addCard(createCardByString(list[i]),true);
     }
+
+    _Player1->refreshDepth();
 
     QVector<Card*> vector;
 
