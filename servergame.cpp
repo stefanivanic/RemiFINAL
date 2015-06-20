@@ -34,6 +34,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(this, SIGNAL(talonCardReturned(QString)),     this, SLOT(sendTalonCardRetSignal(QString)));
     connect(this, SIGNAL(gameEnded()),                    this, SLOT(sendGameEndedSignal()));
 
+    playerTwoModCardNumber(0);
 } // END CONSTRUCTOR
 
 void ServerGame::appendMessage(const QString &message)
@@ -210,6 +211,9 @@ void ServerGame::changeGroup(const QString &message)
 
 void ServerGame::clientConnected()
 {
+
+    playerTwoModCardNumber(14);
+
     QString cards("");
 
     for(int i=0; i<deck->getCards().size(); i++)
