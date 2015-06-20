@@ -587,6 +587,7 @@ Card* Game::createCardByString(const QString& string1)
             sign=Card::HERC;
 
             c = new Card(this,number,number,sign);
+
     }
     else if(string.at(0) == 'J')
     {
