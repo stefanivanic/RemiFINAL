@@ -40,7 +40,8 @@ Game::Game(QWidget *parent) :
     song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
-    song->play();
+    song->play();    
+
 } // END CONSTRUCTOR
 
 void Game::initSnS()
@@ -84,7 +85,7 @@ void Game::playerToTalon()
         if (endGameDialog == QMessageBox::Yes)  emit slotReboot();
         else QApplication::quit();
      */
-        endGameDialog = QMessageBox::information(this,"KRAJ IGRE!","Vi ste pobednik!",QMessageBox::Ok);
+        endGameDialog = QMessageBox::information(this,"THE END!","You win!",QMessageBox::Ok);
 
         if(endGameDialog == QMessageBox::Ok)
         {
@@ -148,9 +149,9 @@ void Game::changePlayer()
 */
     QString s;
     if(playerOneOnMove)
-        s="Vi ste na potezu";
+        s="You are on move";
     else
-        s="Protivnik je na potezu";
+        s="Opponent is on move";
 
     ui->onMoveLabel->setText(s);
 }
@@ -169,29 +170,29 @@ void Game::delay(double seconds, QString message)
 void Game::on_throwGroup_clicked()
 {
     if(!playerTookCard) {
-        ui->errorLogger->setText("Prvo uzmite kartu");
+        ui->errorLogger->setText("First take card");
         return;
     }
     int retValue = _Player1->group->isCorrectGroup(true);
     if( retValue < 0) {
         switch( retValue ) {
-        case -1 : ui->errorLogger->setText("Manje od 3 karte!"); break;
-        case -2 : ui->errorLogger->setText("Više džokera!"); break;
-        case -3 : ui->errorLogger->setText("Karte nisu ni sve istog, ni sve različitog znaka"); break;
-        case -4 : ui->errorLogger->setText("Karte su različitog i znaka i vrednosti"); break;
-        case -5 : ui->errorLogger->setText("Istog znaka, ali neogovarajuće vrednosti"); break;
-        default : ui->errorLogger->setText("Nepoznata greška"); break;
+        case -1 : ui->errorLogger->setText("Less than 3 cards"); break;
+        case -2 : ui->errorLogger->setText("More than one joker"); break;
+        case -3 : ui->errorLogger->setText("Cars are not all same sign, nor different sign"); break;
+        case -4 : ui->errorLogger->setText("All cards are different signs and values"); break;
+        case -5 : ui->errorLogger->setText("Cards are same signs, but not appropriate values"); break;
+        default : ui->errorLogger->setText("Unknown error!"); break;
         //default : ui->errorLogger->setText("Nepoznata greška" + QString::number(retValue)); break;
         }
         return;
     }
     if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
-        ui->errorLogger->setText("Mora da ostane bar 1 karta");
+        ui->errorLogger->setText("You have to be left with at least 1 card");
         return;
     }
 //      ui->errorLogger->setText("");
     groupValue += retValue;
-    ui->groupValue->setText("Vrednost grupe: " + QString::number(groupValue));
+    ui->groupValue->setText("Group value: " + QString::number(groupValue));
 
     int w1 = _Player1->group->getCards().size() * 20 + 60;
     int pos_x = std::accumulate(table.begin() + table.size() / 3 * 3,
@@ -260,13 +261,13 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->resolveMouseEvent(m_event);
                             _Player1->refreshCardsPosition();
                             _Player1->refreshDepth();
-                            ui->errorLogger->setText("Morate prvo da se otvorite");
+                            ui->errorLogger->setText("You have to open firts");
                             return true;
                         }
 
-
+// *********************************************************************************
                         if( _Player1->getCards().size() == 1) {
-                            ui->errorLogger->setText("Mora da ostane bar jedna karta u ruci");
+                            ui->errorLogger->setText("You have to be left with at least 1 card");
                             _Player1->mouseReleaseEvent(m_event); event->ignore(); return true;
                         }
 
@@ -421,19 +422,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             if( talon->isInArea()) {
                 if(event->type() == QEvent::MouseButtonRelease && !firstTime) {
                     if(!playerOneOnMove) {
-                        ui->errorLogger->setText("Sačekajte svoj red");
+                        ui->errorLogger->setText("Wait your turn");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if(!playerTookCard) {
-                        ui->errorLogger->setText("Prvo uzmite kartu");
+                        ui->errorLogger->setText("First take card");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if( groupValue > 0 && groupValue <52 && !_Player1->alreadyOpened) {
-                        ui->errorLogger->setText("Otvaranje mora da ima vrednost preko 51");
+                        ui->errorLogger->setText("Total value of cards have to be grater than 51");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if(playerTookCardFromTalon && groupValue == 0 && !_Player1->alreadyOpened) {
-                        ui->errorLogger->setText("Uzeli ste kartu sa talona, morate da se otvorite");
+                        ui->errorLogger->setText("You have to open when take card from talon");
                         _Player1->mouseReleaseEvent(m_event);
                     }/*
                     else if(!firstTime && playerTookCardFromTalon) {
@@ -479,9 +480,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
         if(deck->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCard)
-                    ui->errorLogger->setText("Karta je već uzeta");
+                    ui->errorLogger->setText("Card already taken");
                 else if(!playerOneOnMove)
-                    ui->errorLogger->setText("Sačekajte svoj red");
+                    ui->errorLogger->setText("Wait your turn");
                 else {
                     emit onDeckCardTaken();
                     _Player1->addCard(deck->getLastCard(),true);
@@ -495,9 +496,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
         if(talon->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCardFromTalon || playerTookCard)
-                    ui->errorLogger->setText("Karta je već uzeta");
+                    ui->errorLogger->setText("Card alredy taken");
                 else if(!playerOneOnMove)
-                    ui->errorLogger->setText("Sačekajte svoj red");
+                    ui->errorLogger->setText("Wait your turn");
                 else {
                    playerTookCardFromTalon  = true;
                    playerTookCard           = true;
@@ -668,12 +669,14 @@ void Game::playerTwoModCardNumber(int offset)
 void Game::on_playStop_clicked()
 {
     if(playing) {
-        song->stop();
+        song->setVolume(0);
         playing=false;
+        ui->playStop->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/notax.png);"));
     }
     else {
-        song->play();
+        song->setVolume(30);
         playing=true;
+        ui->playStop->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/nota.png);"));
     }
 }
 
