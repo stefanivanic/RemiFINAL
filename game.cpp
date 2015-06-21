@@ -70,13 +70,12 @@ void Game::playerToTalon()
 {
     // ovo je trentuno
     playerOneOnMove = !playerOneOnMove;
-
-    talon->addCard(_Player1->getTempCard(), true);
     _Player1->removeCard();
 
     // player je pobedio
     if(_Player1->handSize() == 0) {
 
+        talon->addCard(_Player1->getTempCard(), false);
         emit onCardThrown(_Player1->getTempCard()->name()+" GAMEENDED");
         endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
@@ -88,6 +87,7 @@ void Game::playerToTalon()
         endGameFlag = true;
     }
     else{
+        talon->addCard(_Player1->getTempCard(), true);
         emit onCardThrown(_Player1->getTempCard()->name());
     }
 
