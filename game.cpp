@@ -172,24 +172,24 @@ void Game::delay(double seconds, QString message)
 void Game::on_throwGroup_clicked()
 {
     if(!playerTookCard) {
-        ui->errorLogger->setText("First take card");
+        animation("First take card");
         return;
     }
     int retValue = _Player1->group->isCorrectGroup(true);
     if( retValue < 0) {
         switch( retValue ) {
-        case -1 : ui->errorLogger->setText("Less than 3 cards"); break;
-        case -2 : ui->errorLogger->setText("More than one joker"); break;
-        case -3 : ui->errorLogger->setText("Cars are not all same sign, nor different sign"); break;
-        case -4 : ui->errorLogger->setText("All cards are different signs and values"); break;
-        case -5 : ui->errorLogger->setText("Cards are same signs, but not appropriate values"); break;
-        default : ui->errorLogger->setText("Unknown error!"); break;
+        case -1 : animation("Less than 3 cards"); break;
+        case -2 : animation("More than one joker"); break;
+        case -3 : animation("Cars are not all same sign, nor different sign"); break;
+        case -4 : animation("All cards are different signs and values"); break;
+        case -5 : animation("Cards are same signs, but not appropriate values"); break;
+        default : animation("Unknown error!"); break;
         //default : ui->errorLogger->setText("Nepoznata greška" + QString::number(retValue)); break;
         }
         return;
     }
     if(_Player1->group->getCards().size() == (int)_Player1->handSize()) {
-        ui->errorLogger->setText("You have to be left with at least 1 card");
+        animation("You have to be left with at least 1 card");
         return;
     }
 //      ui->errorLogger->setText("");
@@ -263,13 +263,12 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                             _Player1->resolveMouseEvent(m_event);
                             _Player1->refreshCardsPosition();
                             _Player1->refreshDepth();
-                            ui->errorLogger->setText("You have to open firts");
+                            animation("You have to open firts");
                             return true;
                         }
 
-// *********************************************************************************
                         if( _Player1->getCards().size() == 1) {
-                            ui->errorLogger->setText("You have to be left with at least 1 card");
+                            animation("You have to be left with at least 1 card");
                             _Player1->mouseReleaseEvent(m_event); event->ignore(); return true;
                         }
 
@@ -424,19 +423,19 @@ bool Game::eventFilter(QObject* target, QEvent* event)
             if( talon->isInArea()) {
                 if(event->type() == QEvent::MouseButtonRelease && !firstTime) {
                     if(!playerOneOnMove) {
-                        ui->errorLogger->setText("Wait your turn");
+                        animation("Wait your turn");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if(!playerTookCard) {
-                        ui->errorLogger->setText("First take card");
+                        animation("First take card");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if( groupValue > 0 && groupValue <52 && !_Player1->alreadyOpened) {
-                        ui->errorLogger->setText("Total value of cards have to be grater than 51");
+                        animation("Total value of cards have to be grater than 51");
                         _Player1->mouseReleaseEvent(m_event);
                     }
                     else if(playerTookCardFromTalon && groupValue == 0 && !_Player1->alreadyOpened) {
-                        ui->errorLogger->setText("You have to open when take card from talon");
+                        animation("You have to open when take card from talon");
                         _Player1->mouseReleaseEvent(m_event);
                     }/*
                     else if(!firstTime && playerTookCardFromTalon) {
@@ -482,14 +481,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
         if(deck->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCard)
-                    ui->errorLogger->setText("Card already taken");
+                    animation("Card already taken");
                 else if(!playerOneOnMove)
-                    ui->errorLogger->setText("Wait your turn");
+                    animation("Wait your turn");
                 else {
                     emit onDeckCardTaken();
                     _Player1->addCard(deck->getLastCard(),true);
                     playerTookCard = true;
-                    ui->errorLogger->setText("");
+                    animation("");
                 }
             }
             return true;
@@ -498,9 +497,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
         if(talon->isCardTargeted(target)) {
             if(event->type() == QMouseEvent::MouseButtonPress) {
                 if(playerTookCardFromTalon || playerTookCard)
-                    ui->errorLogger->setText("Card alredy taken");
+                    animation("Card alredy taken");
                 else if(!playerOneOnMove)
-                    ui->errorLogger->setText("Wait your turn");
+                    animation("Wait your turn");
                 else {
                    playerTookCardFromTalon  = true;
                    playerTookCard           = true;
