@@ -331,8 +331,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                     {
                                         qDebug() << "radi se o grupi gde su istog znaka";
 
-
-
                                         if(g.getCards()[g.getCards().size()-1]->getSign() == Card::JOKER) {
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()-1));
                                             _Player1->addCard(g.getCards()[jokerFlag], true);
@@ -347,7 +345,9 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                                             cdc->addCards(g.getCards().mid(0, g.getCards().size()));
                                             resolveGroupChanged(&g,k,0);
 
-
+                                            for(int i = tableContainterPosition + 1; i < granica && i < table.size() ; i++){
+                                                table[i]->moveRight();
+                                            }
                                         }
 
                                     }
