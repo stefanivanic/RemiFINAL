@@ -237,6 +237,13 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
             int tableContainterPosition;
             if(isInTable) {
+// proba
+                if(!_Player1->alreadyOpened){
+                    _Player1->resolveMouseEvent(m_event);
+                    ui->errorLogger->setText("Morate prvo da se otvorite");
+                    return true;
+                }
+
                 CardTableContainer* cdc = NULL;
                 int k;
                 for(k=0; k<table.size(); k++) {
