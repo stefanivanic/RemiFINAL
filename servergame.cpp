@@ -62,11 +62,12 @@ void ServerGame::addCard(const QString &card)
 {
     QStringList list = card.split(" ");
 
-    if(list.size()>1)
+    if(list.size()>1 && list[1].compare("GAMEENDED")==0)
     {
         //protivnik bacio poslednju kartu
         Card* c = createCardByString(list[0]);
         talon->addCard(c,false);
+        playerTwoModCardNumber(-1);
 
         playerTwoWins();
     }
