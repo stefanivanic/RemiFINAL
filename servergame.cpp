@@ -239,7 +239,7 @@ void ServerGame::clientConnected()
 
     playerTwoModCardNumber(14);
 
-    /*QString cards("");
+    QString cards("");
 
     for(int i=0; i<deck->getCards().size(); i++)
     {
@@ -249,7 +249,7 @@ void ServerGame::clientConnected()
 
     qDebug() << "Karte :" << cards;
 
-    server->sendSignal("INITCARDS "+cards); */
+    server->sendSignal("INITCARDS "+cards);
 }
 
 void ServerGame::sendTalonCardRetSignal(const QString &card)
