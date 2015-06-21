@@ -56,19 +56,17 @@ void ClientGame::sendCard(const QString& card)
 
 void ClientGame::addCard(const QString &card)
 {
-    /*Card* c = createCardByString(card);
-
-    talon->addCard(c,true);
-    changePlayer();
-    playerTwoModCardNumber(-1);*/
 
     QStringList list = card.split(" ");
 
-    if(list.size()>1)
+    if(list.size()>1  && list[1].compare("GAMEENDED")==0)
     {
         //protivnik bacio poslednju kartu
         Card* c = createCardByString(list[0]);
         talon->addCard(c,false);
+        playerTwoModCardNumber(-1);
+
+        playerTwoWins();
     }
     else
     {
