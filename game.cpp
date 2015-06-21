@@ -77,12 +77,19 @@ void Game::playerToTalon()
 
         talon->addCard(_Player1->getTempCard(), false);
         emit onCardThrown(_Player1->getTempCard()->name()+" GAMEENDED");
-        endGameDialog = QMessageBox::question(this, "Restart",
+     /*   endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
                                         QMessageBox::Yes|QMessageBox::No);
 
         if (endGameDialog == QMessageBox::Yes)  emit slotReboot();
         else QApplication::quit();
+     */
+        endGameDialog = QMessageBox::information(this,"KRAJ IGRE!","Vi ste pobednik!",QMessageBox::Ok);
+
+        if(endGameDialog == QMessageBox::Ok)
+        {
+            QApplication::quit();
+        }
 
         endGameFlag = true;
     }

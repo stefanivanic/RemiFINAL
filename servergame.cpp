@@ -270,5 +270,10 @@ void ServerGame::playerTwoWins()
 {
     qDebug() << "Pobedio je player 2!";
 
-    QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
+    endGameDialog = QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
+
+    if(endGameDialog == QMessageBox::Ok)
+    {
+        QApplication::quit();
+    }
 }
