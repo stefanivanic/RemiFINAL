@@ -237,13 +237,6 @@ bool Game::eventFilter(QObject* target, QEvent* event)
 
             int tableContainterPosition;
             if(isInTable) {
-// proba
-                if(!_Player1->alreadyOpened){
-                    _Player1->resolveMouseEvent(m_event);
-                    ui->errorLogger->setText("Morate prvo da se otvorite");
-                    return true;
-                }
-
                 CardTableContainer* cdc = NULL;
                 int k;
                 for(k=0; k<table.size(); k++) {
@@ -256,6 +249,14 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                 }
                 if(event->type() == QEvent::MouseButtonRelease) {
                     if( cdc != nullptr) {
+                        if(!_Player1->alreadyOpened){
+                            _Player1->resolveMouseEvent(m_event);
+                            _Player1->refreshCardsPosition();
+                            _Player1->refreshDepth();
+                            ui->errorLogger->setText("Morate prvo da se otvorite");
+                            return true;
+                        }
+
 
                         if( _Player1->getCards().size() == 1) {
                             ui->errorLogger->setText("Mora da ostane bar jedna karta u ruci");
