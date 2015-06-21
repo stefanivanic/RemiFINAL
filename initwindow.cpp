@@ -17,6 +17,8 @@ InitWindow::InitWindow(QWidget *parent) :
 
     ui->inputIp->hide();
     ui->labelIp->hide();
+
+    setFixedSize(581, 411);
 }
 
 InitWindow::~InitWindow()
