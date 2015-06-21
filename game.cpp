@@ -102,6 +102,9 @@ void Game::playerToTalon()
     }
 
     playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()
+
+    ui->groupValue->hide();
+    ui->errorLogger->hide();
 }
 
 void Game::on_undoGroup_clicked()
@@ -123,9 +126,9 @@ void Game::on_undoGroup_clicked()
     groupValue = 0;
 
     ui->undoGroup->hide();
+    ui->groupValue->hide();
 
     qDebug() << "kliknuto";
-
 }
 
 /*void Game::changeTempPosText()
@@ -226,6 +229,8 @@ void Game::on_throwGroup_clicked()
     table.push_back(cdc);
 
     if(groupValue > 51) _Player1->alreadyOpened = true;
+
+    ui->errorLogger->hide();
 }
 
 bool Game::eventFilter(QObject* target, QEvent* event)
