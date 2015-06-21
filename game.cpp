@@ -175,7 +175,7 @@ void Game::delay(double seconds, QString message)
 }
 */
 void Game::on_throwGroup_clicked()
-{
+{    
     if(!playerTookCard) {
         animation("First take card");
         return;
@@ -723,16 +723,17 @@ void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
 
 void Game::animation(const QString& message)
 {
-     ui->errorLogger->setText(message);
-     QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(ui->errorLogger);
-     opacityEffect->setOpacity(0);
-     ui->errorLogger->setGraphicsEffect(opacityEffect);
-     QPropertyAnimation* anim = new QPropertyAnimation(ui->errorLogger);
-     anim->setTargetObject(opacityEffect);
-     anim->setPropertyName("opacity");
-     anim->setDuration(2500);
-     anim->setStartValue(opacityEffect->opacity());
-     anim->setEndValue(1.0);
-     anim->setDuration(2500);
-     anim->start(QAbstractAnimation::KeepWhenStopped);
+    ui->errorLogger->show();
+    ui->errorLogger->setText(message);
+    QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(ui->errorLogger);
+    opacityEffect->setOpacity(0);
+    ui->errorLogger->setGraphicsEffect(opacityEffect);
+    QPropertyAnimation* anim = new QPropertyAnimation(ui->errorLogger);
+    anim->setTargetObject(opacityEffect);
+    anim->setPropertyName("opacity");
+    anim->setDuration(2500);
+    anim->setStartValue(opacityEffect->opacity());
+    anim->setEndValue(1.0);
+    anim->setDuration(2500);
+    anim->start(QAbstractAnimation::KeepWhenStopped);
 }
