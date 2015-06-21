@@ -26,6 +26,8 @@ public:
     explicit Game(QWidget *parent = 0);
     ~Game();
 
+    void animation(const QString& message);
+
     void playerToTalon();
 
     //void delay(double seconds, QString message);

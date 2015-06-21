@@ -4,6 +4,7 @@
 #include <QTime>
 #include <QStringList>
 #include <QMediaPlayer>
+#include <QPropertyAnimation>
 
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
@@ -41,6 +42,8 @@ Game::Game(QWidget *parent) :
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
     song->play();
+
+
 } // END CONSTRUCTOR
 
 void Game::initSnS()
@@ -705,4 +708,20 @@ void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
     emit onGroupCardAdd(message);
     qDebug() << "Poslat signal za dodavanje na grupu! " << message;
     //KRAJ DELA ZA MREZU!
+}
+
+void Game::animation(const QString& message)
+{
+     ui->errorLogger->setText(message);
+     QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(ui->errorLogger);
+     opacityEffect->setOpacity(0);
+     ui->errorLogger->setGraphicsEffect(opacityEffect);
+     QPropertyAnimation* anim = new QPropertyAnimation(ui->errorLogger);
+     anim->setTargetObject(opacityEffect);
+     anim->setPropertyName("opacity");
+     anim->setDuration(2500);
+     anim->setStartValue(opacityEffect->opacity());
+     anim->setEndValue(1.0);
+     anim->setDuration(2500);
+     anim->start(QAbstractAnimation::KeepWhenStopped);
 }
