@@ -44,6 +44,8 @@ Game::Game(QWidget *parent) :
     song->play();
 
 
+
+
 } // END CONSTRUCTOR
 
 void Game::initSnS()
