@@ -15,17 +15,19 @@ Game::Game(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->throwGroup->hide(); ui->undoGroup->hide(); ui->undoTookTalonCard->hide();
+    ui->throwGroup->hide();
+    ui->undoGroup->hide();
+    ui->undoTookTalonCard->hide();
 
-    _Player1 = new PlayerContainer(this, 340, 490, 350, 100);
+    setFixedSize(1050,620);
 
     chooseCards = new ChooseCards(this);
 
+    _Player1 = new PlayerContainer(this, 340, 490, 350, 100);
     deck = new Deck(this, 30, 250, 70, 100); // init i shuffle
     talon = new Talon(this, 120, 250, 70, 100);
 
     _Player1->installEventFilter(this);
-
     talon->installEventFilter(this);
     deck->installEventFilter(this);
 
@@ -37,12 +39,10 @@ Game::Game(QWidget *parent) :
         _Player1->addCard(deck->getLastCard(), true);
     // u add card vise ne mora da se prosledjuje bool
 
-
     song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
     song->play();
-
 
 } // END CONSTRUCTOR
 
