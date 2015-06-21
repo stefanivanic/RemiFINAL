@@ -6,7 +6,6 @@
 #include <QString>
 
 
-
 ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     Game(parent)
 {
@@ -22,7 +21,6 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(client, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
     connect(client, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
     connect(client, SIGNAL(talonCardRetSignal(QString)),this, SLOT(addTalonCard(QString)));
-    connect(client, SIGNAL(gameEndedSignal()),      this, SLOT(playerTwoWins()));
 
     //signali iz game-a
     connect(this,SIGNAL(onNewMessage(QString)),        this,    SLOT(sendMessage(QString)));
@@ -58,11 +56,28 @@ void ClientGame::sendCard(const QString& card)
 
 void ClientGame::addCard(const QString &card)
 {
-    Card* c = createCardByString(card);
+    /*Card* c = createCardByString(card);
 
     talon->addCard(c,true);
     changePlayer();
-    playerTwoModCardNumber(-1);
+    playerTwoModCardNumber(-1);*/
+
+    QStringList list = card.split(" ");
+
+    if(list.size()>1)
+    {
+        //protivnik bacio poslednju kartu
+        Card* c = createCardByString(list[0]);
+        talon->addCard(c,false);
+    }
+    else
+    {
+        Card* c = createCardByString(card);
+
+        talon->addCard(c,true);
+        changePlayer();
+        playerTwoModCardNumber(-1);
+    }
 }
 
 void ClientGame::addGroupOfCards(const QString &cards)
@@ -271,13 +286,11 @@ void ClientGame::addTalonCard(const QString &card)
     playerTwoModCardNumber(-1);
 }
 
-void ClientGame::sendGameEndedSignal()
-{
-    client->sendSignal("GAMEENDED");
-}
 
 void ClientGame::playerTwoWins()
 {
     //POBEDIO PLAYER 2
     qDebug() << "Pobedio je player 2!";
+
+    QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
 }

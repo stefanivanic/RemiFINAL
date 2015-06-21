@@ -27,7 +27,6 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
     connect(server, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
     connect(server, SIGNAL(talonCardRetSignal(QString)),this, SLOT(addTalonCard(QString)));
-    connect(server, SIGNAL(gameEndedSignal()),      this, SLOT(playerTwoWins()));
 
     //signali iz game-a
     connect(this,   SIGNAL(onNewMessage(QString)),        this, SLOT(sendMessage(QString)));
@@ -38,7 +37,6 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(this,   SIGNAL(onTalonCardTaken()),           this, SLOT(sendTalonSignal()));
     connect(this, SIGNAL(onGroupCardAdd(QString)),        this, SLOT(sendGroupCards(QString)));
     connect(this, SIGNAL(talonCardReturned(QString)),     this, SLOT(sendTalonCardRetSignal(QString)));
-    connect(this, SIGNAL(gameEnded()),                    this, SLOT(sendGameEndedSignal()));
 
     playerTwoModCardNumber(0);
 } // END CONSTRUCTOR
@@ -62,11 +60,24 @@ void ServerGame::sendCard(const QString& card)
 
 void ServerGame::addCard(const QString &card)
 {
-    Card* c = createCardByString(card);
+    QStringList list = card.split(" ");
 
-    talon->addCard(c,true);
-    changePlayer();
-    playerTwoModCardNumber(-1);
+    if(list.size()>1)
+    {
+        //protivnik bacio poslednju kartu
+        Card* c = createCardByString(list[0]);
+        talon->addCard(c,false);
+
+        playerTwoWins();
+    }
+    else
+    {
+        Card* c = createCardByString(card);
+
+        talon->addCard(c,true);
+        changePlayer();
+        playerTwoModCardNumber(-1);
+    }
 }
 
 void ServerGame::addGroupOfCards(const QString &cards)
@@ -254,12 +265,9 @@ void ServerGame::addTalonCard(const QString &card)
     playerTwoModCardNumber(-1);
 }
 
-void ServerGame::sendGameEndedSignal()
-{
-    server->sendSignal("GAMEENDED");
-}
-
 void ServerGame::playerTwoWins()
 {
     qDebug() << "Pobedio je player 2!";
+
+    QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
 }

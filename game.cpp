@@ -77,7 +77,7 @@ void Game::playerToTalon()
     // player je pobedio
     if(_Player1->handSize() == 0) {
 
-        emit gameEnded();
+        emit onCardThrown(_Player1->getTempCard()->name()+" GAMEENDED");
         endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
                                         QMessageBox::Yes|QMessageBox::No);
@@ -86,6 +86,9 @@ void Game::playerToTalon()
         else QApplication::quit();
 
         endGameFlag = true;
+    }
+    else{
+        emit onCardThrown(_Player1->getTempCard()->name());
     }
 
     playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()
@@ -422,9 +425,7 @@ bool Game::eventFilter(QObject* target, QEvent* event)
                         firstTime = false;
                     }*/
                     else {
-                        //DEO ZA MREZU!!!!
                         changePlayer();
-                        emit onCardThrown(_Player1->getTempCard()->name());
                         playerToTalon();
                         talon->mouseReleaseEvent(m_event);
 
