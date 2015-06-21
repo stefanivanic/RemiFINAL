@@ -33,6 +33,7 @@ ClientGame::ClientGame(QWidget *parent, QString ip, int port) :
     connect(this,SIGNAL(talonCardReturned(QString)),   this,    SLOT(sendTalonCardRetSignal(QString)));
     connect(this,SIGNAL(gameEnded()),                  this,    SLOT(sendGameEndedSignal()));
 
+    playerTookCard = false;
 } // END CONSTRUCTOR
 
 void ClientGame::appendMessage(const QString &message)
@@ -232,8 +233,6 @@ void ClientGame::changeGroup(const QString &message)
 
 void ClientGame::initializeCards(const QString &cards)
 {
-    changePlayer();
-    changePlayer();
     changePlayer();
 
     playerTwoModCardNumber(15);
