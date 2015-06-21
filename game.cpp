@@ -81,7 +81,7 @@ void Game::playerToTalon()
     if(_Player1->handSize() == 0) {
 
         talon->addCard(c, false);
-        emit onCardThrown(_Player1->getTempCard()->name()+" GAMEENDED");
+        emit onCardThrown(c->name()+" GAMEENDED");
      /*   endGameDialog = QMessageBox::question(this, "Restart",
                                         " Pobeda! Nova igra?",
                                         QMessageBox::Yes|QMessageBox::No);
@@ -100,7 +100,7 @@ void Game::playerToTalon()
     }
     else{
         talon->addCard(c,true);
-        emit onCardThrown(_Player1->getTempCard()->name());
+        emit onCardThrown(c->name());
     }
 
     playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()

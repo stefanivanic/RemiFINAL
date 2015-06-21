@@ -59,8 +59,12 @@ void ClientGame::addCard(const QString &card)
 
     QStringList list = card.split(" ");
 
-    if(list.size()>1)
+    if(list.size()>2)
     {
+        qDebug() << list[0];
+        qDebug() << list[1];
+        qDebug() << list[2];
+
         //protivnik bacio poslednju kartu
         Card* c = createCardByString(list[0]);
         talon->addCard(c,false);
@@ -70,6 +74,9 @@ void ClientGame::addCard(const QString &card)
     }
     else
     {
+        qDebug() << list[0];
+        qDebug() << list[1];
+
         Card* c = createCardByString(card);
 
         talon->addCard(c,true);
