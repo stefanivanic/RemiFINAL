@@ -41,12 +41,8 @@ Game::Game(QWidget *parent) :
     song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
     song->setVolume(30);
-<<<<<<< HEAD
     song->play();
 
-=======
-    song->play();    
->>>>>>> abc92d4059656e51fc04ba43e361eda3e7dcda39
 
 } // END CONSTRUCTOR
 
