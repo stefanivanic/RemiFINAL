@@ -593,7 +593,7 @@ void Game::showOnThrowButton(bool showUndoGroup)
 void Game::hideOnThrowButton(bool hideUndoGroup)
 {
     ui->throwGroup->hide();
-    if( hideUndoGroup ) ui->undoGroup->hide();
+    if( hideUndoGroup && !groupsThrown) ui->undoGroup->hide();
 }
 
 Game::~Game() { delete ui; }
