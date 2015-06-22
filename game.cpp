@@ -7,6 +7,8 @@
 #include <QPropertyAnimation>
 #include <QMediaPlaylist>
 
+// proba za branch
+
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
     theme("default"), playerOneOnMove(true), playerTookCard(true),
