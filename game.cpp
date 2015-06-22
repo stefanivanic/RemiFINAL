@@ -193,6 +193,10 @@ void Game::delay(double seconds, QString message)
 */
 void Game::on_throwGroup_clicked()
 {    
+    if(!playerOneOnMove) {
+        animation("Wait for your turn.");
+        return;
+    }
     if(!playerTookCard) {
         animation("First take card");
         return;
