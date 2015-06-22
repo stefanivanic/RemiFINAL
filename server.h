@@ -10,7 +10,6 @@ class Server : public QObject
 public:
    enum DataType {
             Message,
-            Undefined,
             Card,
             Group,
             Indexes,
@@ -18,7 +17,8 @@ public:
             Talon,
             GroupIndex,
             TCardRet,
-            GameEnded
+            GameEnded,
+            Undefined
         };
    Server(QObject *parent = 0);
    QTcpSocket *socket;
@@ -40,6 +40,7 @@ signals:
    void newGroupIndex(const QString& message);
    void talonCardRetSignal(const QString& card);
    void gameEndedSignal();
+   void clientLeftTheGame();
 
 public slots:
     void newConnection();

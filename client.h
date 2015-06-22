@@ -1,7 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-
 #include <QTcpSocket>
 
 class Client : public QObject
@@ -11,7 +10,6 @@ class Client : public QObject
 public:
     enum DataType {
              Message,
-             Undefined,
              Card,
              Group,
              Indexes,
@@ -20,7 +18,8 @@ public:
              GroupIndex,
              InitCards,
              TCardRet,
-             GameEnded
+             GameEnded,
+             Undefined
          };
     Client(QObject *parent = 0, QString ip = "", int port = 0);
     ~Client();

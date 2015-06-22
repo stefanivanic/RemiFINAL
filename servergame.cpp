@@ -27,6 +27,7 @@ ServerGame::ServerGame(QWidget *parent) :
     connect(server, SIGNAL(talonCardTaken()),       this,   SLOT(removeCardFromTalon()));
     connect(server, SIGNAL(newGroupIndex(QString)), this, SLOT(changeGroup(QString)));
     connect(server, SIGNAL(talonCardRetSignal(QString)),this, SLOT(addTalonCard(QString)));
+    connect(server, SIGNAL(clientLeftTheGame()), this, SLOT(clientLeft()));
 
     //signali iz game-a
     connect(this,   SIGNAL(onNewMessage(QString)),        this, SLOT(sendMessage(QString)));
@@ -279,4 +280,10 @@ void ServerGame::playerTwoWins()
     {
         QApplication::quit();
     }
+}
+
+void ServerGame::clientLeft()
+{
+    ipPortLabel->setText("Protivnik je napustio igru!");
+    ipPortLabel->show();
 }

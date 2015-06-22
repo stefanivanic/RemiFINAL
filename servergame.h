@@ -44,6 +44,7 @@ public slots:
     void removeCardFromTalon();
     void changeGroup(const QString& message);
     void addTalonCard(const QString& card);
+    void clientLeft();
 
 private:
     Server* server;
