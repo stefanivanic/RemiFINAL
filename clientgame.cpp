@@ -76,6 +76,11 @@ void ClientGame::addCard(const QString &card)
         talon->addCard(c,true);
         changePlayer();
         playerTwoModCardNumber(-1);
+
+        notifications->setCurrentIndex(0);
+        notificationPlayer->play();
+
+
     }
 }
 
@@ -285,6 +290,9 @@ void ClientGame::playerTwoWins()
 {
     //POBEDIO PLAYER 2
     qDebug() << "Pobedio je player 2!";
+
+    notifications->setCurrentIndex(3);
+    notificationPlayer->play();
 
     endGameDialog = QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
 

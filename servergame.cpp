@@ -78,6 +78,9 @@ void ServerGame::addCard(const QString &card)
         talon->addCard(c,true);
         changePlayer();
         playerTwoModCardNumber(-1);
+
+        notifications->setCurrentIndex(0);
+        notificationPlayer->play();
     }
 }
 
@@ -266,6 +269,9 @@ void ServerGame::addTalonCard(const QString &card)
 void ServerGame::playerTwoWins()
 {
     qDebug() << "Pobedio je player 2!";
+
+    notifications->setCurrentIndex(3);
+    notificationPlayer->play();
 
     endGameDialog = QMessageBox::information(this,"Kraj igre!","Protivnik je pobedio!",QMessageBox::Ok);
 

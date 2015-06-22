@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 #include "playercontainer.h"
 #include "card.h"
@@ -72,7 +73,11 @@ protected:
     Ui::Game *ui;
 
     QString theme;
+
     QMediaPlayer *song;
+    QMediaPlaylist *notifications;
+    QMediaPlayer *notificationPlayer;
+
     bool playing = true;
 
     PlayerContainer *_Player1;
