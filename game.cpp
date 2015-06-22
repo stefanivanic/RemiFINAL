@@ -122,7 +122,7 @@ void Game::playerToTalon()
 
     playerTookCard = false; // ovo ovde ili u changeOnMoveTExt()
 
-    ui->groupValue->hide();
+    ui->groupValue->setText("");
     ui->errorLogger->hide();
 }
 
@@ -145,7 +145,7 @@ void Game::on_undoGroup_clicked()
     groupValue = 0;
 
     ui->undoGroup->hide();
-    ui->groupValue->hide();
+    ui->groupValue->setText("");
 
     qDebug() << "kliknuto";
 }
