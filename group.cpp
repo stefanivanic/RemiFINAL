@@ -101,10 +101,8 @@ int Group::isCorrectGroup(bool shuffle)
     if(!allEqualSign && !allDifferentSign)
         return -3; // niti su istog znaka niti su svi razlicitog
 
-   //sort stavlja jokera na pocetak jer mu je value 0 valjda
     correctValues();
-//    if( shuffle )
-        sortGroup();
+    sortGroup();
 
     if(allDifferentSign)
     {
@@ -128,7 +126,6 @@ int Group::isCorrectGroup(bool shuffle)
 
     //ako imamo 1 u grupi J Q K 1 sort ga stavlja na prvu poziciju,sto nije dobro
     //ovde menjamo vrednost toj karti ako je ima i sortiramo opet
-    //OVDE DA SE PROMENI!!!
     int i = counters[Card::JOKER];
 
     if(cards[i]->getNumber() == 1 && (cards.last()->getNumber()==14 || cards.last()->getNumber() == 13) )
@@ -160,10 +157,10 @@ int Group::isCorrectGroup(bool shuffle)
                 if(cards[0]->getSign() == Card::JOKER)
                 {
                     Card* tmp = cards[0];
-                    tmp->setValue(cards[i]->getValue()+1); //desilo mi se da sam izbacio grupu sa jokerom
-                    cards.insert(i+1,tmp);                  // a kad sam je vratio u ruke joker mi se promenio
+                    tmp->setValue(cards[i]->getValue()+1);
+                    cards.insert(i+1,tmp);
                     cards.pop_front();
-                    counters[Card::JOKER] = 0;                              // u kartu koju je i sam menjao , promenila se slika! :D
+                    counters[Card::JOKER] = 0;
                 }
                 else return -6;
             }
@@ -176,10 +173,10 @@ int Group::isCorrectGroup(bool shuffle)
                         return -6;
 
                     Card* tmp = cards[0];
-                    tmp->setValue(cards[i]->getValue()+1); //desilo mi se da sam izbacio grupu sa jokerom
-                    cards.insert(i+1,tmp);                  // a kad sam je vratio u ruke joker mi se promenio
+                    tmp->setValue(cards[i]->getValue()+1);
+                    cards.insert(i+1,tmp);
                     cards.pop_front();
-                    counters[Card::JOKER] = 0; // u kartu koju je i sam menjao , promenila se slika! :D
+                    counters[Card::JOKER] = 0;
                 }
                 else
                     return -6;
@@ -202,13 +199,12 @@ int Group::isCorrectGroup(bool shuffle)
                 cards.pop_front();
             }
             // ako je najvisa karta u gurpi A
-            // (posle A ne moze da stoji nista pa jokera ostavljamo na najnizoj poziciji,i dajemo mu vrednost)
+            // (posle A ne moze da stoji nista pa jokera ostavljamo na najnizu poziciju,i dajemo mu vrednost)
             else
                 cards[0]->setValue(cards[1]->getNumber()-1);
         }
 
         //trivijalno racunanje vrednosti grupe, ako grupa ne sadrzi jokera
-        //zameni sa accumulate
         int sum=0;
         for(int i=0; i<cards.size(); i++)
             if(cards[i]->getValue()>=10)

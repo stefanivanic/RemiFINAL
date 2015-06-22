@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QMediaPlayer>
 #include <QPropertyAnimation>
+#include <QMediaPlaylist>
 
 Game::Game(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Game),
@@ -41,8 +42,20 @@ Game::Game(QWidget *parent) :
 
     song = new QMediaPlayer();
     song->setMedia(QUrl("qrc:/music/Calle_Real-Ya_lo_se.mp3"));
-    song->setVolume(30);
+    song->setVolume(60);
     song->play();
+
+    notifications = new QMediaPlaylist();
+    notifications->addMedia(QUrl("qrc:/music/yourturn.mp3"));
+    notifications->addMedia(QUrl("qrc:/music/error.mp3"));
+    notifications->addMedia(QUrl("qrc:/music/applause.mp3"));
+    notifications->addMedia(QUrl("qrc:/music/laughter.mp3"));
+    notifications->setCurrentIndex(1);
+    notifications->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+
+    notificationPlayer = new QMediaPlayer();
+    notificationPlayer->setPlaylist(notifications);
+    notificationPlayer->setVolume(60);
 
 } // END CONSTRUCTOR
 
@@ -80,6 +93,9 @@ void Game::playerToTalon()
     // player je pobedio
     if(_Player1->handSize() == 0) {
 
+        notifications->setCurrentIndex(2);
+        notificationPlayer->play();
+
         talon->addCard(c, false);
         emit onCardThrown(c->name()+" GAMEENDED");
      /*   endGameDialog = QMessageBox::question(this, "Restart",
@@ -89,6 +105,7 @@ void Game::playerToTalon()
         if (endGameDialog == QMessageBox::Yes)  emit slotReboot();
         else QApplication::quit();
      */
+
         endGameDialog = QMessageBox::information(this,"THE END!","You win!",QMessageBox::Ok);
 
         if(endGameDialog == QMessageBox::Ok)
@@ -188,7 +205,7 @@ void Game::on_throwGroup_clicked()
         case -3 : animation("Cars are not all same sign, nor different sign"); break;
         case -4 : animation("All cards are different signs and values"); break;
         case -5 : animation("Cards are same signs, but not appropriate values"); break;
-        default : animation("Unknown error!"); break;
+        default : animation("Check your group!"); break;
         //default : ui->errorLogger->setText("Nepoznata greška" + QString::number(retValue)); break;
         }
         return;
@@ -685,7 +702,7 @@ void Game::on_playStop_clicked()
         ui->playStop->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/notax.png);"));
     }
     else {
-        song->setVolume(30);
+        song->setVolume(60);
         playing=true;
         ui->playStop->setStyleSheet(QStringLiteral("border-image: url(./slike/Teme/nota.png);"));
     }
@@ -723,6 +740,10 @@ void Game::resolveGroupChanged(Group *g,int k, int jokerFlag)
 
 void Game::animation(const QString& message)
 {
+
+    notifications->setCurrentIndex(1);
+    notificationPlayer->play();
+
     ui->errorLogger->show();
     ui->errorLogger->setText(message);
     QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(ui->errorLogger);
@@ -736,4 +757,5 @@ void Game::animation(const QString& message)
     anim->setEndValue(1.0);
     anim->setDuration(2500);
     anim->start(QAbstractAnimation::KeepWhenStopped);
+
 }
