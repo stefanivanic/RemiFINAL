@@ -106,7 +106,7 @@ void Game::playerToTalon()
         else QApplication::quit();
      */
 
-        endGameDialog = QMessageBox::information(this,"THE END!","You win!",QMessageBox::Ok);
+        endGameDialog = QMessageBox::information(this,"THE END!","You are the WINNER!!!",QMessageBox::Ok);
 
         if(endGameDialog == QMessageBox::Ok)
         {

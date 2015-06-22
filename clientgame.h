@@ -36,6 +36,7 @@ private slots:
     void sendGroupCards(const QString& message);
     void sendTalonCardRetSignal(const QString& card);
 
+//stavi u private
 public slots:
     void appendMessage(const QString& message);
     void addCard(const QString& card);

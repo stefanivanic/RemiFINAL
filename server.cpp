@@ -20,7 +20,7 @@ Server::Server(QObject *parent)
 
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
+    //koristimo prvu adresu koja nije local-host
     for (int i = 0; i < ipAddressesList.size(); ++i) {
         if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
             ipAddressesList.at(i).toIPv4Address()) {
@@ -28,7 +28,7 @@ Server::Server(QObject *parent)
             break;
         }
     }
-    // if we did not find one, use IPv4 localhost
+    //u slucaju da nije pronasao nijednu,koristimo local-host
     if (ipAddress.isEmpty())
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
@@ -138,6 +138,8 @@ void Server::disconnected()
 {
 
     qDebug() << " Disconnected!";
+
+    emit clientLeftTheGame();
 
     socket->deleteLater();
 
