@@ -20,10 +20,9 @@ Game::Game(QWidget *parent) :
     ui->undoGroup->hide();
     ui->undoTookTalonCard->hide();
 
-    setFixedSize(1050,620);
-
     chooseCards = new ChooseCards(this);
 
+    setFixedSize(1050,620);
     _Player1 = new PlayerContainer(this, 340, 490, 350, 100);
     deck = new Deck(this, 30, 250, 70, 100); // init i shuffle
     talon = new Talon(this, 120, 250, 70, 100);

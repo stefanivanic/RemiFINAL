@@ -204,7 +204,8 @@
     <property name="styleSheet">
      <string notr="true">#textEdit{
 	border: 1px solid black;
-	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;)
+	border-image: url(&quot;./slike/Teme/2_chat.jpg&quot;);
+	color:#45453E;
 }</string>
     </property>
    </widget>
